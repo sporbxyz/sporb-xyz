@@ -1,0 +1,8 @@
+# Sensitive - never commit
+.env
+*.env.*
+config.yaml
+
+# Node
+node_modules/
+package-lock.json

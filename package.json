@@ -1,0 +1,13 @@
+{
+  "name": "orbitalai-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Project Iris — Early Access Landing Page",
+  "scripts": {
+    "dev": "npx serve .",
+    "deploy:vercel": "vercel --prod"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  }
+}

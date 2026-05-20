@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORB Protocol 🚀 | $SPORB Token</title>
+    <meta name="description" content="SPORB Protocol — The Bridge Between Earth and Space. $SPORB — Solana token for next-gen Space Orbital infrastructure.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="SPORB Protocol 🚀 | $SPORB">
+    <meta property="og:description" content="The Bridge Between Earth and Space. Next-gen Space Orbital infrastructure.">
+    <meta property="og:image" content="/logo.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sporb.xyz">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SPORB Protocol 🚀 | $SPORB">
+    <meta name="twitter:description" content="The Bridge Between Earth and Space.">
+    <meta name="twitter:image" content="/logo.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0f;
+            --fg: #e8e8ed;
+            --muted: #6b6b80;
+            --accent: #00d4aa;
+            --accent2: #7c3aed;
+            --accent-dim: rgba(0, 212, 170, 0.15);
+            --border: rgba(255,255,255,0.06);
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: var(--muted);
+            margin-bottom: 32px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+        
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        h1 {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+        }
+        
+        h1 span {
+            background: linear-gradient(135deg, #00d4aa 0%, #00a3ff 50%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: clamp(16px, 2vw, 22px);
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 48px;
+            max-width: 600px;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-dim), transparent);
+            margin: 48px 0;
+        }
+        
+        h2 {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 16px;
+        }
+        
+        .manifesto {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--muted);
+            margin-bottom: 48px;
+        }
+        
+        .manifesto strong { color: var(--fg); font-weight: 500; }
+        
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+        
+        .pillar {
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        
+        .pillar:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .pillar-icon { font-size: 28px; margin-bottom: 12px; }
+        .pillar h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+        .pillar p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+        
+        /* Buy Section */
+        .buy-section {
+            padding: 32px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.05), rgba(124, 58, 237, 0.05));
+            margin-bottom: 48px;
+            text-align: center;
+        }
+        
+        .buy-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .buy-section .price-tag {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .buy-section .price-tag strong {
+            color: var(--accent);
+            font-size: 18px;
+        }
+        
+        .buy-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-buy {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #00d4aa, #00a3ff);
+            color: #0a0a0f;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            min-width: 200px;
+        }
+        
+        .btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 212, 170, 0.3);
+        }
+        
+        .btn-whitepaper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px 40px;
+            background: transparent;
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: border-color 0.2s;
+            min-width: 200px;
+        }
+        
+        .btn-whitepaper:hover {
+            border-color: var(--accent);
+        }
+        
+        .token-address {
+            margin-top: 20px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            word-break: break-all;
+        }
+        
+        .token-address .label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+        
+        .token-address .addr {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .token-address .addr:hover {
+            color: var(--accent);
+        }
+        
+        /* Early Access Form */
+        .early-access {
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 48px;
+        }
+        
+        .early-access h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .early-access p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        
+        .form-group { margin-bottom: 16px; }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--accent);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #00d4aa, #00a3ff);
+            color: #0a0a0f;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .form-status {
+            margin-top: 12px;
+            font-size: 13px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .form-status.success {
+            display: block;
+            color: var(--accent);
+            background: rgba(0, 212, 170, 0.1);
+        }
+        
+        .form-status.error {
+            display: block;
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        .footer-links { display: flex; gap: 24px; }
+        
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .footer-links a:hover { color: var(--fg); }
+        .footer-links a.social-icon { font-size: 20px; line-height: 1; }
+        
+        .footer-text {
+            font-size: 12px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        @media (max-width: 600px) {
+            .content { padding: 48px 20px; }
+            .pillars { grid-template-columns: 1fr; }
+            .buy-section, .early-access { padding: 24px; }
+            .btn-buy, .btn-whitepaper { min-width: 100%; }
+        }
+        
+        /* Images */
+        .hero-image, .section-image {
+            margin: 48px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .hero-image img, .section-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+
+    <!-- Jupiter Terminal -->
+    <script src="https://terminal.jup.ag/main-v2.js"></script>
+</head>
+<body>
+    <canvas id="stars-canvas"></canvas>
+    
+    <div class="content">
+        <div class="badge">
+            <span class="badge-dot"></span>
+            Stealth Mode — $SPORB
+        </div>
+        
+        <h1><span>$SPORB</span> — We're Building in Orbit</h1>
+        <p class="subtitle">
+            Low-latency edge compute. <strong style="color:#e8e8ed;">400km up.</strong><br>
+            AI inference at the source. Orbital infrastructure. Company equity.
+        </p>
+        
+        <div class="divider"></div>
+        
+        <!-- Hero Image -->
+        <div class="hero-image">
+            <img src="/images/earth-from-space.jpg" alt="Earth from space">
+        </div>
+        
+        <!-- Token Info -->
+        <div class="buy-section" id="buy-section">
+            <h3>🪐 $SPORB Token</h3>
+            <div class="price-tag">
+                Current Price — <strong>$2.41</strong> <span style="color:#6b6b80;">/ SPORB</span>
+            </div>
+            <div class="token-address" style="margin-bottom:12px;">
+                <div class="label">Token Mint (Solana)</div>
+                <div class="addr" onclick="copyAddress(this)">
+                    FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU
+                </div>
+            </div>
+            <div class="token-address" style="margin-bottom:20px; background:rgba(0,212,170,0.05); border-color:rgba(0,212,170,0.15);">
+                <div class="label">Liquidity Pool (Orca — Live)</div>
+                <div style="font-size:12px; color:#6b6b80;">
+                    0.1 SOL + 4.3 SPORB = <strong style="color:#00d4aa;">$2.41/SPORB</strong> <span style="color:#00d4aa; font-size:11px;">(+19% 🚀)</span>
+                </div>
+            </div>
+            <p style="color:#6b6b80; font-size:14px; line-height:1.6; margin-bottom:24px;">
+                $SPORB is a <strong style="color:#e8e8ed;">company equity token</strong> representing the future of 
+                Orbital infrastructure. Real services charge <strong style="color:#00d4aa;">USDC</strong>, 
+                company profits buy back $SPORB.
+            </p>
+            <p style="color:#6b6b80; font-size:12px; margin-bottom:24px;">
+                Buy-and-replenish strategy: Bot profit → buys $SPORB → adds to pool → supports <strong style="color:#00d4aa;">price floor</strong>.
+            </p>
+            <!-- Jupiter Terminal Widget -->
+            <div id="jupiter-terminal" style="min-height:480px; margin-bottom:16px; border-radius:12px; overflow:hidden; background:rgba(255,255,255,0.02); border:1px solid var(--border); padding:24px;">
+                <div id="swap-interface">
+                    <div style="margin-bottom:16px;">
+                        <label style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block;">You Pay</label>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <input id="swap-input-amount" type="number" value="0.1" step="0.01" min="0.001"
+                                style="flex:1; padding:14px 18px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; color:var(--fg); font-size:18px; font-family:'Space Grotesk',sans-serif; outline:none;"
+                                oninput="updateQuote()">
+                            <span style="padding:14px 18px; background:rgba(0,212,170,0.1); border-radius:8px; color:var(--accent); font-weight:600; white-space:nowrap; font-size:14px;">SOL</span>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin:8px 0; font-size:20px; color:var(--muted);">↓</div>
+                    <div style="margin-bottom:20px;">
+                        <label style="font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block;">You Receive</label>
+                        <div style="display:flex; gap:8px; align-items:center;">
+                            <input id="swap-output-amount" type="text" value="0"
+                                style="flex:1; padding:14px 18px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; color:var(--fg); font-size:18px; font-family:'Space Grotesk',sans-serif; outline:none;" readonly disabled>
+                            <span style="padding:14px 18px; background:rgba(124,58,237,0.1); border-radius:8px; color:var(--accent2); font-weight:600; white-space:nowrap; font-size:14px;">$SPORB</span>
+                        </div>
+                    </div>
+                    <div id="quote-info" style="font-size:13px; color:var(--muted); margin-bottom:16px; min-height:20px;">
+                        Enter an amount to see quote
+                    </div>
+                    <button id="swap-btn" onclick="connectAndSwap()"
+                        class="btn-buy" style="width:100%; padding:16px; font-size:16px;">
+                        🔗 Connect Wallet
+                    </button>
+                    <div id="swap-status" style="margin-top:12px; font-size:13px; color:var(--muted); min-height:20px;"></div>
+                </div>
+            </div>
+            <div class="buy-buttons" style="margin-bottom:16px;">
+                <a href="https://www.orca.so/pools" target="_blank" class="btn-buy" style="background:linear-gradient(135deg,#ff6b35,#ff4500);">
+                    🔄 Swap on Orca
+                </a>
+                <a href="https://jup.ag/swap/SOL-FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU?in=SOL&out=FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" class="btn-whitepaper">
+                    ⚡ Jupiter (Jup.ag)
+                </a>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:12px; color:var(--muted); line-height:1.6; text-align:left;">
+                <strong style="color:var(--accent);">📋 How to buy $SPORB:</strong><br>
+                1. Click <strong style="color:var(--fg);">Swap on Orca</strong> ↑<br>
+                2. Connect your wallet<br>
+                3. In search bar, <strong style="color:var(--fg);">paste address:</strong><br>
+                <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--accent); word-break:break-all; display:block; margin-top:4px; background:rgba(0,0,0,0.3); padding:6px 8px; border-radius:4px; cursor:pointer;" onclick="navigator.clipboard.writeText('FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU'); this.textContent='✅ Copied!'">FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU</span>
+            </div>
+            <p style="color:#6b6b80; font-size:12px;">
+                Powered by <a href="https://jup.ag" target="_blank" style="color:#00d4aa;">Jupiter</a> — connect your wallet to swap SOL → $SPORB directly.
+            </p>
+        </div>
+        
+        <h2>// The Mission</h2>
+        <div class="manifesto">
+            <p>
+                Latency is the enemy. Today's cloud lives hundreds or thousands of kilometres from where data is born.
+            </p>
+            <br>
+            <p>
+                We're building the <strong>next layer of infrastructure</strong> — where compute lives closer to the edge than anything before.
+            </p>
+            <br>
+            <p>
+                <strong>$SPORB</strong> is the equity token of the company building it. 
+                Not a meme. Not a promise. A stake in infrastructure.
+            </p>
+        </div>
+        
+        <h2>// Why Now</h2>
+        <div class="pillars">
+            <div class="pillar">
+                <div class="pillar-icon">📡</div>
+                <h3>Edge Latency</h3>
+                <p>The cloud is too far. Real-time processing at source changes everything.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">⚡</div>
+                <h3>AI at the Edge</h3>
+                <p>Inference where data is generated — not after a round trip to a data centre.</p>
+            </div>
+            <div class="pillar">
+                <div class="pillar-icon">🔗</div>
+                <h3>$SPORB Token</h3>
+                <p>Company equity token. Real services charge USDC. Profits buy back $SPORB.</p>
+            </div>
+        </div>
+        
+        <!-- Section Image -->
+        <div class="section-image">
+            <img src="/images/satellite-orbit.jpg" alt="Satellite in orbit">
+        </div>
+        
+        <div class="divider"></div>
+        
+        <!-- Early Access (Coming Soon) -->
+        <div class="early-access">
+            <h3 style="font-size:22px;">🔭 Early Supporter Plan</h3>
+            <p style="margin-bottom:20px;">
+                Lock SOL, get $SPORB instantly, full SOL back at maturity.
+                <strong style="color:var(--accent);">Smart contract coming soon.</strong>
+            </p>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:24px;">
+                <div style="padding:20px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.05);">
+                    <div style="font-size:28px; margin-bottom:8px;">🪐</div>
+                    <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">Lock 1 SOL</div>
+                    <div style="font-size:24px; font-weight:700; color:var(--accent);">1 Year</div>
+                    <div style="font-size:13px; color:var(--muted); margin-top:8px;">
+                        Get <strong style="color:var(--fg);">0.414 SPORB</strong> now<br>
+                        + <strong style="color:var(--fg);">0.1 SPORB</strong> bonus
+                    </div>
+                </div>
+                <div style="padding:20px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.05);">
+                    <div style="font-size:28px; margin-bottom:8px;">🚀</div>
+                    <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">Lock 1 SOL</div>
+                    <div style="font-size:24px; font-weight:700; color:var(--accent);">2 Years</div>
+                    <div style="font-size:13px; color:var(--muted); margin-top:8px;">
+                        Get <strong style="color:var(--fg);">0.414 SPORB</strong> now<br>
+                        + <strong style="color:var(--fg);">0.2 SPORB</strong> bonus
+                    </div>
+                </div>
+                <div style="padding:20px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.05);">
+                    <div style="font-size:28px; margin-bottom:8px;">🌍</div>
+                    <div style="font-size:13px; color:var(--muted); margin-bottom:4px;">Lock 1 SOL</div>
+                    <div style="font-size:24px; font-weight:700; color:var(--accent);">3 Years</div>
+                    <div style="font-size:13px; color:var(--muted); margin-top:8px;">
+                        Get <strong style="color:var(--fg);">0.414 SPORB</strong> now<br>
+                        + <strong style="color:var(--fg);">0.3 SPORB</strong> bonus
+                    </div>
+                </div>
+            </div>
+
+            <div style="padding:24px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); margin-bottom:20px;">
+                <p style="color:var(--accent); font-size:14px; text-align:center; margin-bottom:12px;">
+                    ⚡ <strong>Phase 1 cap: 10 SOL</strong>
+                </p>
+                <p style="color:var(--muted); font-size:13px; text-align:center;">
+                    Smart contract deployment in progress. Leave your contact to get notified when live.
+                </p>
+            </div>
+
+            <form id="early-form">
+                <div class="form-group">
+                    <label>Solana Wallet Address</label>
+                    <input type="text" id="wallet" placeholder="Your Solana wallet address" required>
+                </div>
+                <div class="form-group">
+                    <label>Interested Plan</label>
+                    <select id="plan" style="width:100%; padding:14px 18px; background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:8px; color:var(--fg); font-family:'Space Grotesk',sans-serif; font-size:15px; outline:none;">
+                        <option value="1">1 Year — 0.414 SPORB + 0.1 bonus</option>
+                        <option value="2">2 Years — 0.414 SPORB + 0.2 bonus</option>
+                        <option value="3">3 Years — 0.414 SPORB + 0.3 bonus</option>
+                        <option value="notify">Notify me when contract is live</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Contact (Email / Telegram / X)</label>
+                    <input type="text" id="contact" placeholder="@username or email@example.com" required>
+                </div>
+                <button type="submit" class="btn" id="submit-btn">
+                    Notify Me When Live ✦
+                </button>
+                <div class="form-status" id="form-status"></div>
+            </form>
+        </div>
+        
+        <!-- Footer Image -->
+        <div class="section-image">
+            <img src="/images/space-tech.jpg" alt="Space technology">
+        </div>
+        
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#" onclick="return false;">Whitepaper (Coming Soon)</a>
+                <a href="#" onclick="return false;">Docs (Private)</a>
+                <a href="https://x.com/sporb_xyz" target="_blank" rel="noopener">𝕏 / Twitter</a>
+                <a href="https://t.me/sporb_xyz" target="_blank" rel="noopener">Telegram</a>
+                <a href="https://github.com/sporbxyz" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://discord.gg/sporb_xyz" target="_blank" rel="noopener">Discord</a>
+            </div>
+            <div class="footer-text">
+                SPORB Protocol 🚀 — Stealth Mode
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const stars = Array.from({ length: 200 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5 + 0.3,
+            alpha: Math.random(),
+            speed: Math.random() * 0.02 + 0.005
+        }));
+        
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1) star.alpha = 0;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(232, 232, 237, ${Math.sin(star.alpha * Math.PI) * 0.5 + 0.3})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+        
+        function copyAddress(el) {
+            const addr = el.textContent.trim();
+            navigator.clipboard.writeText(addr);
+            const original = el.textContent;
+            el.textContent = '✅ Copied!';
+            setTimeout(() => {
+                el.textContent = original;
+            }, 2000);
+        }
+        
+        const form = document.getElementById('early-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const statusEl = document.getElementById('form-status');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            const formData = {
+                contact: document.getElementById('contact').value,
+                plan: document.getElementById('plan').value,
+                wallet: document.getElementById('wallet').value,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                await fetch('https://api.sporb.xyz/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+            } catch (err) {
+                console.log('Submission:', formData);
+            }
+            
+            statusEl.className = 'form-status success';
+            statusEl.textContent = '✅ Received. We\'ll be in touch. The future is being built.';
+            form.reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Interest ✦';
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            document.querySelector('h1').style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
+        });
+
+        // Init Jupiter Terminal
+        window.addEventListener('load', function() {
+            // Load Solana Web3
+            var script = document.createElement('script');
+            script.src = 'https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js';
+            document.head.appendChild(script);
+        });
+
+        // Jupiter quote
+        var quoteCache = null;
+        var SPORB_MINT = 'FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU';
+        var SOL_MINT = 'So11111111111111111111111111111111111111112';
+
+        async function updateQuote() {
+            var amount = document.getElementById('swap-input-amount').value;
+            var status = document.getElementById('quote-info');
+            var output = document.getElementById('swap-output-amount');
+
+            if (!amount || parseFloat(amount) <= 0) {
+                status.textContent = 'Enter an amount to see quote';
+                output.value = '0';
+                return;
+            }
+
+            var lamports = Math.floor(parseFloat(amount) * 1e9);
+            status.textContent = 'Getting quote...';
+
+            try {
+                var url = 'https://quote-api.jup.ag/v6/quote?inputMint=' + SOL_MINT +
+                    '&outputMint=' + SPORB_MINT +
+                    '&amount=' + lamports +
+                    '&slippageBps=100';
+
+                var resp = await fetch(url);
+                var data = await resp.json();
+
+                if (data.error) {
+                    status.textContent = '⚠️ ' + data.error;
+                    return;
+                }
+
+                quoteCache = data;
+                var outAmount = parseFloat(data.outAmount) / 1e6;
+                var price = (parseFloat(amount) / outAmount).toFixed(4);
+                output.value = outAmount.toLocaleString(undefined, {maximumFractionDigits: 2});
+
+                status.innerHTML = 'Rate: <strong style="color:var(--accent);">1 SOL ≈ ' + price + ' SPORB</strong>' +
+                    ' &middot; Price impact: ' + (data.priceImpactPct || '0') + '%';
+            } catch (e) {
+                status.textContent = '⚠️ Could not get quote. Pool may be too new.';
+                console.error('Jupiter quote error:', e);
+            }
+        }
+
+        var solanaProvider = null;
+
+        async function connectAndSwap() {
+            var btn = document.getElementById('swap-btn');
+            var status = document.getElementById('swap-status');
+
+            // Try Phantom
+            if (window.solana && window.solana.isPhantom) {
+                solanaProvider = window.solana;
+            } else if (window.backpack) {
+                solanaProvider = window.backpack;
+            } else if (window.xnft && window.xnft.solana) {
+                solanaProvider = window.xnft.solana;
+            } else {
+                status.innerHTML = '⚠️ No Solana wallet found. Please install <a href="https://phantom.app" target="_blank" style="color:var(--accent);">Phantom</a> or <a href="https://backpack.app" target="_blank" style="color:var(--accent2);">Backpack</a>.';
+                return;
+            }
+
+            if (!solanaProvider.publicKey) {
+                status.textContent = 'Connecting wallet...';
+                try {
+                    var resp = await solanaProvider.connect();
+                    status.textContent = '✅ Connected: ' + resp.publicKey.toString().slice(0,6) + '...' + resp.publicKey.toString().slice(-4);
+                } catch (e) {
+                    status.textContent = '❌ Connection rejected';
+                    return;
+                }
+            } else {
+                status.textContent = '✅ Connected: ' + solanaProvider.publicKey.toString().slice(0,6) + '...' + solanaProvider.publicKey.toString().slice(-4);
+            }
+
+            // If not enough SOL for quote, get a new one
+            var amount = document.getElementById('swap-input-amount').value;
+            if (!quoteCache || !amount || parseFloat(amount) <= 0) {
+                await updateQuote();
+                amount = document.getElementById('swap-input-amount').value;
+            }
+
+            if (!quoteCache || quoteCache.error) {
+                status.textContent = '❌ No route available. Pool may need more liquidity.';
+                return;
+            }
+
+            // Execute swap
+            btn.disabled = true;
+            btn.textContent = '⏳ Swapping...';
+            status.textContent = 'Creating swap transaction...';
+
+            try {
+                var swapResp = await fetch('https://quote-api.jup.ag/v6/swap', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        quoteResponse: quoteCache,
+                        userPublicKey: solanaProvider.publicKey.toString(),
+                        wrapAndUnwrapSol: true,
+                        dynamicComputeUnitLimit: true,
+                        prioritizationFeeLamports: 'auto'
+                    })
+                });
+
+                var swapData = await swapResp.json();
+
+                if (swapData.error) {
+                    status.textContent = '❌ Swap error: ' + swapData.error;
+                    btn.disabled = false;
+                    btn.textContent = '🔗 Connect Wallet';
+                    return;
+                }
+
+                // Deserialize and sign transaction
+                var transaction = solanaWeb3.VersionedTransaction.deserialize(
+                    new Uint8Array(swapData.swapTransaction.match(/.{1,2}/g).map(function(b) { return parseInt(b, 16); }))
+                );
+
+                status.textContent = '✍️ Sign in your wallet...';
+
+                var signedTx = await solanaProvider.signTransaction(transaction);
+
+                // Send transaction
+                status.textContent = '📡 Sending transaction...';
+
+                var conn = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+                var txid = await conn.sendRawTransaction(signedTx.serialize(), {
+                    skipPreflight: false,
+                    maxRetries: 3
+                });
+
+                status.innerHTML = '✅ Swap sent! <a href="https://solscan.io/tx/' + txid + '" target="_blank" style="color:var(--accent);">View on Solscan</a>';
+
+                setTimeout(function() {
+                    btn.disabled = false;
+                    btn.textContent = '🔗 Connect Wallet';
+                }, 5000);
+
+            } catch (e) {
+                status.textContent = '❌ Swap failed: ' + (e.message || e);
+                console.error('Swap error:', e);
+                btn.disabled = false;
+                btn.textContent = '🔗 Connect Wallet';
+            }
+
+            // If no provider, show button to install
+            if (!solanaProvider) {
+                status.innerHTML = '⚠️ No wallet detected. <a href="https://phantom.app" target="_blank" style="color:var(--accent);">Install Phantom</a> to swap $SPORB.';
+            }
+        }
+    </script>
+</body>
+</html>

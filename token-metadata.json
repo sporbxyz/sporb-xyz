@@ -1,0 +1,36 @@
+{
+  "name": "SPORB Protocol",
+  "symbol": "SPORB",
+  "description": "SPORB Protocol — The Bridge Between Earth and Space. $SPORB token representing the future of space infrastructure, AI, and decentralized networks.",
+  "image": "https://sporb.xyz/logo.png",
+  "external_url": "https://sporb.xyz",
+  "attributes": [
+    {
+      "trait_type": "Vision",
+      "value": "Space x AI x Web3"
+    },
+    {
+      "trait_type": "Chain",
+      "value": "Solana"
+    },
+    {
+      "trait_type": "Supply",
+      "value": "100,000,000,000"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://sporb.xyz/logo.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "token",
+    "creators": [
+      {
+        "address": "DwLJ7CPvQqgwXJN1NQFUB7TFbrZSPL5ywsH5BfZL4LFm",
+        "share": 100
+      }
+    ]
+  }
+}
