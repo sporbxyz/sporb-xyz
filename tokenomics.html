@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$SPORB Tokenomics | SPORB Protocol</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
+  .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; text-align: center; letter-spacing: -1px; }
+  h1 span { color: #FF6B35; }
+  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 40px; }
+  .section { margin-bottom: 48px; }
+  .section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+  .section h2 span { color: #FF6B35; }
+
+  .supply-big {
+    text-align: center; padding: 32px;
+    background: linear-gradient(145deg, #1C2128, #161B22);
+    border: 1px solid #30363D; border-radius: 16px; margin-bottom: 32px;
+  }
+  .supply-big .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(36px, 8vw, 72px); font-weight: 700; color: #FF6B35;
+  }
+  .supply-big .lbl { color: #8B949E; font-size: 14px; margin-top: 4px; }
+
+  .alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .alloc-card {
+    background: #161B22; border: 1px solid #30363D; border-radius: 12px;
+    padding: 20px; text-align: center;
+  }
+  .alloc-card .pct { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; }
+  .alloc-card .pct.or { color: #FF6B35; }
+  .alloc-card .pct.gr { color: #3FB950; }
+  .alloc-card .pct.bl { color: #58A6FF; }
+  .alloc-card .pct.pu { color: #BC8CFF; }
+  .alloc-card .name { font-size: 14px; font-weight: 600; margin: 4px 0; }
+  .alloc-card .desc { font-size: 12px; color: #8B949E; }
+  .alloc-card .amt { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #484F58; margin-top: 6px; }
+
+  .info-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .info-card {
+    background: #161B22; border: 1px solid #30363D; border-radius: 10px; padding: 20px;
+  }
+  .info-card .icn { font-size: 24px; margin-bottom: 8px; }
+  .info-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .info-card p { font-size: 13px; color: #8B949E; line-height: 1.5; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  th { text-align: left; padding: 10px 12px; background: rgba(255,255,255,0.03); color: #8B949E; font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #30363D; }
+  td { padding: 12px; border-bottom: 1px solid rgba(48,54,61,0.4); }
+  td:last-child, th:last-child { text-align: right; }
+  .hr td { color: #FF6B35; font-weight: 600; }
+
+  .vest-table td:first-child { font-weight: 500; }
+  .vest-table td:nth-child(2) { color: #8B949E; }
+  .vest-table td:nth-child(3) { text-align: right; }
+  .vest-table td:nth-child(4) { text-align: right; }
+
+  .disclaimer {
+    background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.15);
+    border-radius: 10px; padding: 20px; font-size: 12px; color: #8B949E; line-height: 1.6;
+  }
+
+  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
+  .back:hover { color: #FF8C5A; }
+
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
+  .ft a { color: #FF6B35; text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .alloc-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back">\u2190 Back to SPORB</a>
+
+  <h1><span>$SPORB</span> Tokenomics</h1>
+  <p class="sub">Decentralized Physical Infrastructure Network — Smart Display Terminal</p>
+
+  <!-- Total Supply -->
+  <div class="supply-big">
+    <div class="num">100,000,000,000</div>
+    <div class="lbl">Total Supply</div>
+  </div>
+
+  <!-- Allocation -->
+  <div class="section">
+    <h2>Token <span>Allocation</span></h2>
+    <div class="alloc-grid">
+      <div class="alloc-card">
+        <div class="pct or">40%</div>
+        <div class="name">Ecosystem &amp; Rewards</div>
+        <div class="desc">Node mining, community incentives, partnerships</div>
+        <div class="amt">40,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct gr">20%</div>
+        <div class="name">Team &amp; Contributors</div>
+        <div class="desc">4-year vest, 1-year cliff</div>
+        <div class="amt">20,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct bl">15%</div>
+        <div class="name">Company Reserve</div>
+        <div class="desc">R&D, operations, strategic initiatives</div>
+        <div class="amt">15,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct or">10%</div>
+        <div class="name">Liquidity Pool</div>
+        <div class="desc">DEX LP, CEX listings, market making</div>
+        <div class="amt">10,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct pu">8%</div>
+        <div class="name">Pre-Sale</div>
+        <div class="desc">Early supporters, node pre-sale bonuses</div>
+        <div class="amt">8,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct gr">5%</div>
+        <div class="name">Strategic Investors</div>
+        <div class="desc">Private sale, advisors, partners</div>
+        <div class="amt">5,000,000,000 SPORB</div>
+      </div>
+      <div class="alloc-card">
+        <div class="pct bl">2%</div>
+        <div class="name">Marketing &amp; Airdrops</div>
+        <div class="desc">Community campaigns, content creation</div>
+        <div class="amt">2,000,000,000 SPORB</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Node Mining Pool -->
+  <div class="section">
+    <h2>Node Mining <span>Pool</span></h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="icn">\u26CF</div>
+        <h3>Pool Size</h3>
+        <p>300,000,000 SPORB (0.3% of total) allocated for 4 years of node mining.</p>
+      </div>
+      <div class="info-card">
+        <div class="icn">\uD83D\uDCC8</div>
+        <h3>Daily Reward</h3>
+        <p>Base pool: 1,000,000 SPORB/day. Year 1 daily: ~685 SPORB. Dynamic pool adjusts with network size.</p>
+      </div>
+      <div class="info-card">
+        <div class="icn">\uD83D\uDD17</div>
+        <h3>Stake Boost</h3>
+        <p>Node operators can stake SPORB for up to 2x multiplier on mining rewards.</p>
+      </div>
+      <div class="info-card">
+        <div class="icn">\uD83D\uDD12</div>
+        <h3>Supply Lock</h3>
+        <p>Staked tokens are locked out of circulation, reducing sell pressure as the network grows.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vesting Schedule -->
+  <div class="section">
+    <h2>Vesting <span>Schedule</span></h2>
+    <table class="vest-table">
+      <tr><th>Allocation</th><th>Vesting</th><th>At TGE</th><th>Fully Unlocked</th></tr>
+      <tr><td>Ecosystem &amp; Rewards</td><td>Linear over 4 years</td><td>5%</td><td>Month 48</td></tr>
+      <tr><td>Team &amp; Contributors</td><td>1yr cliff + 3yr linear</td><td>0%</td><td>Month 48</td></tr>
+      <tr><td>Company Reserve</td><td>Linear over 3 years</td><td>0%</td><td>Month 36</td></tr>
+      <tr><td>Liquidity Pool</td><td>100% at TGE</td><td>100%</td><td>Day 1</td></tr>
+      <tr><td>Pre-Sale</td><td>3mo lock + 6mo linear</td><td>0%</td><td>Month 9</td></tr>
+      <tr class="hr"><td>Strategic Investors</td><td>6mo cliff + 18mo linear</td><td>0%</td><td>Month 24</td></tr>
+      <tr><td>Marketing &amp; Airdrops</td><td>10% at TGE, rest linear 12mo</td><td>10%</td><td>Month 12</td></tr>
+    </table>
+    <p style="color:#8B949E; font-size:13px; margin-top:8px;">TGE: ~10% circulating supply. Most tokens locked with long vesting schedules.</p>
+  </div>
+
+  <!-- Token Utility -->
+  <div class="section">
+    <h2>Token <span>Utility</span></h2>
+    <table>
+      <tr><th>Use Case</th><th>Description</th></tr>
+      <tr><td>Node Mining Rewards</td><td>SPORB Nodes earn daily $SPORB for uptime and data relay</td></tr>
+      <tr><td>Staking</td><td>Stake $SPORB for mining multiplier (up to 2x) and future governance</td></tr>
+      <tr><td>Signal Engine</td><td>Pay subscriptions with $SPORB for discounted rates</td></tr>
+      <tr><td>Revenue Buy-Back</td><td>5% of Signal Engine fees buy $SPORB from market monthly</td></tr>
+      <tr class="hr"><td>DePIN Rewards</td><td>Future: edge compute, data relay, validator incentives</td></tr>
+    </table>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <strong style="color:#E6EDF3;">Disclaimer:</strong> This tokenomics is a live document and may be updated as the project evolves.
+    Figures are estimates and subject to change. $SPORB is a utility token for the SPORB Protocol ecosystem.
+    Always do your own research.
+  </div>
+
+  <div class="ft">
+    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+  </div>
+</div>
+</body>
+</html>
