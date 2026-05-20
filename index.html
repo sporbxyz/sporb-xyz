@@ -461,6 +461,12 @@
             AI inference at the source. Orbital infrastructure. Company equity.
         </p>
         
+        <div style="text-align:center; margin:24px 0 32px;">
+            <a href="/sporb-node-presale.html" style="display:inline-block; background:linear-gradient(135deg,#ff6b35,#ff8c5a); color:#0d1117; padding:14px 36px; border-radius:10px; font-weight:700; font-size:16px; text-decoration:none; transition:transform 0.2s;">
+                Get the SPORB Node ->
+            </a>
+        </div>
+        
         <div class="divider"></div>
         
         <!-- Hero Image -->
@@ -472,7 +478,8 @@
         <div class="buy-section" id="buy-section">
             <h3>🪐 $SPORB Token</h3>
             <div class="price-tag">
-                Current Price — <strong>$2.41</strong> <span style="color:#6b6b80;">/ SPORB</span>
+                Current Price — <strong><span id="sporb-price">$2.41</span></strong> <span style="color:#6b6b80;">/ SPORB</span>
+                <span id="price-loader" style="color:#484F58; font-size:11px; display:block; margin-top:4px;">Syncing from chain...</span>
             </div>
             <div class="token-address" style="margin-bottom:12px;">
                 <div class="label">Token Mint (Solana)</div>
@@ -483,7 +490,7 @@
             <div class="token-address" style="margin-bottom:20px; background:rgba(0,212,170,0.05); border-color:rgba(0,212,170,0.15);">
                 <div class="label">Liquidity Pool (Orca — Live)</div>
                 <div style="font-size:12px; color:#6b6b80;">
-                    0.1 SOL + 4.3 SPORB = <strong style="color:#00d4aa;">$2.41/SPORB</strong> <span style="color:#00d4aa; font-size:11px;">(+19% 🚀)</span>
+                    0.1 SOL + 4.3 SPORB = <strong style="color:#00d4aa;"><span id="pool-price">$2.41</span>/SPORB</strong> <span style="color:#00d4aa; font-size:11px;"><span id="price-change">+19%</span> 🚀</span>
                 </div>
             </div>
             <p style="color:#6b6b80; font-size:14px; line-height:1.6; margin-bottom:24px;">
@@ -666,7 +673,8 @@
         
         <div class="footer">
             <div class="footer-links">
-                <a href="#" onclick="return false;">Whitepaper (Coming Soon)</a>
+                <a href="/sporb-node-presale.html">SPORB Node Pre-Sale</a>
+                <a href="/one-pager.pdf" target="_blank">Whitepaper</a>
                 <a href="#" onclick="return false;">Docs (Private)</a>
                 <a href="https://x.com/sporb_xyz" target="_blank" rel="noopener">𝕏 / Twitter</a>
                 <a href="https://t.me/sporb_xyz" target="_blank" rel="noopener">Telegram</a>
@@ -789,7 +797,7 @@
             status.textContent = 'Getting quote...';
 
             try {
-                var url = 'https://quote-api.jup.ag/v6/quote?inputMint=' + SOL_MINT +
+                var url = 'https://api.jup.ag/swap/v1/quote?inputMint=' + SOL_MINT +
                     '&outputMint=' + SPORB_MINT +
                     '&amount=' + lamports +
                     '&slippageBps=100';
@@ -864,7 +872,7 @@
             status.textContent = 'Creating swap transaction...';
 
             try {
-                var swapResp = await fetch('https://quote-api.jup.ag/v6/swap', {
+                var swapResp = await fetch('https://api.jup.ag/swap/v1/swap', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -923,5 +931,29 @@
             }
         }
     </script>
+
+<script>
+async function updatePrice() {
+  var el = document.getElementById('sporb-price');
+  var pl = document.getElementById('pool-price');
+  var pc = document.getElementById('price-change');
+  var ld = document.getElementById('price-loader');
+  try {
+    var r = await fetch('/price');
+    var d = await r.json();
+    if (d.spor_usd) {
+      el.textContent = '$' + d.spor_usd.toFixed(4);
+      pl.textContent = '$' + d.spor_usd.toFixed(2);
+      if (pc) pc.textContent = '+' + d.price_change_pct + '%';
+      if (ld) ld.textContent = 'Live \u25CF Updated ' + new Date(d.timestamp).toLocaleTimeString();
+    }
+  } catch(_) {
+    if (ld) ld.textContent = 'Price sync unavailable \u26A0';
+  }
+}
+updatePrice();
+setInterval(updatePrice, 30000);
+</script>
+
 </body>
 </html>
