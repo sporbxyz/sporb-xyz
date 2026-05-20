@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Buy  | SPORB Protocol</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
+  .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 800; text-align: center; letter-spacing: -1px; }
+  h1 span { color: #FF6B35; }
+  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 32px; }
+  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
+
+  .step {
+    background: #161B22; border: 1px solid #30363D; border-radius: 14px;
+    padding: 24px; margin-bottom: 16px; display: flex; gap: 20px; align-items: flex-start;
+  }
+  .step-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700;
+    color: #FF6B35; min-width: 48px; text-align: center;
+  }
+  .step-content { flex: 1; }
+  .step-content h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #F0F6FC; }
+  .step-content p { font-size: 13px; color: #8B949E; line-height: 1.6; }
+  .step-content .code-block {
+    background: #0D1117; border: 1px solid #30363D; border-radius: 6px;
+    padding: 10px 14px; margin: 8px 0; font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #FF6B35; word-break: break-all; cursor: pointer;
+  }
+  .step-content .tip {
+    margin-top: 8px; padding: 8px 12px; background: rgba(255,107,53,0.05);
+    border: 1px solid rgba(255,107,53,0.12); border-radius: 6px;
+    font-size: 12px; color: #8B949E; line-height: 1.5;
+  }
+
+  .btn-buy {
+    display: inline-block; background: #FF6B35; color: #0D1117; font-weight: 700;
+    padding: 14px 36px; border-radius: 10px; font-size: 15px; text-decoration: none;
+    text-align: center; margin: 4px;
+  }
+  .btn-buy:hover { background: #FF8C5A; }
+  .btn-alt {
+    display: inline-block; color: #FF6B35; font-weight: 600; font-size: 14px;
+    text-decoration: none; border: 1px solid #FF6B35; padding: 14px 36px;
+    border-radius: 10px; text-align: center; margin: 4px;
+  }
+  .btn-alt:hover { background: rgba(255,107,53,0.1); }
+  .btns { text-align: center; margin: 32px 0; }
+
+  .token-card {
+    background: #1C2128; border: 1px solid #30363D; border-radius: 10px;
+    padding: 16px 20px; margin: 16px 0; text-align: center;
+  }
+  .token-card .addr {
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #FF6B35;
+    word-break: break-all; cursor: pointer;
+  }
+  .token-card .lbl { font-size: 11px; color: #484F58; margin-bottom: 4px; }
+
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
+  .ft a { color: #FF6B35; text-decoration: none; }
+
+  @media (max-width: 600px) { .step { flex-direction: column; gap: 8px; } .step-num { text-align: left; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back">← Back to SPORB</a>
+  <h1>How to Buy <span></span></h1>
+  <p class="sub">Step-by-step guide — 5 minutes, any budget</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h3>Install Phantom Wallet</h3>
+      <p>Download Phantom from <strong><a href="https://phantom.app" target="_blank" style="color:#FF6B35;">phantom.app</a></strong> — available as browser extension (Chrome, Firefox, Edge) or mobile app (iOS, Android). Create a new wallet and securely save your seed phrase.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h3>Fund with SOL</h3>
+      <p>Buy SOL from a centralized exchange (Binance, Coinbase, Kraken, OKX) and withdraw to your Phantom wallet address. You need SOL for transaction fees (~/usr/bin/bash.01 per swap) and as the base currency for the SPORB pool.</p>
+      <div class="tip">💡 Start with at least 0.1 SOL (-15) to cover fees and swap</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h3>Swap SOL → </h3>
+      <p>Use Jupiter aggregator to swap SOL for  at the best rate:</p>
+      <div class="code-block" onclick="navigator.clipboard.writeText('FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU'); this.textContent='✅ Copied!'">
+        FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU
+      </div>
+      <p>Click the button below — connect Phantom, enter SOL amount, and confirm the swap in your wallet.</p>
+    </div>
+  </div>
+
+  <div class="btns">
+    <a href="https://jup.ag/swap/SOL-FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU?in=SOL&out=FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" class="btn-buy">⚡ Swap on Jupiter</a>
+    <a href="https://www.orca.so/pools" target="_blank" class="btn-alt">🔄 Swap on Orca</a>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <h3>Verify on Solscan</h3>
+      <p>You can check your  balance and all transactions on Solscan — the Solana blockchain explorer.</p>
+      <div class="tip">🔍 <a href="https://solscan.io/token/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" style="color:#FF6B35;">View  on Solscan</a></div>
+    </div>
+  </div>
+
+  <div class="token-card">
+    <div class="lbl">Token Address (Solana)</div>
+    <div class="addr" onclick="navigator.clipboard.writeText('FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU')">
+      FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU 🗐 Copy
+    </div>
+  </div>
+
+  <div class="ft">
+    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+  </div>
+</div>
+</body>
+</html>

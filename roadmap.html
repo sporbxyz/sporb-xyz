@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset=UTF-8>
+<meta name=viewport content=width=device-width, initial-scale=1.0>
+<title>Roadmap | SPORB Protocol</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; text-align: center; letter-spacing: -1px; }
+  h1 span { color: #FF6B35; }
+  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 40px; }
+  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
+
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: ''; position: absolute; left: 11px; top: 0; bottom: 0;
+    width: 2px; background: #30363D;
+  }
+
+  .phase {
+    position: relative; margin-bottom: 36px; padding-left: 20px;
+  }
+  .phase::before {
+    content: ''; position: absolute; left: -26px; top: 6px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #30363D; border: 2px solid #0D1117;
+  }
+  .phase.done::before { background: #3FB950; }
+  .phase.active::before { background: #FF6B35; box-shadow: 0 0 12px rgba(255,107,53,0.4); }
+  .phase.future::before { background: #484F58; }
+
+  .phase .label {
+    display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 10px; margin-bottom: 6px;
+  }
+  .phase.done .label { background: rgba(63,185,80,0.15); color: #3FB950; }
+  .phase.active .label { background: rgba(255,107,53,0.15); color: #FF6B35; }
+  .phase.future .label { background: rgba(72,79,88,0.15); color: #8B949E; }
+
+  .phase h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .phase .date { font-size: 12px; color: #484F58; margin-bottom: 8px; }
+  .phase ul { list-style: none; }
+  .phase ul li { font-size: 13px; color: #8B949E; padding: 3px 0; display: flex; align-items: center; gap: 6px; }
+  .phase ul li::before { content: "\2713"; color: #3FB950; font-weight: 700; }
+  .phase.future ul li::before { content: "\25CB"; color: #484F58; }
+
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
+  .ft a { color: #FF6B35; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back">← Back to SPORB</a>
+  <h1>SPORB <span>Roadmap</span></h1>
+  <p class="sub">From DePIN display terminal to orbital data infrastructure</p>
+
+  <div class="timeline">
+
+    <div class="phase done">
+      <span class="label">Completed</span>
+      <h3>Phase 0: Foundation</h3>
+      <div class="date">Q1-Q2 2026</div>
+      <ul>
+        <li> token launch on Solana</li>
+        <li>Orca liquidity pool (SOL/SPORB)</li>
+        <li>Token metadata on-chain (IPFS)</li>
+        <li>Signal Engine MVP — XAUUSD signals</li>
+        <li>SPORB Node presale page</li>
+        <li>Website + GitHub open source</li>
+        <li>Tokenomics & Utility pages</li>
+        <li>Live price sync from chain</li>
+      </ul>
+    </div>
+
+    <div class="phase active">
+      <span class="label">In Progress</span>
+      <h3>Phase 1: Product</h3>
+      <div class="date">Q2-Q3 2026</div>
+      <ul>
+        <li>SPORB Node hardware prototype</li>
+        <li>Signal Engine paid subscriptions</li>
+        <li>DexScreener / Birdeye listing</li>
+        <li>Community building (TG / X / Discord)</li>
+        <li>Whitepaper v2 (full technical)</li>
+        <li>CEX listing discussions</li>
+      </ul>
+    </div>
+
+    <div class="phase future">
+      <span class="label">Upcoming</span>
+      <h3>Phase 2: Network</h3>
+      <div class="date">Q4 2026 — Q1 2027</div>
+      <ul>
+        <li>SPORB Node manufacturing & shipping (Q1 2027)</li>
+        <li>Node mining pool live</li>
+        <li>Staking contract (boost mining rewards)</li>
+        <li>Signal Engine v2 (multi-asset)</li>
+        <li>Revenue buy-back program active</li>
+      </ul>
+    </div>
+
+    <div class="phase future">
+      <span class="label">Long Term</span>
+      <h3>Phase 3: Infrastructure</h3>
+      <div class="date">2027+</div>
+      <ul>
+        <li>Edge compute network (DePIN)</li>
+        <li>Data relay layer</li>
+        <li>On-chain governance</li>
+        <li>Orbital data infrastructure R&D</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="ft">
+    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORB Protocol Whitepaper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; letter-spacing: -1px; }
+  h1 span { color: #FF6B35; }
+  h2 { font-size: 24px; font-weight: 700; margin-top: 40px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #30363D; }
+  h2 span { color: #FF6B35; }
+  h3 { font-size: 18px; font-weight: 600; margin-top: 24px; margin-bottom: 8px; color: #F0F6FC; }
+  p { font-size: 15px; line-height: 1.7; color: #8B949E; margin-bottom: 12px; }
+  p strong { color: #E6EDF3; }
+  .meta { color: #484F58; font-size: 13px; margin: 8px 0 32px; }
+  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; }
+  ul { margin: 8px 0 16px 20px; }
+  ul li { font-size: 14px; color: #8B949E; line-height: 1.7; margin-bottom: 4px; }
+  ul li strong { color: #E6EDF3; }
+
+  .toc { background: #161B22; border: 1px solid #30363D; border-radius: 12px; padding: 24px; margin: 24px 0; }
+  .toc h3 { margin-top: 0; }
+  .toc ol { margin: 8px 0 0 20px; }
+  .toc ol li { font-size: 14px; color: #FF6B35; padding: 4px 0; cursor: pointer; }
+  .toc ol li a { color: #8B949E; text-decoration: none; }
+  .toc ol li a:hover { color: #FF6B35; }
+
+  .callout {
+    background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.15);
+    border-radius: 10px; padding: 20px; margin: 16px 0;
+  }
+  .callout p { margin: 0; font-size: 14px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
+  th { text-align: left; padding: 10px 12px; background: rgba(255,255,255,0.03); color: #8B949E; font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #30363D; }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(48,54,61,0.4); }
+  td:last-child, th:last-child { text-align: right; }
+  .hr td { color: #FF6B35; font-weight: 600; }
+
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
+  .ft a { color: #FF6B35; text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="/" class="back">← Back to SPORB</a>
+
+  <h1>SPORB Protocol <span>Whitepaper</span></h1>
+  <p class="meta">Version 2.0 — May 2026</p>
+
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ol>
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#problem">The Problem</a></li>
+      <li><a href="#solution">The Solution: SPORB Protocol</a></li>
+      <li><a href="#tokenomics">Tokenomics</a></li>
+      <li><a href="#utility"> Utility</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#revenue">Revenue Model</a></li>
+      <li><a href="#disclaimer">Disclaimer</a></li>
+    </ol>
+  </div>
+
+  <h2 id="abstract">1. <span>Abstract</span></h2>
+  <p>SPORB Protocol is a <strong>Decentralized Physical Infrastructure Network (DePIN)</strong> that combines smart display hardware with real-time data signal processing. The SPORB Node serves as both a DePIN terminal and a Signal Engine data receiver, creating a two-sided marketplace: <strong>hardware operators earn  tokens</strong> by running nodes, while <strong>traders access premium market signals</strong> via subscription fees that flow back into the ecosystem.</p>
+  <p> is the native utility token on Solana, powering node rewards, staking, Signal Engine subscriptions, and future edge compute services.</p>
+
+  <h2 id="problem">2. <span>The Problem</span></h2>
+  <p>Current market data infrastructure suffers from three core issues:</p>
+  <ul>
+    <li><strong>Centralized control</strong> — Trading signals and market data are controlled by centralized providers with opaque pricing</li>
+    <li><strong>No hardware integration</strong> — Traders must constantly monitor screens; there is no dedicated hardware for signal display</li>
+    <li><strong>Wasted compute</strong> — Millions of devices sit idle when they could contribute to distributed data relay networks</li>
+  </ul>
+
+  <h2 id="solution">3. <span>The Solution: SPORB Protocol</span></h2>
+  <p>SPORB Protocol addresses these problems through an integrated hardware + software + token ecosystem:</p>
+  <h3>SPORB Node</h3>
+  <p>A 10.1" transparent IPS smart display terminal that connects to the SPORB Signal Engine. It displays real-time XAUUSD signals, market data, and runs a heartbeat-based uptime proof system to earn  rewards.</p>
+  <h3>Signal Engine</h3>
+  <p>An algorithmic trading signal system for XAUUSD (gold) that identifies FVG (Fair Value Gap) reversals, trend continuations, and multi-target exits (TP1/TP2/TP3). Subscription revenue funds  buy-backs.</p>
+  <h3> Token</h3>
+  <p>The economic backbone — rewarding node operators, enabling discounted subscriptions, and capturing ecosystem value through buy-backs.</p>
+
+  <h2 id="tokenomics">4. <span>Tokenomics</span></h2>
+  <p>Total supply: <strong>100,000,000,000 </strong></p>
+  <table>
+    <tr><th>Category</th><th>%</th><th>Amount</th><th>Vesting</th></tr>
+    <tr><td>Ecosystem &amp; Rewards</td><td>30%</td><td>30B</td><td>Linear 4 years</td></tr>
+    <tr><td>Team &amp; Contributors</td><td>18%</td><td>18B</td><td>1yr cliff + 3yr linear</td></tr>
+    <tr><td>Company Reserve</td><td>15%</td><td>15B</td><td>Linear 3 years</td></tr>
+    <tr><td>Marketing &amp; Airdrops</td><td>10%</td><td>10B</td><td>10% TGE, linear 12mo</td></tr>
+    <tr><td>Liquidity Pool</td><td>10%</td><td>10B</td><td>100% at TGE</td></tr>
+    <tr><td>Pre-Sale</td><td>8%</td><td>8B</td><td>3mo lock + 6mo linear</td></tr>
+    <tr><td>Strategic Partners</td><td>5%</td><td>5B</td><td>6mo cliff + 18mo linear</td></tr>
+    <tr class="hr"><td>Community Staking</td><td>4%</td><td>4B</td><td>Starts M6, linear 24mo</td></tr>
+  </table>
+  <p>Circulating at TGE: <strong>~10%</strong>. Node mining pool: <strong>300M  (0.3%)</strong> over 4 years via daily Dynamic Pool (~685 /day in Year 1).</p>
+
+  <h2 id="utility">5. <span> Utility</span></h2>
+  <ul>
+    <li><strong>Node Mining Rewards</strong> — Every SPORB Node earns daily  based on uptime, tier, and stake</li>
+    <li><strong>Staking Boost</strong> — Stake  for up to 2x mining multiplier; locked tokens reduce circulating supply</li>
+    <li><strong>Signal Engine Payments</strong> — Subscribe with  for discounted rates on XAUUSD signals</li>
+    <li><strong>Revenue Buy-Back</strong> — 5% of Signal Engine fees buy  from the market monthly</li>
+    <li><strong>Future: Edge Compute</strong> — Pay for data relay and compute with ; burn-to-use mechanism</li>
+  </ul>
+
+  <h2 id="architecture">6. <span>Architecture</span></h2>
+  <p>The SPORB ecosystem consists of four layers:</p>
+  <ul>
+    <li><strong>Hardware Layer</strong> — SPORB Nodes: smart displays with WiFi, 5,000mAh battery, OTA firmware, heartbeat proof</li>
+    <li><strong>Signal Layer</strong> — Signal Engine: algorithmic XAUUSD analysis, FVG detection, confidence scoring, multi-TP</li>
+    <li><strong>Token Layer</strong> —  on Solana: mining rewards, staking, subscription payments, buy-backs</li>
+    <li><strong>Network Layer</strong> — Data relay between nodes and signal engine, future edge compute distribution</li>
+  </ul>
+
+  <h2 id="roadmap">7. <span>Roadmap</span></h2>
+  <table>
+    <tr><th>Phase</th><th>Timeline</th><th>Key Milestones</th></tr>
+    <tr><td>Phase 0</td><td>Q1-Q2 2026</td><td>Token launch, LP, Signal MVP, presale, website ✓</td></tr>
+    <tr><td>Phase 1</td><td>Q2-Q3 2026</td><td>Hardware prototype, paid subscriptions, community, CEX talks</td></tr>
+    <tr class="hr"><td>Phase 2</td><td>Q4 2026-Q1 2027</td><td>Node manufacturing & shipping, staking, multi-asset signals</td></tr>
+    <tr><td>Phase 3</td><td>2027+</td><td>Edge compute network, data relay, governance, orbital R&D</td></tr>
+  </table>
+
+  <h2 id="revenue">8. <span>Revenue Model</span></h2>
+  <div class="callout">
+    <p><strong>Three revenue streams:</strong></p>
+    <p style="margin-top:8px;">1. <strong>Signal Engine subscriptions</strong> — 9/mo, 9/quarter, 99/lifetime</p>
+    <p>2. <strong>SPORB Node hardware</strong> — 49–,299 per unit (presale pricing)</p>
+    <p>3. <strong>Future: Edge compute & API access</strong></p>
+    <p style="margin-top:8px;"><strong>5%</strong> of all Signal Engine revenue is used to buy  from the market, creating organic price support. The buy-and-replenish strategy adds buy pressure and supports a price floor.</p>
+  </div>
+
+  <h2 id="disclaimer">9. <span>Disclaimer</span></h2>
+  <p>This whitepaper is for informational purposes only and does not constitute investment advice.  is a utility token, not a security. Cryptocurrency investments carry risk. Always do your own research. The SPORB Protocol team makes no guarantees regarding future value or performance.</p>
+
+  <div class="callout" style="text-align:center;">
+    <p style="font-size:14px; color:#E6EDF3;">📄 <a href="/one-pager.pdf" style="color:#FF6B35;">Download as PDF</a> &nbsp;·&nbsp; 🌐 <a href="https://sporb.xyz" style="color:#FF6B35;">sporb.xyz</a> &nbsp;·&nbsp; 💬 <a href="https://t.me/sporb_xyz" style="color:#FF6B35;">Telegram</a></p>
+  </div>
+
+  <div class="ft">
+    <p>&copy; 2026 SPORB Protocol. All rights reserved.</p>
+  </div>
+</div>
+</body>
+</html>
