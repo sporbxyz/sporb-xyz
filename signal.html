@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SPORB Signal Engine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0D1117;
+      --accent: #FF6B35;
+      --buy: #00C853;
+      --sell: #FF1744;
+      --text: #E0E0E0;
+      --text2: #8B949E;
+      --card: #151B26;
+      --border: #2D3748;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .container {
+      max-width:1200px;
+      margin:0 auto;
+      padding:16px;
+    }
+    header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 0;
+      border-bottom:1px solid var(--border);
+      margin-bottom:16px;
+    }
+    .logo { font-size:22px; font-weight:700; color:var(--accent); }
+    .price-row {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:15px;
+    }
+    .price-arrow {
+      font-size:18px;
+      font-weight:600;
+      transition:color 0.3s;
+    }
+    .badge {
+      background:#6B3FA0;
+      color:#fff;
+      border-radius:10px;
+      padding:1px 7px;
+      font-size:11px;
+      font-weight:600;
+    }
+    .section {
+      background:var(--card);
+      border-radius:8px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+    .section-title {
+      font-size:15px;
+      font-weight:600;
+      color:var(--text);
+      border-bottom:1px solid var(--border);
+      padding-bottom:8px;
+      margin-bottom:12px;
+    }
+    .signal-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .dir-pill {
+      padding:4px 12px;
+      border-radius:12px;
+      font-size:13px;
+      font-weight:600;
+      color:#fff;
+    }
+    .dir-pill.BUY { background:var(--buy); }
+    .dir-pill.SELL { background:var(--sell); }
+    .strength-text { font-size:13px; color:var(--text2); }
+    .signal-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      font-size:13px;
+    }
+    .signal-item {
+      display:flex;
+      justify-content:space-between;
+      padding:6px 8px;
+      background:var(--border);
+      border-radius:4px;
+    }
+    .signal-item .label { color:var(--text2); }
+    .signal-item .val { font-weight:600; }
+    .strength-bar {
+      width:100%;
+      height:8px;
+      background:var(--border);
+      border-radius:4px;
+      overflow:hidden;
+      margin:10px 0 6px;
+    }
+    .strength-fill {
+      height:100%;
+      background:var(--accent);
+      border-radius:4px;
+      width:0%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:8px;
+      font-weight:600;
+      transition:width 0.5s;
+    }
+    .cond-grid {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:6px;
+      margin-top:8px;
+    }
+    .cond-item {
+      display:flex;
+      align-items:center;
+      gap:5px;
+      font-size:11px;
+      color:var(--text2);
+    }
+    .cond-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      flex-shrink:0;
+    }
+    .cond-true .cond-dot { background:var(--buy); }
+    .cond-false .cond-dot { background:var(--border); }
+    .cond-true { color:var(--text); }
+    .chart-wrap {
+      position:relative;
+      width:100%;
+      height:80px;
+    }
+    canvas {
+      width:100%;
+      height:100%;
+      border-radius:4px;
+    }
+    .table-wrap {
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:12px;
+      min-width:500px;
+    }
+    th, td {
+      padding:8px 6px;
+      text-align:left;
+      border-bottom:1px solid var(--border);
+      white-space:nowrap;
+    }
+    th {
+      color:var(--text2);
+      font-weight:500;
+      background:var(--border);
+    }
+    tr:hover { background:rgba(255,107,53,0.08); }
+    .status-badge {
+      display:inline-block;
+      padding:2px 7px;
+      border-radius:4px;
+      font-size:10px;
+      font-weight:600;
+    }
+    .status-active { background:var(--accent); color:#fff; }
+    .status-done { background:var(--border); color:var(--text2); }
+    .stats-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+      gap:10px;
+    }
+    .stat-box {
+      background:var(--border);
+      border-radius:6px;
+      padding:12px;
+      text-align:center;
+    }
+    .stat-num { font-size:20px; font-weight:700; margin:4px 0; }
+    .stat-lbl { font-size:11px; color:var(--text2); }
+
+    @media (max-width:600px) {
+      .container { padding:10px; }
+      .logo { font-size:18px; }
+      .signal-grid { grid-template-columns:1fr 1fr; }
+      .cond-grid { grid-template-columns:repeat(2,1fr); }
+      .section { padding:12px; }
+      .stats-grid { grid-template-columns:repeat(2,1fr); }
+      .price-row { font-size:13px; }
+    }
+    @media (max-width:380px) {
+      .signal-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">SPORB</div>
+    <div class="price-row">
+      <span>$<span id="price-val">--</span></span>
+      <span class="price-arrow" id="price-arrow">↔</span>
+      <span class="badge" id="signal-count">0</span>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="section-title">Active Signal</div>
+    <div class="signal-header">
+      <div id="dir-pill" class="dir-pill">--</div>
+      <div class="strength-text" id="strength-text">Strength: --</div>
+    </div>
+    <div class="signal-grid">
+      <div class="signal-item"><span class="label">Entry</span><span class="val" id="entry">--</span></div>
+      <div class="signal-item"><span class="label">TP1</span><span class="val" id="tp1">--</span></div>
+      <div class="signal-item"><span class="label">TP2</span><span class="val" id="tp2">--</span></div>
+      <div class="signal-item"><span class="label">TP3</span><span class="val" id="tp3">--</span></div>
+      <div class="signal-item"><span class="label">Layer</span><span class="val" id="layer">--</span></div>
+      <div class="signal-item"><span class="label">Confidence</span><span class="val" id="confidence">--</span></div>
+      <div class="signal-item" style="grid-column:span 2;"><span class="label">Timestamp</span><span class="val" id="timestamp">--</span></div>
+    </div>
+    <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+    <div class="cond-grid" id="cond-grid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Price Chart</div>
+    <div class="chart-wrap"><canvas id="chart"></canvas></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Signal History</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Time</th><th>Dir</th><th>Entry</th><th>TP1</th><th>TP2</th><th>TP3</th><th>Strength</th><th>Cond</th><th>Status</th>
+        </tr></thead>
+        <tbody id="hist-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Statistics</div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-num" id="s-total">--</div><div class="stat-lbl">Total Signals</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-active">--</div><div class="stat-lbl">Active</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-win">--</div><div class="stat-lbl">Win Rate</div></div>
+      <div class="stat-box"><div class="stat-num" id="s-best">--</div><div class="stat-lbl">Best Signal</div></div>
+    </div>
+  </div>
+
+  <!-- Pricing Section -->
+  <div class="section pricing-section">
+    <div class="section-title">Subscribe for Live Signals</div>
+    <p style="color:var(--text2); font-size:13px; text-align:center; margin-bottom:20px;">
+      Public dashboard shows delayed signals only. Get real-time XAUUSD signals delivered to your Telegram.
+    </p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Monthly</div>
+        <div class="plan-price">$29</div>
+        <div class="plan-period">/ month</div>
+        <ul class="plan-features">
+          <li>Real-time XAUUSD signals</li>
+          <li>Telegram delivery</li>
+          <li>Entry + TP1/TP2/TP3</li>
+          <li>Confidence scoring</li>
+        </ul>
+        <a href="https://t.me/sporb_xyz" target="_blank" class="plan-btn">Subscribe via Telegram</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="badge-wrap">BEST VALUE</div>
+        <div class="plan-name">Quarterly</div>
+        <div class="plan-price">$69</div>
+        <div class="plan-period">/ quarter</div>
+        <ul class="plan-features">
+          <li>Everything in Monthly</li>
+          <li>VIP Telegram group</li>
+          <li>Priority support</li>
+          <li>Signal performance stats</li>
+        </ul>
+        <a href="https://t.me/sporb_xyz" target="_blank" class="plan-btn">Subscribe via Telegram</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">Lifetime</div>
+        <div class="plan-price">$199</div>
+        <div class="plan-period">one-time</div>
+        <ul class="plan-features">
+          <li>Unlimited access</li>
+          <li>VIP Telegram group</li>
+          <li>Early access to new assets</li>
+          <li>Signal Engine API access</li>
+        </ul>
+        <a href="https://t.me/sporb_xyz" target="_blank" class="plan-btn">Subscribe via Telegram</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.pricing-section { margin-top: 8px; }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.pricing-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+}
+.pricing-card.featured {
+  border-color: var(--accent);
+  transform: scale(1.03);
+}
+.badge-wrap {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #0D1117;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+.plan-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.plan-price { font-size: 32px; font-weight: 700; color: var(--accent); }
+.plan-period { font-size: 11px; color: var(--text2); margin-bottom: 16px; }
+.plan-features { list-style: none; margin: 0 0 20px; padding: 0; text-align: left; }
+.plan-features li {
+  font-size: 12px;
+  color: var(--text2);
+  padding: 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.plan-features li::before { content: "\2713"; color: #3FB950; font-weight: 700; }
+.plan-btn {
+  display: block;
+  background: var(--accent);
+  color: #0D1117;
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  text-decoration: none;
+}
+.plan-btn:hover { background: #FF8C5A; }
+@media (max-width: 600px) {
+  .pricing-grid { grid-template-columns: 1fr; }
+  .pricing-card.featured { transform: none; }
+}
+</style>
+
+<script>
+const $ = id => document.getElementById(id);
+const priceVal = $('price-val'), priceArrow = $('price-arrow'), signalCount = $('signal-count');
+const dirPill = $('dir-pill'), strengthText = $('strength-text');
+const entry = $('entry'), tp1 = $('tp1'), tp2 = $('tp2'), tp3 = $('tp3'), layer = $('layer');
+const confidence = $('confidence'), timestamp = $('timestamp');
+const strengthFill = $('strength-fill'), condGrid = $('cond-grid');
+const chartCanvas = $('chart'), ctx = chartCanvas.getContext('2d');
+const histBody = $('hist-body');
+const sTotal = $('s-total'), sActive = $('s-active'), sWin = $('s-win'), sBest = $('s-best');
+
+let priceHist = [];
+let prevPrice = null;
+
+const STRENGTH_PCT = { weak: 25, moderate: 50, strong: 75, very_strong: 100 };
+const STRENGTH_LABEL = { weak: 'WEAK', moderate: 'MODERATE', strong: 'STRONG', very_strong: 'VERY STRONG' };
+const COND_KEYS = ['trend','momentum','volume','breakout','fvg','divergence','rejection','htf_trend'];
+const COND_LABELS = ['Trend','Momo','Volume','Breakout','FVG','Diverge','Reject','HTF'];
+
+function drawChart(data) {
+  const w = chartCanvas.width = chartCanvas.offsetWidth;
+  const h = chartCanvas.height = chartCanvas.offsetHeight;
+  if (data.length < 2) return;
+  const lo = Math.min(...data), hi = Math.max(...data), rng = hi - lo || 1;
+  ctx.clearRect(0,0,w,h);
+  const grd = ctx.createLinearGradient(0,0,0,h);
+  grd.addColorStop(0, 'rgba(255,107,53,0.35)');
+  grd.addColorStop(1, 'rgba(255,107,53,0)');
+  ctx.beginPath();
+  data.forEach((v,i) => {
+    const x = (i/(data.length-1))*w;
+    const y = h - ((v-lo)/rng)*h;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = '#FF6B35';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.lineTo(w,h);
+  ctx.lineTo(0,h);
+  ctx.closePath();
+  ctx.fillStyle = grd;
+  ctx.fill();
+}
+
+function renderSignal(s) {
+  if (!s) return;
+  dirPill.textContent = s.direction;
+  dirPill.className = 'dir-pill ' + s.direction;
+  entry.textContent = '$' + s.entry_price.toFixed(2);
+  tp1.textContent = '$' + s.tp1.toFixed(2);
+  tp2.textContent = '$' + s.tp2.toFixed(2);
+  tp3.textContent = '$' + s.tp3.toFixed(2);
+  layer.textContent = '$' + (s.layer || s.entry_price).toFixed(2);
+  confidence.textContent = s.confidence + '%';
+  timestamp.textContent = s.timestamp ? new Date(s.timestamp).toLocaleString() : '--';
+
+  const sp = STRENGTH_PCT[s.strength] || 25;
+  const sl = STRENGTH_LABEL[s.strength] || s.strength;
+  strengthFill.style.width = sp + '%';
+  strengthFill.textContent = sl;
+  strengthText.textContent = 'Strength: ' + sl;
+
+  condGrid.innerHTML = '';
+  const cd = s.condition_details || {};
+  COND_KEYS.forEach((k,i) => {
+    const ok = cd[k] === true;
+    const el = document.createElement('div');
+    el.className = 'cond-item' + (ok ? ' cond-true' : ' cond-false');
+    el.innerHTML = '<span class="cond-dot"></span>' + COND_LABELS[i];
+    condGrid.appendChild(el);
+  });
+}
+
+function renderHistory(hist) {
+  histBody.innerHTML = '';
+  if (!hist || !hist.length) return;
+  hist.forEach(h => {
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + (h.timestamp ? new Date(h.timestamp).toLocaleTimeString() : '--') + '</td>' +
+      '<td style="color:' + (h.direction==='BUY' ? 'var(--buy)' : 'var(--sell)') + ';font-weight:600">' + h.direction + '</td>' +
+      '<td>$' + (h.entry_price||0).toFixed(2) + '</td>' +
+      '<td>$' + (h.tp1||0).toFixed(2) + '</td>' +
+      '<td>$' + (h.tp2||0).toFixed(2) + '</td>' +
+      '<td>$' + (h.tp3||0).toFixed(2) + '</td>' +
+      '<td>' + (h.strength||'').toUpperCase() + '</td>' +
+      '<td>' + (h.conditions_met||'--') + '</td>' +
+      '<td><span class="status-badge ' + ((h.status||'active')==='active'?'status-active':'status-done') + '">' + ((h.status||'active').toUpperCase()) + '</span></td>';
+    histBody.appendChild(tr);
+  });
+}
+
+function renderStats(hist) {
+  const total = (hist||[]).length;
+  sTotal.textContent = total;
+  sActive.textContent = (hist||[]).filter(h => (h.status||'active')==='active').length;
+  sWin.textContent = total > 0 ? '—' : '—';
+  sBest.textContent = '—';
+}
+
+async function fetchData() {
+  try {
+    const [sigRes, stRes] = await Promise.all([
+      fetch('/signal-api/signal'),
+      fetch('/signal-api/status')
+    ]);
+    const sigData = await sigRes.json();
+    const stData = await stRes.json();
+
+    // Price
+    const cur = stData.current_price;
+    if (cur) {
+      priceVal.textContent = cur.toFixed(2);
+      if (prevPrice !== null) {
+        if (cur > prevPrice) { priceArrow.textContent = '↑'; priceArrow.style.color = 'var(--buy)'; }
+        else if (cur < prevPrice) { priceArrow.textContent = '↓'; priceArrow.style.color = 'var(--sell)'; }
+        else { priceArrow.textContent = '↔'; priceArrow.style.color = 'var(--text2)'; }
+      }
+      prevPrice = cur;
+      priceHist.push(cur);
+      if (priceHist.length > 30) priceHist.shift();
+      drawChart(priceHist);
+    }
+
+    // Signal
+    if (sigData.signal) {
+      renderSignal(sigData.signal);
+    }
+
+    // Count
+    const h = sigData.history || [];
+    signalCount.textContent = h.length || '0';
+
+    // History
+    renderHistory(h);
+    renderStats(h);
+  } catch(e) { console.error('fetch error', e); }
+}
+
+function resize() { drawChart(priceHist); }
+window.addEventListener('resize', resize);
+
+fetchData();
+setInterval(fetchData, 30000);
+</script>
+</body>
+</html>
