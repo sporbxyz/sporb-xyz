@@ -6,3 +6,12 @@ config.yaml
 # Node
 node_modules/
 package-lock.json
+
+# Runtime data - never commit
+orders.json
+submissions.json
+price.json
+stripe-config.json
+usdt-config.json
+payment-server.js
+submit-order.js

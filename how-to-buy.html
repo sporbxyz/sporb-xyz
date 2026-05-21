@@ -5,39 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>How to Buy  | SPORB Protocol</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
-  .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
-  h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 800; text-align: center; letter-spacing: -1px; }
-  h1 span { color: #FF6B35; }
-  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 32px; }
-  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
+  body { background: #0a0a0f; font-family: 'Space Grotesk', sans-serif; color: #e8e8ed; }
+  #stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+  .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 1; }
+  h1 { font-size: clamp(28px, 5vw, 44px); font-weight: 700; text-align: center; letter-spacing: -1px; }
+  h1 span { color: #00d4aa; }
+  .sub { text-align: center; color: #6b6b80; font-size: 16px; margin: 12px 0 32px; }
+  .back { display: inline-block; margin-bottom: 24px; color: #00d4aa; text-decoration: none; font-size: 14px; font-weight: 500; }
+  .back:hover { color: #00e6bb; }
 
   .step {
-    background: #161B22; border: 1px solid #30363D; border-radius: 14px;
+    background: #0d0d14; border: 1px solid #1a1a28; border-radius: 14px;
     padding: 24px; margin-bottom: 16px; display: flex; gap: 20px; align-items: flex-start;
   }
   .step-num {
     font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700;
-    color: #FF6B35; min-width: 48px; text-align: center;
+    color: #00d4aa; min-width: 48px; text-align: center;
   }
   .step-content { flex: 1; }
-  .step-content h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #F0F6FC; }
-  .step-content p { font-size: 13px; color: #8B949E; line-height: 1.6; }
+  .step-content h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: #e8e8ed; }
+  .step-content p { font-size: 13px; color: #6b6b80; line-height: 1.6; }
   .step-content .code-block {
-    background: #0D1117; border: 1px solid #30363D; border-radius: 6px;
+    background: #0a0a0f; border: 1px solid #1a1a28; border-radius: 6px;
     padding: 10px 14px; margin: 8px 0; font-family: 'JetBrains Mono', monospace;
-    font-size: 12px; color: #FF6B35; word-break: break-all; cursor: pointer;
+    font-size: 12px; color: #00d4aa; word-break: break-all; cursor: pointer;
   }
+  .step-content .code-block:hover { border-color: #00d4aa; }
   .step-content .tip {
-    margin-top: 8px; padding: 8px 12px; background: rgba(255,107,53,0.05);
-    border: 1px solid rgba(255,107,53,0.12); border-radius: 6px;
-    font-size: 12px; color: #8B949E; line-height: 1.5;
+    margin-top: 8px; padding: 8px 12px; background: rgba(0,212,170,0.05);
+    border: 1px solid rgba(0,212,170,0.12); border-radius: 6px;
+    font-size: 12px; color: #6b6b80; line-height: 1.5;
   }
 
   .btn-buy {
-    display: inline-block; background: #FF6B35; color: #0D1117; font-weight: 700;
+    display: inline-block; background: #FF6B35; color: #0a0a0f; font-weight: 700;
     padding: 14px 36px; border-radius: 10px; font-size: 15px; text-decoration: none;
     text-align: center; margin: 4px;
   }
@@ -51,22 +54,24 @@
   .btns { text-align: center; margin: 32px 0; }
 
   .token-card {
-    background: #1C2128; border: 1px solid #30363D; border-radius: 10px;
+    background: #0d0d14; border: 1px solid #1a1a28; border-radius: 10px;
     padding: 16px 20px; margin: 16px 0; text-align: center;
   }
   .token-card .addr {
-    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #FF6B35;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #00d4aa;
     word-break: break-all; cursor: pointer;
   }
-  .token-card .lbl { font-size: 11px; color: #484F58; margin-bottom: 4px; }
+  .token-card .lbl { font-size: 11px; color: #6b6b80; margin-bottom: 4px; }
 
-  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
-  .ft a { color: #FF6B35; text-decoration: none; }
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #1a1a28; font-size: 13px; color: #6b6b80; margin-top: 48px; }
+  .ft a { color: #00d4aa; text-decoration: none; }
+  .ft a:hover { color: #00e6bb; }
 
   @media (max-width: 600px) { .step { flex-direction: column; gap: 8px; } .step-num { text-align: left; } }
 </style>
 </head>
 <body>
+<canvas id="stars-canvas"></canvas>
 <div class="container">
   <a href="/" class="back">← Back to SPORB</a>
   <h1>How to Buy <span></span></h1>
@@ -76,7 +81,7 @@
     <div class="step-num">1</div>
     <div class="step-content">
       <h3>Install Phantom Wallet</h3>
-      <p>Download Phantom from <strong><a href="https://phantom.app" target="_blank" style="color:#FF6B35;">phantom.app</a></strong> — available as browser extension (Chrome, Firefox, Edge) or mobile app (iOS, Android). Create a new wallet and securely save your seed phrase.</p>
+      <p>Download Phantom from <strong><a href="https://phantom.app" target="_blank" style="color:#00d4aa;">phantom.app</a></strong> — available as browser extension (Chrome, Firefox, Edge) or mobile app (iOS, Android). Create a new wallet and securely save your seed phrase.</p>
     </div>
   </div>
 
@@ -111,7 +116,7 @@
     <div class="step-content">
       <h3>Verify on Solscan</h3>
       <p>You can check your  balance and all transactions on Solscan — the Solana blockchain explorer.</p>
-      <div class="tip">🔍 <a href="https://solscan.io/token/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" style="color:#FF6B35;">View  on Solscan</a></div>
+      <div class="tip">🔍 <a href="https://solscan.io/token/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" style="color:#00d4aa;">View  on Solscan</a></div>
     </div>
   </div>
 
@@ -126,5 +131,44 @@
     <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
   </div>
 </div>
+<script>
+// Stars canvas background
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+const COUNT = 240;
+for (let i = 0; i < COUNT; i++) {
+  stars.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: Math.random() * 1.6 + 0.3,
+    a: Math.random(),
+    speed: Math.random() * 0.008 + 0.003,
+  });
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  for (const s of stars) {
+    s.a += s.speed;
+    const alpha = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(s.a));
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+    ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
 </body>
 </html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORB Protocol — Investor One-Pager</title>
+    <meta name="description" content="SPORB Protocol — Orbital Data Infrastructure. DePIN + Signal Engine + Edge Computing.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="SPORB Protocol — Investor One-Pager">
+    <meta property="og:description" content="Orbital Data Infrastructure. $SPORB — company token for next-gen decentralized infrastructure.">
+    <meta property="og:image" content="/logo.svg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sporb.xyz/one-pager">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0f;
+            --fg: #e8e8ed;
+            --muted: #6b6b80;
+            --accent: #00d4aa;
+            --accent2: #7c3aed;
+            --accent-dim: rgba(0, 212, 170, 0.15);
+            --border: rgba(255,255,255,0.06);
+            --card-bg: rgba(255,255,255,0.02);
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+        }
+        
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header { text-align: center; margin-bottom: 64px; }
+        .header h1 { font-size: 42px; font-weight: 700; margin-bottom: 12px; }
+        .header h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tagline { font-size: 20px; color: var(--muted); margin-bottom: 16px; }
+        .meta { font-size: 14px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+        .meta a { color: var(--accent); text-decoration: none; }
+        
+        .section { margin-bottom: 48px; }
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .section p { font-size: 15px; color: var(--muted); line-height: 1.8; margin-bottom: 16px; }
+        .section p strong { color: var(--fg); }
+        
+        .intersection { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+        .pillar-card {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            transition: border-color 0.3s;
+        }
+        .pillar-card:hover { border-color: var(--accent-dim); }
+        .pillar-card .icon { font-size: 28px; margin-bottom: 10px; }
+        .pillar-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+        .pillar-card p { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0; }
+        
+        .table-wrap { overflow-x: auto; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        table th { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+        table tr:last-child td { border: none; }
+        .status-done { color: var(--accent); }
+        .status-pending { color: #f0a030; }
+        
+        .roadmap-phase {
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            background: var(--card-bg);
+        }
+        .roadmap-phase h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .roadmap-phase h3 .phase-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--accent);
+            margin-left: 8px;
+            padding: 2px 8px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 4px;
+        }
+        .roadmap-phase ul { list-style: none; padding: 0; }
+        .roadmap-phase ul li { font-size: 14px; color: var(--muted); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .roadmap-phase ul li .icon { font-size: 14px; }
+        .roadmap-phase ul li strong { color: var(--fg); }
+        
+        .ask-box {
+            padding: 28px;
+            border: 1px solid var(--accent-dim);
+            border-radius: 12px;
+            background: rgba(0, 212, 170, 0.04);
+            margin-bottom: 48px;
+        }
+        .ask-box h3 { font-size: 18px; font-weight: 600; margin-bottom: 20px; text-align: center; }
+        .ask-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .ask-item label { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+        .ask-item p { font-size: 14px; color: var(--fg); margin: 0; }
+        
+        .links { text-align: center; font-size: 13px; color: var(--muted); }
+        .links a { color: var(--accent); text-decoration: none; }
+        .links .separator { margin: 0 12px; color: var(--border); }
+        
+        @media (max-width: 700px) {
+            .intersection { grid-template-columns: 1fr; }
+            .moat-grid { grid-template-columns: 1fr; }
+            .ask-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="stars-canvas"></canvas>
+    
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1><span>SPORB Protocol</span></h1>
+            <p class="tagline">Orbital Data Infrastructure</p>
+            <p class="meta">
+                Token: <strong>$SPORB</strong> &nbsp;·&nbsp;
+                Chain: <strong>Solana</strong> &nbsp;·&nbsp;
+                Supply: <strong>100B</strong> &nbsp;·&nbsp;
+                <a href="https://sporb.xyz" style="color:var(--accent);text-decoration:none;">sporb.xyz</a>
+            </p>
+        </div>
+        
+        <!-- VISION -->
+        <div class="section">
+            <div class="section-title">// The Vision</div>
+            <p>
+                The most valuable infrastructure company of this decade will sit at the 
+                <strong>intersection of three megatrends</strong>.
+            </p>
+            
+            <div class="intersection">
+                <div class="pillar-card">
+                    <div class="icon">🌐</div>
+                    <h3>DePIN</h3>
+                    <p>Decentralized physical infrastructure — token-incentivized node networks that reward participants.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="icon">🧠</div>
+                    <h3>AI</h3>
+                    <p>Real-time signal processing, predictive models, and autonomous trading engines at the edge.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="icon">⛓️</div>
+                    <h3>Web3</h3>
+                    <p>Tokenized infrastructure, DAO governance, and programmable value transfer.</p>
+                </div>
+            </div>
+            
+            <p>
+                <strong>SPORB Protocol</strong> builds the decentralized data infrastructure layer where these three converge.
+                Starting with a live <strong>Signal Engine</strong> (gold market data subscription, generating real USDC revenue) 
+                and expanding into a <strong>DePIN node network</strong> for edge compute.
+            </p>
+        </div>
+        
+        <!-- PRODUCT -->
+        <div class="section">
+            <div class="section-title">// The Product</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Layer</th><th>What</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Signal Engine</td><td>Gold market AI signal subscription — real USDC revenue</td><td><span class="status-done">✅ Live</span></td></tr>
+                        <tr><td>DePIN Nodes</td><td>Decentralized edge compute network — incentivized hardware</td><td>Architecture</td></tr>
+                        <tr><td>Data Relay</td><td>Token-gated access to aggregated market &amp; infrastructure data</td><td>R&amp;D</td></tr>
+                        <tr><td>Token</td><td>$SPORB — company equity representation</td><td><span class="status-done">✅ Deployed</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <p><strong>Revenue model:</strong> Services charge <strong>USDC</strong>. Company profits buy back $SPORB from market.</p>
+        </div>
+        
+        <!-- TOKEN UTILITY -->
+        <div class="section">
+            <div class="section-title">// Token Utility</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th></th><th></th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>✅ Equity representation</td><td>$SPORB is a company token, not a meme or payment gimmick</td></tr>
+                        <tr><td>✅ Buyback engine</td><td>Real service revenue → market buybacks → value accrual</td></tr>
+                        <tr><td>✅ Governance</td><td>DAO for protocol upgrades and fund allocation</td></tr>
+                        <tr><td>✅ Node incentives</td><td>DePIN node operators earn $SPORB for contributing compute</td></tr>
+                        <tr><td>❌ No complex burn</td><td>Simple, clean tokenomics</td></tr>
+                        <tr><td>❌ No double-token</td><td>Single $SPORB until aCREDIT in Phase 2</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- TOKENOMICS -->
+        <div class="section">
+            <div class="section-title">// Tokenomics</div>
+            <p>Total Supply: <strong>100,000,000,000 (100B)</strong> $SPORB</p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Allocation</th><th>%</th><th>Amount</th><th>Vesting</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Ecosystem Fund</td><td>30%</td><td>30B</td><td>DAO-governed, 10yr</td></tr>
+                        <tr><td>Public Sale</td><td>15%</td><td>15B</td><td>5% at TGE, 3mo linear</td></tr>
+                        <tr><td>Strategic Investors</td><td>10%</td><td>10B</td><td>6mo cliff, 24mo linear</td></tr>
+                        <tr><td>Team</td><td>10%</td><td>10B</td><td>12mo cliff, 48mo linear</td></tr>
+                        <tr><td>Community Rewards</td><td>10%</td><td>10B</td><td>5yr mining</td></tr>
+                        <tr><td>Node Mining Pool</td><td>10%</td><td>10B</td><td>DePIN node rewards</td></tr>
+                        <tr><td>Liquidity</td><td>5%</td><td>5B</td><td>100% at TGE</td></tr>
+                        <tr><td>Advisors &amp; Partners</td><td>5%</td><td>5B</td><td>6mo cliff, 24mo linear</td></tr>
+                        <tr><td>DAO Treasury</td><td>5%</td><td>5B</td><td>DAO governance</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- TRACK RECORD -->
+        <div class="section">
+            <div class="section-title">// Track Record</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Milestone</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Token deployed on Solana mainnet</td><td><span class="status-done">✅ Live</span></td></tr>
+                        <tr><td>Website &amp; domain (sporb.xyz)</td><td><span class="status-done">✅ Live, SSL</span></td></tr>
+                        <tr><td>Early Access whitelist</td><td><span class="status-done">✅ Open</span></td></tr>
+                        <tr><td>Signal Engine (gold market data)</td><td><span class="status-done">✅ Live, generating revenue</span></td></tr>
+                        <tr><td>Metadata updated (SPORB Protocol)</td><td><span class="status-done">✅ Done</span></td></tr>
+                        <tr><td>Liquidity pool</td><td><span class="status-pending">⏳ Launch w/ services</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- COMPETITIVE MOAT -->
+        <div class="section">
+            <div class="section-title">// Competitive Moat</div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Factor</th><th style="color:var(--accent)">SPORB</th><th style="color:#ff6b6b">Typical Infrastructure Token</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Real service revenue</td><td>✅ USDC charges, buyback model</td><td>❌ Hype-only</td></tr>
+                        <tr><td>Team token vesting</td><td>✅ 48mo with 12mo cliff</td><td>❌ Often 0 cliff</td></tr>
+                        <tr><td>Supply control</td><td>✅ Creator holds 100%, responsible release</td><td>❌ Dump risk</td></tr>
+                        <tr><td>Live revenue product</td><td>✅ Signal Engine generating now</td><td>❌ Pre-revenue</td></tr>
+                        <tr><td>Dual-token avoidance</td><td>✅ Single $SPORB until Phase 2</td><td>❌ Overcomplicated</td></tr>
+                        <tr><td>Stealth approach</td><td>✅ Building before marketing</td><td>❌ Overpromise</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- ROADMAP -->
+        <div class="section">
+            <div class="section-title">// Roadmap</div>
+            
+            <div class="roadmap-phase">
+                <h3>Phase 1 — Foundation <span class="phase-tag">0-12 months</span></h3>
+                <ul>
+                    <li><span class="icon">✅</span>Token deploy &amp; website</li>
+                    <li><span class="icon">✅</span>Early access whitelist</li>
+                    <li><span class="icon">✅</span>Signal Engine live (gold market data subscription)</li>
+                    <li><span class="icon">🔄</span><strong>Trading bot profitability</strong> → seed capital</li>
+                    <li><span class="icon">📅</span>DePIN node hardware design &amp; prototype</li>
+                    <li><span class="icon">📅</span>Strategic R&amp;D grant applications</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <h3>Phase 2 — Service Launch <span class="phase-tag">1-3 years</span></h3>
+                <ul>
+                    <li><span class="icon">📅</span>DePIN node network launch (edge compute)</li>
+                    <li><span class="icon">📅</span>Signal Engine expanded to multi-market</li>
+                    <li><span class="icon">📅</span>Token liquidity pool with utility floor</li>
+                    <li><span class="icon">📅</span>aCREDIT stable payment token (Phase 2)</li>
+                    <li><span class="icon">📅</span>Enterprise data subscription API</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <h3>Phase 3 — Scale <span class="phase-tag">3-7 years</span></h3>
+                <ul>
+                    <li><span class="icon">📅</span>Distributed node network (edge computing cluster)</li>
+                    <li><span class="icon">📅</span>Infrastructure-as-a-service for enterprise</li>
+                    <li><span class="icon">📅</span>Global node partner program</li>
+                </ul>
+            </div>
+            
+            <div class="roadmap-phase">
+                <h3>Phase 4 — Autonomous <span class="phase-tag">7-10 years</span></h3>
+                <ul>
+                    <li><span class="icon">📅</span>Full decentralized compute network</li>
+                    <li><span class="icon">📅</span>DAO-managed infrastructure fund</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- ASK -->
+        <div class="ask-box">
+            <h3>💎 Investment Opportunity</h3>
+            <div class="ask-grid">
+                <div class="ask-item">
+                    <label>Seeking</label>
+                    <p>Strategic investors &amp; grant funding</p>
+                </div>
+                <div class="ask-item">
+                    <label>Stage</label>
+                    <p>Pre-revenue, pre-seed</p>
+                </div>
+                <div class="ask-item">
+                    <label>Use of Funds</label>
+                    <p>Node R&amp;D, AI model training, infrastructure development</p>
+                </div>
+                <div class="ask-item">
+                    <label>Structure</label>
+                    <p>Token allocation + future equity (company planned)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- LINKS -->
+        <div class="links">
+            <strong>Contact:</strong> Via whitelist at <a href="https://sporb.xyz">sporb.xyz</a>
+            <span class="separator">·</span>
+            <strong>Token:</strong> <a href="https://solscan.io/token/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank">FMRd...KfLU</a>
+            <span class="separator">·</span>
+            <strong>Solscan</strong>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.body.scrollHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        const stars = Array.from({ length: 200 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 1.5 + 0.3,
+            alpha: Math.random(),
+            speed: Math.random() * 0.02 + 0.005
+        }));
+        
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.alpha += star.speed;
+                if (star.alpha > 1) star.alpha = 0;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(232, 232, 237, ${Math.sin(star.alpha * Math.PI) * 0.5 + 0.3})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+    </script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$SPORB Transparency | SPORB Protocol</title>
+    <meta name="description" content="SPORB Protocol — Full token transparency. Contract address, Solscan, RugCheck status, tokenomics, and team info.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    
+    <meta property="og:title" content="$SPORB Transparency | SPORB Protocol">
+    <meta property="og:description" content="Full transparency for the $SPORB token — contract, supply, team wallet, and RugCheck status.">
+    <meta property="og:image" content="/logo.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0f;
+            --fg: #e8e8ed;
+            --muted: #6b6b80;
+            --accent: #00d4aa;
+            --accent2: #7c3aed;
+            --accent-dim: rgba(0, 212, 170, 0.15);
+            --border: rgba(255,255,255,0.06);
+            --red: #ef4444;
+            --yellow: #eab308;
+            --green: #22c55e;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        #stars-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            min-height: 100vh;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+        
+        h1 {
+            font-size: clamp(32px, 6vw, 56px);
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+        
+        h1 span { color: var(--accent); }
+        
+        .subtitle {
+            font-size: 16px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 48px;
+        }
+        
+        .section {
+            margin-bottom: 48px;
+        }
+        
+        .section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section h2 .num {
+            width: 28px; height: 28px;
+            background: var(--accent-dim);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 600; color: var(--accent);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            gap: 16px;
+        }
+        
+        .info-row:last-child { border-bottom: none; }
+        .info-row .label { font-size: 13px; color: var(--muted); white-space: nowrap; min-width: 100px; }
+        .info-row .value { 
+            font-family: 'JetBrains Mono', monospace; 
+            font-size: 12px; 
+            word-break: break-all;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .info-row .value a { color: var(--accent); text-decoration: none; }
+        .info-row .value a:hover { text-decoration: underline; }
+        .info-row .value .copy-btn {
+            background: var(--accent-dim);
+            border: 1px solid var(--border);
+            color: var(--accent);
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            margin-left: 8px;
+        }
+        .info-row .value .copy-btn:hover { background: rgba(0, 212, 170, 0.25); }
+        .info-row .value .copy-btn.copied { background: rgba(34, 197, 94, 0.2); color: var(--green); border-color: var(--green); }
+        
+        /* Status Box */
+        .status-box {
+            display: flex;
+            gap: 12px;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+        .status-box.red { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .status-box.yellow { background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.2); }
+        .status-box.green { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); }
+        
+        .status-box .icon { font-size: 20px; flex-shrink: 0; }
+        .status-box .text { font-size: 14px; line-height: 1.5; }
+        .status-box .text strong { display: block; margin-bottom: 4px; font-size: 15px; }
+        .status-box .text .detail { font-size: 13px; color: var(--muted); }
+        
+        /* Action Card */
+        .action-card {
+            background: var(--accent-dim);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .action-card p { font-size: 14px; line-height: 1.5; }
+        .action-card .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: var(--accent);
+            color: #0a0a0f;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .action-card .btn:hover { background: #00e8bb; }
+        
+        /* Mint info */
+        .mint-info {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .mint-chip {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .mint-chip .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .mint-chip .dot.green { background: var(--green); }
+        .mint-chip .dot.yellow { background: var(--yellow); }
+        .mint-chip .dot.red { background: var(--red); }
+        
+        .footer {
+            margin-top: 80px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+        .footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+        .footer-links a {
+            font-size: 13px; color: var(--muted); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--fg); }
+        .footer-text {
+            font-size: 12px; color: var(--muted);
+            margin-top: 16px;
+        }
+        
+        @media (max-width: 600px) {
+            .info-row { flex-direction: column; gap: 6px; }
+            .info-row .value { text-align: left; }
+            .info-row .label { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div class="content">
+    <div class="badge">🔍 TRUST & TRANSPARENCY</div>
+    
+    <h1>$SPORB <span>Transparency</span></h1>
+    <p class="subtitle">
+        Everything you need to verify $SPORB. Contract address, supply, team wallet, 
+        and current security status. We believe in full transparency from day one.
+    </p>
+    
+    <!-- 1. Contract Info -->
+    <div class="section">
+        <h2><span class="num">1</span> Token Contract</h2>
+        <div class="info-box">
+            <div class="info-row">
+                <div class="label">Network</div>
+                <div class="value">Solana ⚡</div>
+            </div>
+            <div class="info-row">
+                <div class="label">Contract</div>
+                <div class="value" id="contract-row">
+                    <span id="contract-addr">FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU</span>
+                    <button class="copy-btn" onclick="copyContract()" id="copy-btn">📋 Copy</button>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="label">Solscan</div>
+                <div class="value">
+                    <a href="https://solscan.io/token/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" rel="noopener">
+                        ↗ solscan.io/token/FMRdhytRT49jy...
+                    </a>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="label">Token Name</div>
+                <div class="value">SPORB Protocol</div>
+            </div>
+            <div class="info-row">
+                <div class="label">Symbol</div>
+                <div class="value">$SPORB</div>
+            </div>
+            <div class="info-row">
+                <div class="label">Total Supply</div>
+                <div class="value">100,000,000,000 (100B)</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2. Security Status -->
+    <div class="section">
+        <h2><span class="num">2</span> Security Status</h2>
+        
+        <div class="status-box yellow">
+            <div class="icon">🟡</div>
+            <div class="text">
+                <strong>⚠️ Mint & Freeze Authority — Pending Revoke</strong>
+                <div class="detail">
+                    The token contract still has mint and freeze authorities enabled. 
+                    We are currently setting up multi-wallet token distribution before 
+                    permanently revoking these. This is a temporary state — 
+                    <strong>both will be revoked soon.</strong>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-box red">
+            <div class="icon">🔴</div>
+            <div class="text">
+                <strong>Single Wallet Holding — Distribution In Progress</strong>
+                <div class="detail">
+                    Currently 100% of supply is in a single deploy wallet. 
+                    We are in the process of splitting into separate wallets 
+                    (Ecosystem, Team, Marketing, LP, Presale, Partners, Staking) 
+                    per our tokenomics. Multi-wallet setup is underway.
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-box green">
+            <div class="icon">🟢</div>
+            <div class="text">
+                <strong>✅ Open Source & Verifiable</strong>
+                <div class="detail">
+                    All contracts and website code are fully open source on 
+                    <a href="https://github.com/sporbxyz" target="_blank" style="color: var(--accent);">GitHub/sporbxyz</a>. 
+                    Token metadata is on-chain and linked via IPFS.
+                </div>
+            </div>
+        </div>
+        
+        <div class="mint-info">
+            <span class="mint-chip"><span class="dot yellow"></span> Mint Authority: Enabled (pending revoke)</span>
+            <span class="mint-chip"><span class="dot yellow"></span> Freeze Authority: Enabled (pending revoke)</span>
+            <span class="mint-chip"><span class="dot green"></span> LP Lock: Not yet deployed</span>
+            <span class="mint-chip"><span class="dot green"></span> Supply: Fixed at 100B (no hidden mint)</span>
+        </div>
+    </div>
+    
+    <!-- 3. Team -->
+    <div class="section">
+        <h2><span class="num">3</span> Team Wallet</h2>
+        <div class="info-box">
+            <div class="info-row">
+                <div class="label">Creator Wallet</div>
+                <div class="value">
+                    <span>DwLJ7CPvQqgwXJN1NQFUB7TFbrZSPL5ywsH5BfZL4LFm</span>
+                    <a href="https://solscan.io/account/DwLJ7CPvQqgwXJN1NQFUB7TFbrZSPL5ywsH5BfZL4LFm" target="_blank" rel="noopener" style="font-size: 11px;"> ↗</a>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="label">Token Metadata</div>
+                <div class="value">
+                    <a href="https://ipfs.io/ipfs/QmWAsw3rZnkJjuksLqtwVAUW2dDhAP7tkuWP1zFmV8jCrM" target="_blank" rel="noopener">IPFS: QmWAsw3rZnkJjuksLqtwVAU...</a>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="label">Token Image</div>
+                <div class="value">
+                    <a href="https://ipfs.io/ipfs/QmSmnsYEvbiJ8yaS6ddNvpfuA2FRZo3XfxBv6PN1KvgoDh" target="_blank" rel="noopener">IPFS: QmSmnsYEvbiJ8yaS6ddNvpfuA...</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 4. Supply Breakdown -->
+    <div class="section">
+        <h2><span class="num">4</span> Supply Allocation</h2>
+        <div class="info-box">
+            <div class="info-row">
+                <div class="label">🌱 Ecosystem</div>
+                <div class="value">30B (30%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">👥 Team</div>
+                <div class="value">18B (18%) — Locked</div>
+            </div>
+            <div class="info-row">
+                <div class="label">🏢 Company Reserve</div>
+                <div class="value">15B (15%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">📣 Marketing & Airdrops</div>
+                <div class="value">10B (10%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">💧 Liquidity Pool</div>
+                <div class="value">10B (10%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">🎯 Pre-Sale</div>
+                <div class="value">8B (8%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">🤝 Strategic Partners</div>
+                <div class="value">5B (5%)</div>
+            </div>
+            <div class="info-row">
+                <div class="label">🔒 Community/Staking</div>
+                <div class="value">4B (4%)</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- RugCheck -->
+    <div class="section">
+        <h2><span class="num">5</span> RugCheck Report</h2>
+        <div class="action-card">
+            <div>
+                <strong style="font-size: 15px;">Current Score: 121,287 (High Risk)</strong>
+                <p style="margin-top: 6px; font-size: 13px; color: var(--muted);">
+                    Score is high due to mint authority + single holder. 
+                    This is a <strong>temporary</strong> state — we are in the process 
+                    of distributing tokens to multi-wallet and will revoke authorities.
+                </p>
+            </div>
+            <a href="https://rugcheck.xyz/tokens/FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" rel="noopener" class="btn">
+                View on RugCheck ↗
+            </a>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/tokenomics.html">Tokenomics</a>
+            <a href="/utility.html">Utility</a>
+            <a href="/roadmap.html">Roadmap</a>
+            <a href="/whitepaper.html">Whitepaper</a>
+            <a href="/signal.html">Signal Engine</a>
+            <a href="/sporb-node-presale.html">Pre-Sale</a>
+            <a href="https://x.com/sporb_xyz" target="_blank">𝕏 / Twitter</a>
+            <a href="https://t.me/sporb_xyz" target="_blank">Telegram</a>
+            <a href="https://github.com/sporbxyz" target="_blank">GitHub</a>
+            <a href="https://discord.gg/sporb_xyz" target="_blank">Discord</a>
+        </div>
+        <div class="footer-text">
+            SPORB Protocol 🚀 — Built in the open.
+        </div>
+    </div>
+</div>
+
+<script>
+// Stars canvas
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const stars = [];
+for (let i = 0; i < 150; i++) {
+    stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.5 + 0.3,
+        a: Math.random(),
+        d: Math.random() * 0.005 + 0.002
+    });
+}
+
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(s => {
+        s.a += s.d;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(200,200,220,${Math.sin(s.a) * 0.5 + 0.3})`;
+        ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// Copy contract address
+function copyContract() {
+    const addr = 'FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU';
+    navigator.clipboard.writeText(addr).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+            btn.textContent = '📋 Copy';
+            btn.classList.remove('copied');
+        }, 2000);
+    });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORB Signal Engine Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0D1117;
+    color: #C9D1D9;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #161B22;
+    border-bottom: 1px solid #30363D;
+    padding: 10px 20px;
+  }
+  .logo {
+    color: #FF6B35;
+    font-weight: 700;
+    font-size: 1.5em;
+  }
+  .price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .price-arrow {
+    font-size: 1.2em;
+  }
+  .badge {
+    background-color: #6B3FA0;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 0.8em;
+  }
+  main {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .card {
+    background-color: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .signal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .direction-pill {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: white;
+  }
+  .direction-pill.BUY { background-color: #00C853; }
+  .direction-pill.SELL { background-color: #FF1744; }
+  .signal-details {
+    margin-top: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    font-size: 0.9em;
+  }
+  .strength-bar {
+    background-color: #30363D;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 8px;
+    margin-top: 4px;
+  }
+  .strength-fill {
+    height: 100%;
+    background-color: #FF6B35;
+    width: 0%;
+  }
+  .conditions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .condition-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .condition-true { background-color: #00C853; }
+  .condition-false { background-color: #30363D; }
+  .sparkline-container {
+    margin-top: 10px;
+  }
+  canvas {
+    width: 100%;
+    height: 60px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  th, td {
+    border-bottom: 1px solid #30363D;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    color: #8B949E;
+  }
+  .BUY-text { color: #00C853; font-weight: 600; }
+  .SELL-text { color: #FF1744; font-weight: 600; }
+  .stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .stat-box {
+    background-color: #161B22;
+    border: 1px solid #30363D;
+    border-radius: 8px;
+    padding: 10px 16px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+  }
+  @media (max-width: 600px) {
+    .signal-details { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">SPORB</div>
+  <div class="price">
+    <span id="price-value">--</span>
+    <span id="price-arrow" class="price-arrow">↔</span>
+    <span class="badge" id="signal-count">0</span>
+  </div>
+</header>
+<main>
+  <div class="card" id="active-signal-card">
+    <div class="signal-header">
+      <div id="signal-direction" class="direction-pill">--</div>
+      <div id="signal-strength">Strength: --</div>
+    </div>
+    <div class="signal-details">
+      <div>Entry: <span id="entry-price">--</span></div>
+      <div>TP1: <span id="tp1">--</span></div>
+      <div>TP2: <span id="tp2">--</span></div>
+      <div>TP3: <span id="tp3">--</span></div>
+      <div>Layer: <span id="layer">--</span></div>
+      <div>Confidence: <span id="confidence">--</span>%</div>
+      <div>Conditions: <span id="conditions-met">--</span></div>
+      <div>Timestamp: <span id="timestamp">--</span></div>
+    </div>
+    <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+    <div class="conditions" id="condition-dots"></div>
+    <div class="sparkline-container"><canvas id="sparkline"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h3>Signal History</h3>
+    <table id="history-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Direction</th>
+          <th>Entry($)</th>
+          <th>TP1</th>
+          <th>TP2</th>
+          <th>TP3</th>
+          <th>Strength</th>
+          <th>Cond</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div class="stats">
+    <div class="stat-box">
+      <div>Total Signals</div>
+      <div id="total-signals" style="font-size:1.2em;font-weight:600;">0</div>
+    </div>
+    <div class="stat-box">
+      <div>Active Signals</div>
+      <div id="active-signals" style="font-size:1.2em;font-weight:600;">0</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const priceValue = document.getElementById('price-value');
+const priceArrow = document.getElementById('price-arrow');
+const signalCount = document.getElementById('signal-count');
+const directionEl = document.getElementById('signal-direction');
+const entryEl = document.getElementById('entry-price');
+const tp1El = document.getElementById('tp1');
+const tp2El = document.getElementById('tp2');
+const tp3El = document.getElementById('tp3');
+const layerEl = document.getElementById('layer');
+const confidenceEl = document.getElementById('confidence');
+const conditionsMetEl = document.getElementById('conditions-met');
+const timestampEl = document.getElementById('timestamp');
+const strengthFill = document.getElementById('strength-fill');
+const strengthText = document.getElementById('signal-strength');
+const conditionDots = document.getElementById('condition-dots');
+const historyTableBody = document.querySelector('#history-table tbody');
+const totalSignalsEl = document.getElementById('total-signals');
+const activeSignalsEl = document.getElementById('active-signals');
+const sparklineCanvas = document.getElementById('sparkline');
+const ctx = sparklineCanvas.getContext('2d');
+
+let sparkData = [];
+let lastPrice = null;
+
+function drawSparkline(data) {
+  const width = sparklineCanvas.width = sparklineCanvas.offsetWidth;
+  const height = sparklineCanvas.height = sparklineCanvas.offsetHeight;
+  if (data.length < 2) return;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  ctx.clearRect(0,0,width,height);
+  const gradient = ctx.createLinearGradient(0,0,0,height);
+  gradient.addColorStop(0,'rgba(255,107,53,0.4)');
+  gradient.addColorStop(1,'rgba(255,107,53,0)');
+  ctx.beginPath();
+  data.forEach((val,i)=>{
+    const x = (i/(data.length-1))*width;
+    const y = height - ((val - min)/(max - min)) * height;
+    if(i===0) ctx.moveTo(x,y);
+    else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = '#FF6B35';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.lineTo(width,height);
+  ctx.lineTo(0,height);
+  ctx.closePath();
+  ctx.fillStyle = gradient;
+  ctx.fill();
+}
+
+async function fetchData() {
+  try {
+    const [signalRes, statusRes] = await Promise.all([
+      fetch('/signal-api/signal'),
+      fetch('/signal-api/status')
+    ]);
+    const signalData = await signalRes.json();
+    const statusData = await statusRes.json();
+
+    // Update price
+    const currentPrice = statusData.current_price;
+    priceValue.textContent = currentPrice.toFixed(2);
+    if (lastPrice !== null) {
+      priceArrow.textContent = currentPrice > lastPrice ? '↑' : currentPrice < lastPrice ? '↓' : '↔';
+      priceArrow.style.color = currentPrice > lastPrice ? '#00C853' : currentPrice < lastPrice ? '#FF1744' : '#C9D1D9';
+    }
+    lastPrice = currentPrice;
+    sparkData.push(currentPrice);
+    if (sparkData.length > 30) sparkData.shift();
+    drawSparkline(sparkData);
+
+    // Update signal
+    const s = signalData.signal;
+    directionEl.textContent = s.direction;
+    directionEl.className = 'direction-pill ' + s.direction;
+    entryEl.textContent = s.entry_price;
+    tp1El.textContent = s.tp1;
+    tp2El.textContent = s.tp2;
+    tp3El.textContent = s.tp3;
+    layerEl.textContent = s.layer;
+    confidenceEl.textContent = s.confidence;
+    conditionsMetEl.textContent = s.conditions_met;
+    timestampEl.textContent = new Date(s.timestamp).toLocaleString();
+    strengthText.textContent = 'Strength: ' + s.strength;
+    let strengthPercent = 25;
+    if (s.strength === 'moderate') strengthPercent = 50;
+    else if (s.strength === 'strong') strengthPercent = 75;
+    else if (s.strength === 'very_strong') strengthPercent = 100;
+    strengthFill.style.width = strengthPercent + '%';
+
+    // Conditions
+    conditionDots.innerHTML = '';
+    const conds = s.condition_details;
+    Object.keys(conds).forEach(k=>{
+      const dot = document.createElement('div');
+      dot.className = 'condition-dot ' + (conds[k] ? 'condition-true' : 'condition-false');
+      conditionDots.appendChild(dot);
+    });
+
+    // Stats
+    const activeCount = signalData.active_signals.length;
+    const totalCount = activeCount + signalData.history.length + 1;
+    signalCount.textContent = activeCount;
+    totalSignalsEl.textContent = totalCount;
+    activeSignalsEl.textContent = activeCount;
+
+    // History
+    historyTableBody.innerHTML = '';
+    signalData.history.forEach(h=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${new Date(h.timestamp).toLocaleString()}</td>
+        <td class="${h.direction}-text">${h.direction}</td>
+        <td>${h.entry_price}</td>
+        <td>${h.tp1}</td>
+        <td>${h.tp2}</td>
+        <td>${h.tp3}</td>
+        <td>${h.strength}</td>
+        <td>${h.conditions_met}</td>
+        <td>${h.status || '--'}</td>
+      `;
+      historyTableBody.appendChild(tr);
+    });
+
+  } catch (err) {
+    console.error('Fetch error', err);
+  }
+}
+
+fetchData();
+setInterval(fetchData, 15000);
+</script>
+</body>
+</html>

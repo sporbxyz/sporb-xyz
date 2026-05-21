@@ -4,37 +4,74 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$SPORB Utility | SPORB Protocol</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
-  .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
 
-  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; text-align: center; letter-spacing: -1px; }
-  h1 span { color: #FF6B35; }
-  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 40px; }
+  :root {
+    --bg: #0a0a0f;
+    --fg: #e8e8ed;
+    --muted: #6b6b80;
+    --accent: #00d4aa;
+    --accent2: #7c3aed;
+    --accent-dim: rgba(0, 212, 170, 0.15);
+    --border: rgba(255,255,255,0.06);
+  }
 
-  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
-  .back:hover { color: #FF8C5A; }
+  body {
+    background: var(--bg);
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--fg);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+  }
+
+  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 700; text-align: center; letter-spacing: -1px; }
+  h1 span { color: var(--accent); }
+  .sub { text-align: center; color: var(--muted); font-size: 16px; margin: 12px 0 40px; }
+
+  .back { display: inline-block; margin-bottom: 24px; color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
+  .back:hover { color: var(--accent); }
 
   .section { margin-bottom: 48px; }
-  .section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
-  .section h2 span { color: #FF6B35; }
-  .section p { color: #8B949E; font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
+  .section h2 { font-size: 22px; font-weight: 600; margin-bottom: 20px; }
+  .section h2 span { color: var(--accent); }
+  .section p { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 16px; }
 
   .utility-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
   .utility-card {
-    background: linear-gradient(145deg, #1C2128, #161B22);
-    border: 1px solid #30363D; border-radius: 14px; padding: 28px 24px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid var(--border); border-radius: 14px; padding: 28px 24px;
     transition: border-color 0.2s;
   }
-  .utility-card:hover { border-color: #FF6B35; }
+  .utility-card:hover { border-color: var(--accent); }
   .utility-card .icn { font-size: 36px; margin-bottom: 12px; }
-  .utility-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #F0F6FC; }
-  .utility-card p { font-size: 13px; color: #8B949E; line-height: 1.6; margin: 0; }
+  .utility-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--fg); }
+  .utility-card p { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
   .utility-card .tag {
     display: inline-block; margin-top: 12px;
-    background: rgba(255,107,53,0.1); color: #FF6B35;
+    background: var(--accent-dim); color: var(--accent);
     font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px;
   }
 
@@ -45,29 +82,29 @@
     display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center;
   }
   .flow-box {
-    background: #1C2128; border: 1px solid #30363D; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px;
     padding: 16px 20px; text-align: center; min-width: 120px;
   }
-  .flow-box.on { border-color: #FF6B35; }
+  .flow-box.on { border-color: var(--accent); }
   .flow-box .f-icn { font-size: 28px; }
-  .flow-box .f-lbl { font-size: 11px; color: #8B949E; margin-top: 4px; }
+  .flow-box .f-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; }
   .flow-arrow { color: #484F58; font-size: 22px; }
 
   .value-prop {
-    background: #161B22; border: 1px solid #30363D; border-radius: 14px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 14px;
     padding: 28px; margin: 24px 0;
   }
   .value-prop h3 { color: #FF6B35; font-size: 16px; margin-bottom: 12px; }
   .value-prop ul { list-style: none; }
   .value-prop ul li {
-    font-size: 13px; color: #8B949E; padding: 6px 0;
+    font-size: 13px; color: var(--muted); padding: 6px 0;
     display: flex; align-items: flex-start; gap: 8px;
   }
   .value-prop ul li::before { content: "→"; color: #FF6B35; font-weight: 700; }
 
-  .pricing-ref { text-align: center; padding: 32px; border-top: 1px solid #30363D; }
+  .pricing-ref { text-align: center; padding: 32px; border-top: 1px solid var(--border); }
   .pricing-ref .btn {
-    display: inline-block; background: #FF6B35; color: #0D1117; font-weight: 700;
+    display: inline-block; background: #FF6B35; color: #0a0a0f; font-weight: 700;
     padding: 14px 36px; border-radius: 10px; font-size: 15px; text-decoration: none;
     margin: 12px;
   }
@@ -80,16 +117,17 @@
 
   .equation {
     font-family: 'JetBrains Mono', monospace;
-    background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.15);
-    border-radius: 10px; padding: 20px; text-align: center; font-size: 15px; color: #F0F6FC; margin: 16px 0;
+    background: rgba(0, 212, 170, 0.05); border: 1px solid rgba(0, 212, 170, 0.15);
+    border-radius: 10px; padding: 20px; text-align: center; font-size: 15px; color: var(--fg); margin: 16px 0;
     line-height: 1.6;
   }
-  .equation .hl { color: #FF6B35; font-weight: 700; }
+  .equation .hl { color: #00d4aa; font-weight: 700; }
   .equation .grn { color: #3FB950; }
-  .equation .sm { font-size: 12px; color: #8B949E; }
+  .equation .sm { font-size: 12px; color: var(--muted); }
 
-  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
-  .ft a { color: #FF6B35; text-decoration: none; }
+  .ft { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); font-size: 13px; color: var(--muted); margin-top: 48px; }
+  .ft a { color: var(--accent); text-decoration: none; }
+  .ft a:hover { color: #00e8b8; }
 
   @media (max-width: 600px) {
     .utility-grid { grid-template-columns: 1fr; }
@@ -98,6 +136,8 @@
 </style>
 </head>
 <body>
+  <canvas id="stars-canvas"></canvas>
+
 <div class="container">
   <a href="/" class="back">← Back to SPORB</a>
 
@@ -185,36 +225,70 @@
     <h2>Why Hold <span>$SPORB</span></h2>
     <div class="value-prop">
       <ul>
-        <li><strong style="color:#E6EDF3;">Earn passive income</strong> — Stake for Node mining boost or run a Node for daily rewards</li>
-        <li><strong style="color:#E6EDF3;">Discounts on services</strong> — Pay Signal Engine subscriptions with $SPORB at discounted rates</li>
-        <li><strong style="color:#E6EDF3;">Revenue-backed value</strong> — 5% of Signal Engine fees buy $SPORB monthly, creating organic demand</li>
-        <li><strong style="color:#E6EDF3;">Supply scarcity</strong> — Node staking locks tokens out of circulation. Long vesting schedules prevent dumps</li>
-        <li><strong style="color:#E6EDF3;">Future utility</strong> — Edge compute credits, governance, ecosystem access — all powered by $SPORB</li>
+        <li><strong style="color:var(--fg);">Earn passive income</strong> — Stake for Node mining boost or run a Node for daily rewards</li>
+        <li><strong style="color:var(--fg);">Discounts on services</strong> — Pay Signal Engine subscriptions with $SPORB at discounted rates</li>
+        <li><strong style="color:var(--fg);">Revenue-backed value</strong> — 5% of Signal Engine fees buy $SPORB monthly, creating organic demand</li>
+        <li><strong style="color:var(--fg);">Supply scarcity</strong> — Node staking locks tokens out of circulation. Long vesting schedules prevent dumps</li>
+        <li><strong style="color:var(--fg);">Future utility</strong> — Edge compute credits, governance, ecosystem access — all powered by $SPORB</li>
       </ul>
     </div>
 
-    <div class="value-prop" style="border-color: rgba(255,107,53,0.2);">
+    <div class="value-prop" style="border-color: rgba(0,212,170,0.2);">
       <h3>📊 Revenue Model</h3>
       <ul>
-        <li><strong style="color:#E6EDF3;">Signal Engine</strong> — Monthly subscriptions ($29 / $69 / $199 lifetime)</li>
-        <li><strong style="color:#E6EDF3;">SPORB Node Hardware</strong> — Hardware sales ($149–$1,299 per unit)</li>
-        <li><strong style="color:#E6EDF3;">Future</strong> — Edge compute, data relay fees, API access</li>
+        <li><strong style="color:var(--fg);">Signal Engine</strong> — Monthly subscriptions ($29 / $69 / $199 lifetime)</li>
+        <li><strong style="color:var(--fg);">SPORB Node Hardware</strong> — Hardware sales ($149–$1,299 per unit)</li>
+        <li><strong style="color:var(--fg);">Future</strong> — Edge compute, data relay fees, API access</li>
       </ul>
     </div>
   </div>
 
   <!-- CTA -->
   <div class="pricing-ref">
-    <h3 style="color:#F0F6FC; margin-bottom: 12px;">Start Using $SPORB Today</h3>
-    <p style="color:#8B949E; font-size: 14px; margin-bottom: 20px;">Buy on Jupiter, run a Node, or subscribe to Signal Engine.</p>
+    <h3 style="color:var(--fg); margin-bottom: 12px;">Start Using $SPORB Today</h3>
+    <p style="color:var(--muted); font-size: 14px; margin-bottom: 20px;">Buy on Jupiter, run a Node, or subscribe to Signal Engine.</p>
     <a href="https://jup.ag/swap/SOL-FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU?in=SOL&out=FMRdhytRT49jyfrJSWsdEcvLHJQm61BKwAVrTxCFKfLU" target="_blank" class="btn">Buy $SPORB</a>
     <a href="/sporb-node-presale.html" class="btn-ghost">Get SPORB Node</a>
     <a href="/signal.html" class="btn-ghost">Signal Engine</a>
   </div>
 
   <div class="ft">
-    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+    <p>&copy; 2026 SPORB Protocol | <a href="https://sporb.xyz">sporb.xyz</a></p>
   </div>
 </div>
+
+<script>
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const stars = Array.from({ length: 200 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 1.5 + 0.3,
+    alpha: Math.random(),
+    speed: Math.random() * 0.02 + 0.005
+  }));
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => {
+      star.alpha += star.speed;
+      if (star.alpha > 1) star.alpha = 0;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 232, 237, ${Math.sin(star.alpha * Math.PI) * 0.5 + 0.3})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+</script>
 </body>
 </html>

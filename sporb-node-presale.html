@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORB Node — Pre-Sale</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; font-family: 'Space Grotesk', sans-serif; color: #E6EDF3; }
+
+  #stars {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1; pointer-events: none;
+  }
+
+  .hero {
+    text-align: center; padding: 60px 20px 40px;
+    background: radial-gradient(ellipse at 50% 50%, rgba(0,212,170,0.06) 0%, transparent 60%);
+  }
+  .hero h1 { font-size: clamp(36px, 7vw, 68px); font-weight: 800; letter-spacing: -1px; }
+  .hero h1 span { color: #00d4aa; }
+  .hero .tagline { font-size: clamp(16px, 3vw, 22px); color: #6b7280; font-weight: 300; margin: 16px auto 32px; max-width: 600px; }
+
+  .hero-gallery { max-width: 500px; width: 100%; margin: 0 auto; }
+  .hero-gallery img { width: 100%; border-radius: 12px; }
+  .hero-main { margin-bottom: 8px; }
+  .hero-main img { border: 1px solid rgba(0,212,170,0.15); }
+  .hero-thumbs { display: flex; gap: 8px; }
+  .hero-thumbs img { width: 50%; border-radius: 8px; border: 1px solid rgba(0,212,170,0.12); }
+
+  .section { max-width: 1000px; margin: 0 auto; padding: 60px 20px; border-top: 1px solid #1a1a24; }
+  .section:first-of-type { border-top: none; }
+
+  h2 { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 32px; }
+  h2 span { color: #00d4aa; }
+
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .tier {
+    background: linear-gradient(145deg, #111118, #0d0d14); border: 1px solid #1a1a24;
+    border-radius: 14px; padding: 24px 20px; text-align: center; position: relative;
+  }
+  .tier:hover { border-color: #00d4aa; }
+  .tier.featured { border-color: #FF6B35; }
+  .tier .badge {
+    background: #FF6B35; color: #0a0a0f; font-size: 9px; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  }
+  .tier h3 { font-size: 16px; font-weight: 700; margin: 8px 0; color: #E6EDF3; }
+  .tier .price { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700; color: #E6EDF3; margin: 10px 0; }
+  .tier .price .old { font-size: 14px; color: #4b5563; text-decoration: line-through; }
+  .tier .bonus { font-size: 13px; color: #FF6B35; margin: 6px 0; font-weight: 600; }
+  .tier ul { list-style: none; margin: 12px 0; font-size: 12px; line-height: 2; }
+  .tier ul li { color: #6b7280; }
+  .tier ul li::before { content: "\2713 "; color: #00d4aa; }
+
+  .btn { display: inline-block; background: #FF6B35; color: #0a0a0f; font-weight: 700; padding: 10px 24px; border-radius: 8px; font-size: 13px; border: none; cursor: pointer; width: 100%; }
+  .btn:hover { background: #FF8C5A; }
+  .btn-outline { background: transparent; border: 1px solid #FF6B35; color: #FF6B35; }
+
+  .paybox {
+    background: #0d0d14; border: 1px solid #1a1a24; border-radius: 14px;
+    padding: 32px; display: flex; gap: 32px; align-items: center; flex-wrap: wrap; justify-content: center;
+  }
+  .paybox .qr { width: 160px; } .paybox .qr img { width: 100%; border-radius: 8px; }
+  .payinfo { flex: 1; min-width: 250px; }
+  .payinfo h3 { color: #00d4aa; font-size: 16px; margin-bottom: 12px; }
+  .payinfo .addr {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #6b7280;
+    background: #0a0a0f; padding: 12px; border-radius: 6px; word-break: break-all;
+    border: 1px solid #1a1a24; margin: 8px 0; cursor: pointer;
+  }
+  .payinfo .net { font-size: 13px; color: #E6EDF3; }
+  .payinfo .net span { background: rgba(0,212,170,0.1); color: #00d4aa; padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+
+  .obox { background: #0d0d14; border: 1px solid #1a1a24; border-radius: 14px; padding: 32px; margin-top: 32px; }
+  .obox h3 { color: #E6EDF3; font-size: 18px; margin-bottom: 20px; text-align: center; }
+  .fg { margin-bottom: 16px; }
+  .fg label { display: block; font-size: 12px; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .fg input, .fg textarea {
+    width: 100%; padding: 10px 14px; background: #0a0a0f; border: 1px solid #1a1a24;
+    border-radius: 6px; color: #E6EDF3; font-size: 14px; outline: none;
+  }
+  .fg input:focus { border-color: #00d4aa; }
+  .fr { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  #fs { display: none; padding: 12px; border-radius: 6px; margin-top: 16px; text-align: center; font-size: 13px; }
+  #fs.ok { display: block; background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.2); color: #3FB950; }
+  #fs.err { display: block; background: rgba(248,81,73,0.1); border: 1px solid rgba(248,81,73,0.2); color: #F85149; }
+  .tx { margin-top: 20px; padding: 16px; background: rgba(0,212,170,0.05); border: 1px solid rgba(0,212,170,0.15); border-radius: 8px; font-size: 13px; color: #6b7280; line-height: 1.5; }
+
+  .diagram { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px 0; }
+  .drow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .dnode {
+    width: 64px; height: 100px; background: #111118; border: 1px solid #1a1a24;
+    border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 4px; font-size: 9px; color: #6b7280;
+  }
+  .dnode.on { border-color: #00d4aa; }
+  .dnode .ico { width: 40px; height: 56px; background: #0a0a0f; border-radius: 4px; border: 1px solid #1a1a24; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+  .dnode .earn { color: #00d4aa; font-weight: 600; }
+  .dconn { color: #4b5563; font-size: 18px; }
+  .dsrv {
+    width: 80px; height: 100px; background: #111118; border: 1px solid #00d4aa;
+    border-radius: 10px; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 4px; font-size: 9px; color: #6b7280;
+  }
+  .dsrv .ico { font-size: 24px; }
+
+  .sg { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .si { display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: 6px; font-size: 13px; }
+  .si .l { color: #6b7280; } .si .v { color: #E6EDF3; font-weight: 500; }
+
+  .fb { background: #0a0a0f; border: 1px solid #1a1a24; border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 13px; text-align: center; line-height: 1.6; }
+  .fb .h { color: #00d4aa; font-weight: 600; }
+
+  .tg { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin: 16px 0; }
+  .tc { background: rgba(255,255,255,0.02); border: 1px solid #1a1a24; border-radius: 10px; padding: 16px; }
+  .tc h3 { font-size: 14px; color: #00d4aa; margin-bottom: 8px; }
+  .tc p { font-size: 13px; color: #6b7280; line-height: 1.5; }
+  .tc .n { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: #E6EDF3; display: block; margin: 8px 0 4px; }
+  .tc .n.o { color: #00d4aa; }
+  .tc .n.g { color: #00d4aa; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  th { text-align: left; padding: 8px 12px; background: rgba(255,255,255,0.03); color: #6b7280; font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #1a1a24; }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(26,26,36,0.4); color: #E6EDF3; }
+  td:last-child, th:last-child { text-align: right; }
+  .hr td:first-child { color: #00d4aa; font-weight: 600; }
+
+  .faq { margin-top: 20px; }
+  .fi { background: #0d0d14; border: 1px solid #1a1a24; border-radius: 8px; padding: 16px; margin-bottom: 8px; }
+  .fi h4 { font-size: 14px; color: #E6EDF3; margin-bottom: 4px; }
+  .fi p { font-size: 13px; color: #6b7280; line-height: 1.5; }
+
+  .ft { text-align: center; padding: 40px 20px; border-top: 1px solid #1a1a24; font-size: 13px; color: #4b5563; }
+
+  @media (max-width: 600px) {
+    .tiers { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .fr { grid-template-columns: 1fr; }
+    .paybox { flex-direction: column; text-align: center; }
+    .sg { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="hero">
+  <h1>SPORB <span>NODE</span></h1>
+  <p class="tagline">DePIN Smart Display Terminal — Earn $SPORB While Displaying Real-Time Market Signals</p>
+  <div class="hero-gallery">
+    <div class="hero-main">
+      <img src="sporb-node-hero.jpg" alt="SPORB Node">
+    </div>
+    <div class="hero-thumbs">
+      <img src="sporb-node-screen.jpg" alt="Screen">
+      <img src="sporb-node-lifestyle.jpg" alt="Multi-Device">
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Pre-Sale <span>Tiers</span></h2>
+  <p style="text-align:center; color:#6b7280; margin-bottom:28px; font-size:14px;">First 1,000 nodes get maximum bonus. Shipping Q1 2027.</p>
+  
+  <div class="tiers">
+    <div class="tier">
+      <h3>Early Bird</h3>
+      <div class="price"><span class="old">$199</span> $149</div>
+      <div class="bonus">+ 25 $SPORB</div>
+      <div class="per-unit">1x Node · Limited</div>
+      <ul><li>10.1" Transparent IPS</li><li>Signal Engine Data</li><li>Tier 1 Rewards</li><li>Free Shipping</li></ul>
+      <button class="btn" onclick="sel('earlybird','Early Bird','149')">Select</button>
+    </div>
+    <div class="tier featured">
+      <div class="badge">BEST VALUE</div>
+      <h3>Standard</h3>
+      <div class="price">$179</div>
+      <div class="bonus">+ 50 $SPORB</div>
+      <div class="per-unit">1x Node + 25 Stake</div>
+      <ul><li>10.1" Transparent IPS</li><li>Signal Engine Data</li><li>Tier 1 Rewards</li><li>Free Shipping</li></ul>
+      <button class="btn" onclick="sel('standard','Standard','179')">Select</button>
+    </div>
+    <div class="tier">
+      <h3>Node Runner</h3>
+      <div class="price">$649</div>
+      <div class="bonus">+ 250 $SPORB</div>
+      <div class="per-unit">4x Nodes ($162/ea)</div>
+      <ul><li>4x SPORB Nodes</li><li>+250 SPORB Stake</li><li>Tier 2 Ready</li><li>Priority Shipping</li></ul>
+      <button class="btn-outline btn" onclick="sel('noderunner','Node Runner','649')">Select</button>
+    </div>
+    <div class="tier">
+      <h3>Validator</h3>
+      <div class="price">$1,299</div>
+      <div class="bonus">+ 500 $SPORB</div>
+      <div class="per-unit">10x Nodes ($130/ea)</div>
+      <ul><li>10x SPORB Nodes</li><li>+750 SPORB Stake</li><li>Tier 2 Ready</li><li>Priority + Support</li></ul>
+      <button class="btn-outline btn" onclick="sel('validator','Validator','1299')">Select</button>
+    </div>
+  </div>
+
+  <div class="paybox">
+    <div class="qr"><img src="usdt-trc20-qr.png" alt="USDT TRC20 QR"></div>
+    <div class="payinfo">
+      <h3>Send Payment</h3>
+      <p class="net">Network: <span>TRON (TRC-20)</span></p>
+      <p style="font-size:12px; color:#6b7280; margin:8px 0;">USDT Only</p>
+      <div class="addr" onclick="copyAddr()">TVmG1w6RdUAsiQfgaKHnDuigmGxPhjb7ga</div>
+      <p style="font-size:11px; color:#4b5563;">Click to copy</p>
+    </div>
+  </div>
+
+  <div class="obox" id="orderForm">
+    <h3>Order Form</h3>
+    <p style="text-align:center; color:#6b7280; font-size:13px; margin-bottom:20px;">Send USDT (TRC-20) to the address above, then submit this form.</p>
+    <form id="frm" onsubmit="submitOrder(event)">
+      <div class="fr">
+        <div class="fg"><label>Tier</label><input type="text" id="tier" name="tier" readonly placeholder="Select above" style="color:#00d4aa;font-weight:600;"></div>
+        <div class="fg"><label>Amount</label><input type="text" id="amount" name="amount" readonly placeholder="$0"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label>Name</label><input type="text" name="name" required placeholder="John Doe"></div>
+        <div class="fg"><label>Email</label><input type="email" name="email" required placeholder="you@email.com"></div>
+      </div>
+      <div class="fg"><label>Shipping Address</label><input type="text" name="address" required placeholder="Street, City, Country"></div>
+      <div class="fg"><label>Telegram / WhatsApp</label><input type="text" name="contact" placeholder="@username"></div>
+      <div class="fr">
+        <div class="fg"><label>TXID</label><input type="text" name="txid" required placeholder="Transfer TXID"></div>
+        <div class="fg"><label>Your Wallet</label><input type="text" name="payer_wallet" required placeholder="Your wallet address"></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea name="notes" rows="2" style="resize:vertical;"></textarea></div>
+      <button type="submit" class="btn" style="padding:14px;font-size:15px;">Submit Order</button>
+    </form>
+    <div id="fs"></div>
+    <div class="tx">Questions? Email <strong style="color:#00d4aa;">pre-sale@sporb.xyz</strong></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>SPORB Node Network <span>Architecture</span></h2>
+  <div class="diagram">
+    <p style="color:#4b5563;font-size:11px;margin-bottom:8px;">Hybrid Network — Star Broadcast + P2P Mesh Relay</p>
+    <div class="drow">
+      <div class="dnode on"><div class="ico">&#x1F5A5;</div><span class="earn">+0.68 SPORB</span></div>
+      <span class="dconn">&#8592;</span>
+      <div class="dsrv"><div class="ico">&#9729;</div><span>Signal Engine</span><span style="color:#00d4aa;">SERVER</span></div>
+      <span class="dconn">&#8594;</span>
+      <div class="dnode on"><div class="ico">&#x1F5A5;</div><span class="earn">+1.04 SPORB</span></div>
+      <span class="dconn">&#8596;</span>
+      <div class="dnode"><div class="ico">&#x1F5A5;</div><span>Idle</span></div>
+    </div>
+    <p style="color:#4b5563;font-size:11px;">&#8595; P2P Mesh Relay — Network scales to x1,000 nodes</p>
+    <div class="drow">
+      <div class="dnode"><div class="ico">&#x1F5A5;</div><span>Offline</span></div>
+      <span class="dconn">&#8596;</span>
+      <div class="dnode on"><div class="ico">&#x1F5A5;</div><span class="earn">+1.38 SPORB</span></div>
+      <span class="dconn">&#8596;</span>
+      <div class="dnode"><div class="ico">&#x1F5A5;</div><span>Pending</span></div>
+    </div>
+    <p style="color:#4b5563;font-size:10px;margin-top:8px;">&#8594; Server broadcast &nbsp;&#8596; Node-to-node mesh relay &nbsp;&#9679; Each node earns $SPORB by tier &amp; stake</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Product <span>Specs</span></h2>
+  <div class="sg">
+    <div class="si"><span class="l">Display</span><span class="v">10.1" Transparent IPS</span></div>
+    <div class="si"><span class="l">Resolution</span><span class="v">1280x800 HD</span></div>
+    <div class="si"><span class="l">Processor</span><span class="v">ESP32-S3 / Rockchip</span></div>
+    <div class="si"><span class="l">Connectivity</span><span class="v">WiFi 4/5, BLE 5.0</span></div>
+    <div class="si"><span class="l">Storage</span><span class="v">64GB internal</span></div>
+    <div class="si"><span class="l">Design</span><span class="v">Floating transparent</span></div>
+    <div class="si"><span class="l">Color</span><span class="v">Matte black + orange</span></div>
+    <div class="si"><span class="l">Battery</span><span class="v">5,000mAh (10h)</span></div>
+    <div class="si"><span class="l">Data Source</span><span class="v">SPORB Signal Engine</span></div>
+    <div class="si"><span class="l">Firmware</span><span class="v">OTA updatable</span></div>
+    <div class="si"><span class="l">Uptime Proof</span><span class="v">Heartbeat 60s</span></div>
+    <div class="si"><span class="l">Integration</span><span class="v">Wallet, staking</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Token Reward — <span>Dynamic Pool</span></h2>
+  <div class="fb">
+    Your Daily = DailyPool x <span class="h">Your Score / Total Score</span><br>
+    Node Score = <span class="h">Tier x Uptime x Stake</span>
+  </div>
+  <div class="tg">
+    <div class="tc"><h3>Base Pool</h3><span class="n o">1,000,000</span><p>$SPORB for Node Mining<br>Over 4 years</p></div>
+    <div class="tc"><h3>Year 1 Daily</h3><span class="n o">685</span><p>$SPORB/day across all nodes</p></div>
+    <div class="tc"><h3>@ 1K Nodes</h3><span class="n o">~0.68</span><p>$SPORB/day/node (Tier 1)</p></div>
+  </div>
+  <p style="color:#00d4aa;font-size:12px;margin-bottom:12px;">Pool reduced 5x. Rewards are scarce - product value > token farming.</p>
+  
+  <h3>Scenarios (Tier 1, no stake)</h3>
+  <table>
+    <tr><th>Network</th><th>Daily $SPORB</th><th>@ $0.50</th><th>Payback</th></tr>
+    <tr><td>500</td><td>~1.44</td><td>$21.60/mo</td><td>7.5 mo</td></tr>
+    <tr class="hr"><td><strong>1,000</strong></td><td><strong>~0.72</strong></td><td><strong>$10.80/mo</strong></td><td><strong>14 mo</strong></td></tr>
+    <tr><td>5,000</td><td>~0.15</td><td>$2.30/mo</td><td>2.9 yr</td></tr>
+    <tr><td>10,000</td><td>~0.02</td><td>$1.10/mo</td><td>5.8 yr</td></tr>
+    <tr><td>50,000</td><td>~0.02</td><td>$0.24/mo</td><td>29 yr</td></tr>
+  </table>
+  
+  <h3>Tiers</h3>
+  <table>
+    <tr><th>Tier</th><th>Mult</th><th>@ 1K nodes</th></tr>
+    <tr><td>Tier 1 - Display</td><td>1.0x</td><td>~0.68/day</td></tr>
+    <tr><td>Tier 2 - Relay</td><td>1.5x</td><td>~1.04/day</td></tr>
+    <tr class="hr"><td>Tier 3 - Validator</td><td>2.5x</td><td>~1.74/day</td></tr>
+  </table>
+  
+  <h3>Stake Boost</h3>
+  <table>
+    <tr><th>Stake</th><th>Boost</th><th>@ 1K (T1)</th></tr>
+    <tr><td>0</td><td>1.0x</td><td>~0.68</td></tr>
+    <tr><td>100</td><td>1.2x</td><td>~0.82</td></tr>
+    <tr><td>500</td><td>1.5x</td><td>~1.04</td></tr>
+    <tr class="hr"><td>1,000</td><td>2.0x</td><td>~1.38</td></tr>
+  </table>
+  
+  <h3>Buy Pressure</h3>
+  <div class="tg">
+    <div class="tc"><h3>Revenue Buy-Back</h3><span class="n g">Auto</span><p>5% of Signal Engine fees buy $SPORB monthly</p></div>
+    <div class="tc"><h3>Stake Lock-Up</h3><span class="n g">Lock</span><p>Nodes need stake - locks supply out of circulation</p></div>
+    <div class="tc"><h3>Natural Cap</h3><span class="n g">Ceiling</span><p>Low rewards naturally limit node count growth</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>FAQ</h2>
+  <div class="faq">
+    <div class="fi"><h4>When will SPORB Node ship?</h4><p>Target Q1 2027. Pre-sale funds production. Monthly progress updates.</p></div>
+    <div class="fi"><h4>How do I earn $SPORB?</h4><p>Keep the node on. It displays market data and sends heartbeats. Rewards from daily Dynamic Pool.</p></div>
+    <div class="fi"><h4>Can I buy multiple Nodes?</h4><p>Yes - no limit. Each node earns independently. More nodes = stronger network.</p></div>
+    <div class="fi"><h4>What about bonus $SPORB?</h4><p>From Ecosystem allocation. Locked 3 months post-launch, linear unlock over 6 months.</p></div>
+    <div class="fi"><h4>Token supply?</h4><p>100B total. 10% circulating at TGE. Node pool: 0.3% (300M). Most locked/vesting.</p></div>
+  </div>
+</div>
+
+<div class="ft">
+  <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz" style="color:#00d4aa;">sporb.xyz</a></p>
+</div>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+for (let i = 0; i < 200; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 2,
+    alpha: Math.random(),
+    speed: 0.002 + Math.random() * 0.006
+  });
+}
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.alpha += s.speed;
+    if (s.alpha > 1 || s.alpha < 0) s.speed *= -1;
+    ctx.fillStyle = `rgba(0, 212, 170, ${Math.max(0.15, Math.min(1, s.alpha))})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+function sel(id, name, price) {
+  document.getElementById('tier').value = name;
+  document.getElementById('amount').value = '$' + price + ' USDT';
+  document.getElementById('orderForm').scrollIntoView({behavior:'smooth'});
+}
+function copyAddr() {
+  navigator.clipboard.writeText('TVmG1w6RdUAsiQfgaKHnDuigmGxPhjb7ga');
+  document.getElementById('fs').className = 'ok';
+  document.getElementById('fs').textContent = 'Address copied!';
+  setTimeout(() => document.getElementById('fs').className = '', 2000);
+}
+async function submitOrder(e) {
+  e.preventDefault();
+  const f = document.getElementById('frm'), s = document.getElementById('fs');
+  const b = f.querySelector('button');
+  const d = {};
+  new FormData(f).forEach((v,k) => d[k] = v);
+  d.timestamp = new Date().toISOString();
+  b.disabled = true; b.textContent = 'Sending...'; s.className = '';
+  try {
+    const r = await fetch('/submit-order', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)});
+    const j = await r.json();
+    if (j.ok) {
+      s.className = 'ok'; s.textContent = 'Order submitted! Confirmation within 24h.';
+      f.reset(); document.getElementById('tier').value = ''; document.getElementById('amount').value = '';
+    } else throw new Error(j.error || 'Failed');
+  } catch(e) {
+    s.className = 'err'; s.textContent = 'Error: ' + e.message + '. Email pre-sale@sporb.xyz';
+  } finally { b.disabled = false; b.textContent = 'Submit Order'; }
+}
+</script>
+</body>
+</html>

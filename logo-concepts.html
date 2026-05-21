@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORB Logo Concepts</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #0b0d11; 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #e8eaed;
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .sub {
+            color: #6366f1;
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 48px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #12151a;
+            border: 1px solid #262b36;
+            border-radius: 20px;
+            padding: 36px 32px 28px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: #6366f1; }
+        .card .icon-wrap {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card .icon-wrap svg { width: 200px; height: 200px; }
+        .card h2 {
+            color: #e8eaed;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .card .tag {
+            display: inline-block;
+            background: #1a1e26;
+            border: 1px solid #262b36;
+            border-radius: 20px;
+            padding: 4px 14px;
+            color: #6366f1;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .card p {
+            color: #9aa2b1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>SPORB Protocol</h1>
+    <div class="sub">Logo Concepts</div>
+
+    <div class="grid">
+
+        <!-- 1️⃣ Portal -->
+        <div class="card">
+            <div class="icon-wrap">
+                <svg viewBox="0 0 200 200" width="200" height="200">
+                    <defs>
+                        <linearGradient id="portalGlow" x1="20%" y1="0%" x2="80%" y2="100%">
+                            <stop offset="0%" stop-color="#e8eaed"/>
+                            <stop offset="60%" stop-color="#a5b4fc"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                        <radialGradient id="portalInner" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4"/>
+                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                        </radialGradient>
+                        <filter id="portalFilter">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <circle cx="100" cy="100" r="95" fill="#0f1520" stroke="#262b36" stroke-width="1.5"/>
+                    <!-- Outer ring segments -->
+                    <path d="M 20 100 A 80 80 0 0 1 100 20" fill="none" stroke="#262b36" stroke-width="2"/>
+                    <path d="M 180 100 A 80 80 0 0 1 100 180" fill="none" stroke="#262b36" stroke-width="2"/>
+                    <!-- Diamond crack / portal shape -->
+                    <polygon points="100,35 160,100 100,165 40,100" fill="none" stroke="url(#portalGlow)" stroke-width="6" filter="url(#portalFilter)"/>
+                    <polygon points="100,55 140,100 100,145 60,100" fill="url(#portalInner)" stroke="#6366f1" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Center orb -->
+                    <circle cx="100" cy="100" r="10" fill="#a5b4fc" opacity="0.8" filter="url(#portalFilter)"/>
+                    <circle cx="100" cy="100" r="4" fill="#e8eaed"/>
+                    <!-- Small particles -->
+                    <circle cx="75" cy="75" r="2" fill="#6366f1" opacity="0.4"/>
+                    <circle cx="130" cy="80" r="1.5" fill="#a5b4fc" opacity="0.3"/>
+                    <circle cx="70" cy="125" r="1.5" fill="#6366f1" opacity="0.3"/>
+                    <circle cx="135" cy="120" r="2" fill="#a5b4fc" opacity="0.4"/>
+                </svg>
+            </div>
+            <h2>🔥 Portal</h2>
+            <div class="tag">#1 暗黑科幻</div>
+            <p>裂開嘅菱形 portal，中心發光<br/>連接兩個世界 · Earth ↔ Space</p>
+        </div>
+
+        <!-- 2️⃣ Lightning Bridge -->
+        <div class="card">
+            <div class="icon-wrap">
+                <svg viewBox="0 0 200 200" width="200" height="200">
+                    <defs>
+                        <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#e8eaed"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                        <filter id="boltGlow">
+                            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <circle cx="100" cy="100" r="95" fill="#0f1520" stroke="#262b36" stroke-width="1.5"/>
+                    <!-- Top platform -->
+                    <polygon points="100,20 145,65 55,65" fill="none" stroke="#e8eaed" stroke-width="3" stroke-linejoin="round"/>
+                    <!-- Bottom platform (rotated) -->
+                    <polygon points="100,180 145,135 55,135" fill="none" stroke="#e8eaed" stroke-width="3" stroke-linejoin="round"/>
+                    <!-- Lightning bridge -->
+                    <polyline points="70,65 85,90 105,85 115,105 130,135" fill="none" stroke="url(#boltGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" filter="url(#boltGlow)"/>
+                    <!-- Accent dots -->
+                    <circle cx="100" cy="20" r="3" fill="#6366f1" opacity="0.6"/>
+                    <circle cx="100" cy="180" r="3" fill="#6366f1" opacity="0.6"/>
+                    <!-- Side energy lines -->
+                    <line x1="40" y1="50" x2="52" y2="62" stroke="#262b36" stroke-width="1.5"/>
+                    <line x1="160" y1="150" x2="148" y2="138" stroke="#262b36" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <h2>⚡ Lightning Bridge</h2>
+            <div class="tag">#2 能量橋樑</div>
+            <p>上下兩極平台，中間閃電 bridge<br/>充滿力量 · 科技感爆發</p>
+        </div>
+
+        <!-- 3️⃣ Infinity Bridge -->
+        <div class="card">
+            <div class="icon-wrap">
+                <svg viewBox="0 0 200 200" width="200" height="200">
+                    <defs>
+                        <linearGradient id="infGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#e8eaed"/>
+                            <stop offset="50%" stop-color="#a5b4fc"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                        <linearGradient id="infGrad2" x1="100%" y1="100%" x2="0%" y2="0%">
+                            <stop offset="0%" stop-color="#e8eaed"/>
+                            <stop offset="50%" stop-color="#a5b4fc"/>
+                            <stop offset="100%" stop-color="#6366f1"/>
+                        </linearGradient>
+                        <filter id="infGlow">
+                            <feGaussianBlur stdDeviation="2" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <circle cx="100" cy="100" r="95" fill="#0f1520" stroke="#262b36" stroke-width="1.5"/>
+                    <!-- Infinity left loop (silver → purple) -->
+                    <path d="M 100 100
+                             C 100 50, 50 40, 35 70
+                             C 20 100, 40 130, 65 130
+                             C 85 130, 95 115, 100 100"
+                          fill="none" stroke="url(#infGrad1)" stroke-width="6" stroke-linecap="round" filter="url(#infGlow)"/>
+                    <!-- Infinity right loop (purple → silver) + bridge structure -->
+                    <path d="M 100 100
+                             C 100 150, 150 160, 165 130
+                             C 180 100, 160 70, 135 70
+                             C 115 70, 105 85, 100 100"
+                          fill="none" stroke="url(#infGrad2)" stroke-width="6" stroke-linecap="round" filter="url(#infGlow)"/>
+                    <!-- Center bridge straight segment -->
+                    <line x1="100" y1="100" x2="100" y2="100" stroke="#e8eaed" stroke-width="6" stroke-linecap="round"/>
+                    <!-- Small gap in center to show bridge connection -->
+                    <path d="M 85 95 L 115 105" stroke="#0f1520" stroke-width="2"/>
+                    <!-- Orbital dots -->
+                    <circle cx="35" cy="70" r="3" fill="#e8eaed" opacity="0.5"/>
+                    <circle cx="165" cy="130" r="3" fill="#6366f1" opacity="0.5"/>
+                </svg>
+            </div>
+            <h2>∞ Infinity Bridge</h2>
+            <div class="tag">#3 無限連接</div>
+            <p>∞ 符號但右半變 bridge 架構<br/>Earth ↔ Space 永續連接</p>
+        </div>
+
+        <!-- 4️⃣ Pyramid + Orb -->
+        <div class="card">
+            <div class="icon-wrap">
+                <svg viewBox="0 0 200 200" width="200" height="200">
+                    <defs>
+                        <linearGradient id="pyrGrad" x1="0%" y1="100%" x2="50%" y2="0%">
+                            <stop offset="0%" stop-color="#262b36"/>
+                            <stop offset="80%" stop-color="#e8eaed"/>
+                            <stop offset="100%" stop-color="#a5b4fc"/>
+                        </linearGradient>
+                        <radialGradient id="orbGlow" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#e8eaed" stop-opacity="1"/>
+                            <stop offset="40%" stop-color="#a5b4fc" stop-opacity="0.8"/>
+                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                        </radialGradient>
+                        <filter id="pyrFilter">
+                            <feGaussianBlur stdDeviation="3" result="blur"/>
+                            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                    </defs>
+                    <circle cx="100" cy="100" r="95" fill="#0f1520" stroke="#262b36" stroke-width="1.5"/>
+                    <!-- Pyramid base -->
+                    <polygon points="100,145 35,70 165,70" fill="none" stroke="url(#pyrGrad)" stroke-width="5" stroke-linejoin="round"/>
+                    <!-- Pyramid inner lines (3D structure) -->
+                    <line x1="100" y1="145" x2="100" y2="70" stroke="#6366f1" stroke-width="3" opacity="0.5"/>
+                    <line x1="68" y1="95" x2="132" y2="95" stroke="#6366f1" stroke-width="1" opacity="0.3"/>
+                    <!-- Orb above pyramid -->
+                    <circle cx="100" cy="38" r="18" fill="url(#orbGlow)" filter="url(#pyrFilter)"/>
+                    <circle cx="100" cy="38" r="8" fill="#e8eaed" opacity="0.9"/>
+                    <circle cx="100" cy="38" r="3" fill="#ffffff"/>
+                    <!-- Connection line between orb and pyramid peak -->
+                    <line x1="100" y1="56" x2="100" y2="70" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+                    <!-- Ground line -->
+                    <line x1="20" y1="155" x2="180" y2="155" stroke="#262b36" stroke-width="1" opacity="0.5"/>
+                </svg>
+            </div>
+            <h2>🔺 Pyramid + Orb</h2>
+            <div class="tag">#4 基礎建設</div>
+            <p>立體金字塔（foundation）+ 頂部發光球體（SPORB）<br/>穩固 · powerful · 簡潔</p>
+        </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:40px;color:#5c6475;font-size:13px;">
+        SPORB Protocol · SVG Concepts · No planets, no moons, no stars
+    </div>
+</body>
+</html>

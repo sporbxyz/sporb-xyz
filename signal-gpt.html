@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORB Signal Engine Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0D1117;
+            color: #FFFFFF;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #161B22;
+            border-bottom: 1px solid #30363D;
+        }
+        .header .logo {
+            color: #FF6B35;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        .header .price-info {
+            display: flex;
+            align-items: center;
+        }
+        .header .price-info span {
+            margin-left: 10px;
+        }
+        .badge {
+            background-color: #6B3FA0;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .card {
+            background-color: #161B22;
+            border: 1px solid #30363D;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px;
+        }
+        .active-signal {
+            display: flex;
+            flex-direction: column;
+        }
+        .direction-pill {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #FFFFFF;
+            width: fit-content;
+        }
+        .buy { background-color: #00C853; }
+        .sell { background-color: #FF1744; }
+        .key-prices {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .strength-bar {
+            background-color: #30363D;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .strength-bar div {
+            height: 10px;
+        }
+        .conditions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .condition {
+            display: flex;
+            align-items: center;
+        }
+        .condition span {
+            margin-left: 5px;
+        }
+        .green-dot { color: #00C853; }
+        .red-dot { color: #FF1744; }
+        .sparkline {
+            margin: 20px;
+        }
+        .signal-history {
+            margin: 20px;
+            border-collapse: collapse;
+            width: calc(100% - 40px);
+        }
+        .signal-history th, .signal-history td {
+            border: 1px solid #30363D;
+            padding: 10px;
+            text-align: center;
+        }
+        .signal-history tr:hover {
+            background-color: #30363D;
+        }
+        .pill {
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+        .active { background-color: #00C853; }
+        .expired { background-color: #FF1744; }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #161B22;
+            border-top: 1px solid #30363D;
+            color: #6B6B6B;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">SPORB Signal Engine - XAUUSDT</div>
+        <div class="price-info">
+            <span id="price-direction">—</span>
+            <span id="live-price">$0.00</span>
+            <span class="badge" id="signal-count">0 Active</span>
+        </div>
+        <span id="last-price" style="display:none">$0.00</span>
+    </div>
+
+    <div class="card active-signal">
+        <div class="direction-pill buy">BUY</div>
+        <div class="key-prices">
+            <div>Entry: $0.00</div>
+            <div>TP1: $0.00</div>
+            <div>TP2: $0.00</div>
+            <div>TP3: $0.00</div>
+            <div>Layer: $0.00</div>
+        </div>
+        <div class="strength-bar">
+            <div style="width: 25%;"></div>
+        </div>
+        <div class="strength-label" style="font-size:12px;color:#6B7280;margin-top:4px;">WEAK</div>
+        <div>Confidence: 50%</div>
+        <div class="conditions">
+            <div class="condition"><span class="green-dot">●</span><span>Trend</span></div>
+            <div class="condition"><span class="red-dot">●</span><span>Momentum</span></div>
+            <div class="condition"><span class="green-dot">●</span><span>Volume</span></div>
+            <div class="condition"><span class="red-dot">●</span><span>Breakout</span></div>
+            <div class="condition"><span class="green-dot">●</span><span>FVG</span></div>
+            <div class="condition"><span class="red-dot">●</span><span>Divergence</span></div>
+            <div class="condition"><span class="green-dot">●</span><span>Rejection</span></div>
+            <div class="condition"><span class="red-dot">●</span><span>HTF Trend</span></div>
+        </div>
+        <div>Timestamp: 00:00:00</div>
+    </div>
+
+    <div class="sparkline">
+        <canvas id="sparkline-chart" width="600" height="100"></canvas>
+    </div>
+
+    <table class="signal-history">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Direction</th>
+                <th>Entry</th>
+                <th>TP1</th>
+                <th>TP2</th>
+                <th>TP3</th>
+                <th>Strength</th>
+                <th>Cond</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="signal-history-body">
+            <!-- Signal history rows will be populated here -->
+        </tbody>
+    </table>
+
+    <div class="stats">
+        <div class="card">Total Signals: <span id="total-signals">0</span></div>
+        <div class="card">Active Signals: <span id="active-signals">0</span></div>
+        <div class="card">Last Signal: <span id="last-signal-time">00:00:00</span></div>
+    </div>
+
+    <div class="footer">
+        SPORB Signal Engine v1 — Orbital Data Infrastructure
+    </div>
+
+    <script>
+        async function fetchData() {
+            try {
+                const signalResponse = await fetch('/signal-api/signal');
+                const signalData = await signalResponse.json();
+                const statusResponse = await fetch('/signal-api/status');
+                const statusData = await statusResponse.json();
+
+                // Update live price
+                const curPrice = statusData && statusData.current_price ? statusData.current_price : '--';
+                document.getElementById('live-price').textContent = `$${curPrice}`;
+                // Price direction indicator
+                const priceDir = document.getElementById('price-direction');
+                if (document.getElementById('last-price') && curPrice !== '--') {
+                    const lastPrice = parseFloat(document.getElementById('last-price').textContent.replace('$','')) || curPrice;
+                    priceDir.textContent = curPrice > lastPrice ? '▲' : '▼';
+                    priceDir.style.color = curPrice > lastPrice ? '#00C853' : '#FF1744';
+                }
+                document.getElementById('last-price').textContent = `$${curPrice}`;
+                document.getElementById('signal-count').textContent = `${(signalData.active_signals || []).length} Active`;
+
+                // Update active signal card
+                const activeSignal = signalData.signal;
+                if (activeSignal) {
+                    const dirPill = document.querySelector('.active-signal .direction-pill');
+                    dirPill.textContent = activeSignal.direction.toUpperCase();
+                    dirPill.className = `direction-pill ${activeSignal.direction.toLowerCase()}`;
+                    const keyPrices = document.querySelectorAll('.key-prices div');
+                    keyPrices[0].innerHTML = `<span class="label">Entry</span> <span class="value">$${activeSignal.entry_price.toFixed(2)}</span>`;
+                    keyPrices[1].innerHTML = `<span class="label">TP1</span> <span class="value">$${activeSignal.tp1.toFixed(2)}</span>`;
+                    keyPrices[2].innerHTML = `<span class="label">TP2</span> <span class="value">$${activeSignal.tp2.toFixed(2)}</span>`;
+                    keyPrices[3].innerHTML = `<span class="label">TP3</span> <span class="value">$${activeSignal.tp3.toFixed(2)}</span>`;
+                    keyPrices[4].innerHTML = `<span class="label">Layer</span> <span class="value">$${(activeSignal.layer || activeSignal.entry_price).toFixed(2)}</span>`;
+                    
+                    const strengthMap = { weak: 25, moderate: 50, strong: 75, very_strong: 100 };
+                    const strengthLabel = { weak: 'WEAK', moderate: 'MODERATE', strong: 'STRONG', very_strong: 'VERY STRONG' };
+                    const sp = strengthMap[activeSignal.strength] || 25;
+                    const sl = strengthLabel[activeSignal.strength] || activeSignal.strength;
+                    document.querySelector('.strength-bar div').style.width = sp + '%';
+                    document.querySelector('.strength-bar .strength-label').textContent = sl;
+                    document.querySelector('.active-signal .confidence').textContent = `Confidence: ${activeSignal.confidence}%`;
+                    
+                    const cd = activeSignal.condition_details || {};
+                    const condKeys = ['trend','momentum','volume','breakout','fvg','divergence','rejection','htf_trend'];
+                    const condItems = document.querySelectorAll('.conditions .condition');
+                    condKeys.forEach((key, i) => {
+                        if (condItems[i]) {
+                            const dot = condItems[i].querySelector('span:first-child');
+                            if (dot) dot.className = cd[key] ? 'green-dot' : 'red-dot';
+                        }
+                    });
+                    document.querySelector('.active-signal .timestamp').textContent = activeSignal.timestamp ? new Date(activeSignal.timestamp).toLocaleString() : '--';
+                }
+
+                // Update signal history
+                const signalHistoryBody = document.getElementById('signal-history-body');
+                signalHistoryBody.innerHTML = '';
+                signalData.history.forEach(signal => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${signal.timestamp ? new Date(signal.timestamp).toLocaleTimeString() : '--'}</td>
+                        <td style="color:${signal.direction === 'BUY' ? '#00C853' : '#FF1744'};font-weight:600">${signal.direction}</td>
+                        <td>$${signal.entry_price.toFixed(2)}</td>
+                        <td>$${signal.tp1.toFixed(2)}</td>
+                        <td>$${signal.tp2.toFixed(2)}</td>
+                        <td>$${signal.tp3.toFixed(2)}</td>
+                        <td>${signal.strength ? signal.strength.toUpperCase() : '--'}</td>
+                        <td>${signal.conditions_met || '--'}</td>
+                        <td><span class="pill ${(signal.status||'active') === 'active' ? 'active' : 'expired'}">${(signal.status||'active').toUpperCase()}</span></td>
+                    `;
+                    signalHistoryBody.appendChild(row);
+                });
+
+                // Update stats
+                document.getElementById('total-signals').textContent = (signalData.history || []).length;
+                document.getElementById('active-signals').textContent = (signalData.active_signals || []).length;
+                document.getElementById('last-signal-time').textContent = signalData.signal && signalData.signal.timestamp ? new Date(signalData.signal.timestamp).toLocaleTimeString() : '--';
+
+                // Update sparkline chart
+                if (!window.priceHistory) window.priceHistory = [];
+                if (curPrice !== '--') {
+                    window.priceHistory.push(curPrice);
+                    if (window.priceHistory.length > 30) window.priceHistory.shift();
+                }
+                const data = window.priceHistory;
+                if (data.length >= 2) {
+                    const canvas = document.getElementById('sparkline-chart');
+                    canvas.width = 600;
+                    canvas.height = 100;
+                    const ctx = canvas.getContext('2d');
+                    const w = 600, h = 100, pad = 5;
+                    const yMax = Math.max(...data), yMin = Math.min(...data), range = yMax - yMin || 1;
+                    const gradient = ctx.createLinearGradient(0, 0, 0, h);
+                    gradient.addColorStop(0, 'rgba(255, 107, 53, 0.5)');
+                    gradient.addColorStop(1, 'rgba(255, 107, 53, 0)');
+                    ctx.clearRect(0, 0, w, h);
+                    ctx.beginPath();
+                    ctx.strokeStyle = '#FF6B35';
+                    ctx.lineWidth = 2;
+                    data.forEach((val, i) => {
+                        const x = pad + (i / (data.length - 1)) * (w - 2 * pad);
+                        const y = h - pad - ((val - yMin) / range) * (h - 2 * pad);
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+                    ctx.stroke();
+                    ctx.lineTo(w - pad, h - pad);
+                    ctx.lineTo(pad, h - pad);
+                    ctx.closePath();
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
+        setInterval(fetchData, 30000);
+        fetchData();
+    </script>
+</body>
+</html>

@@ -4,82 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$SPORB Tokenomics | SPORB Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+  :root {
+    --bg: #0a0a0f;
+    --fg: #e8e8ed;
+    --muted: #6b6b80;
+    --accent: #00d4aa;
+    --accent-dim: rgba(0, 212, 170, 0.08);
+    --accent-glow: rgba(0, 212, 170, 0.12);
+    --orange: #FF6B35;
+    --orange-dim: rgba(255, 107, 53, 0.1);
+    --border: rgba(255,255,255,0.06);
+    --card-bg: rgba(255,255,255,0.02);
+    --card-hover: rgba(255,255,255,0.04);
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
-  .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
-  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; text-align: center; letter-spacing: -1px; }
-  h1 span { color: #FF6B35; }
-  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 40px; }
-  .section { margin-bottom: 48px; }
-  .section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
-  .section h2 span { color: #FF6B35; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+  }
+  h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+  h1 span { color: var(--accent); }
+  .sub {
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 400;
+    margin: 12px 0 48px;
+    letter-spacing: 0.01em;
+  }
+  .section { margin-bottom: 56px; }
+  .section h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: -0.01em;
+  }
+  .section h2 span { color: var(--accent); }
 
   .supply-big {
-    text-align: center; padding: 32px;
-    background: linear-gradient(145deg, #1C2128, #161B22);
-    border: 1px solid #30363D; border-radius: 16px; margin-bottom: 32px;
+    text-align: center;
+    padding: 40px 32px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 40px;
+    backdrop-filter: blur(4px);
   }
   .supply-big .num {
     font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(36px, 8vw, 72px); font-weight: 700; color: #FF6B35;
+    font-size: clamp(40px, 8vw, 72px);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), #00f5c8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
-  .supply-big .lbl { color: #8B949E; font-size: 14px; margin-top: 4px; }
+  .supply-big .lbl {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
 
   .alloc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
   .alloc-card {
-    background: #161B22; border: 1px solid #30363D; border-radius: 12px;
-    padding: 20px; text-align: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    transition: border-color 0.3s, background 0.3s;
   }
-  .alloc-card .pct { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; }
-  .alloc-card .pct.or { color: #FF6B35; }
-  .alloc-card .pct.gr { color: #3FB950; }
+  .alloc-card:hover {
+    border-color: var(--accent-dim);
+    background: var(--card-hover);
+  }
+  .alloc-card .pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .alloc-card .pct.or { color: var(--orange); }
+  .alloc-card .pct.gr { color: var(--accent); }
   .alloc-card .pct.bl { color: #58A6FF; }
   .alloc-card .pct.pu { color: #BC8CFF; }
-  .alloc-card .name { font-size: 14px; font-weight: 600; margin: 4px 0; }
-  .alloc-card .desc { font-size: 12px; color: #8B949E; }
-  .alloc-card .amt { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #484F58; margin-top: 6px; }
+  .alloc-card .name {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 6px 0;
+    color: var(--fg);
+  }
+  .alloc-card .desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .alloc-card .amt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(107,107,128,0.6);
+    margin-top: 8px;
+  }
 
   .info-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
   .info-card {
-    background: #161B22; border: 1px solid #30363D; border-radius: 10px; padding: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 20px;
+    transition: border-color 0.3s, background 0.3s;
   }
-  .info-card .icn { font-size: 24px; margin-bottom: 8px; }
-  .info-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px; }
-  .info-card p { font-size: 13px; color: #8B949E; line-height: 1.5; }
+  .info-card:hover {
+    border-color: var(--accent-dim);
+    background: var(--card-hover);
+  }
+  .info-card .icn { font-size: 24px; margin-bottom: 10px; display: block; }
+  .info-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+  .info-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
 
-  table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 16px 0; }
-  th { text-align: left; padding: 10px 12px; background: rgba(255,255,255,0.03); color: #8B949E; font-weight: 600; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #30363D; }
-  td { padding: 12px; border-bottom: 1px solid rgba(48,54,61,0.4); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.02);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    color: var(--fg);
+  }
+  tr:last-child td { border-bottom: none; }
   td:last-child, th:last-child { text-align: right; }
-  .hr td { color: #FF6B35; font-weight: 600; }
+  .hr td {
+    color: var(--orange);
+    font-weight: 600;
+  }
 
   .vest-table td:first-child { font-weight: 500; }
-  .vest-table td:nth-child(2) { color: #8B949E; }
-  .vest-table td:nth-child(3) { text-align: right; }
+  .vest-table td:nth-child(2) { color: var(--muted); }
+  .vest-table td:nth-child(3) { text-align: right; font-family: 'JetBrains Mono', monospace; }
   .vest-table td:nth-child(4) { text-align: right; }
 
   .disclaimer {
-    background: rgba(255,107,53,0.05); border: 1px solid rgba(255,107,53,0.15);
-    border-radius: 10px; padding: 20px; font-size: 12px; color: #8B949E; line-height: 1.6;
+    background: var(--accent-dim);
+    border: 1px solid rgba(0, 212, 170, 0.08);
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .disclaimer strong {
+    color: var(--fg);
+    font-weight: 600;
   }
 
-  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
-  .back:hover { color: #FF8C5A; }
-
-  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
-  .ft a { color: #FF6B35; text-decoration: none; }
+  .ft {
+    text-align: center;
+    padding: 40px 0 20px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 48px;
+    letter-spacing: 0.02em;
+  }
 
   @media (max-width: 600px) {
+    .container { padding: 40px 16px 24px; }
     .alloc-grid { grid-template-columns: 1fr 1fr; }
+    .supply-big { padding: 28px 20px; }
+    td, th { padding: 10px 12px; }
   }
 </style>
 </head>
 <body>
+<canvas id="stars-canvas"></canvas>
 <div class="container">
-  <a href="/" class="back">\u2190 Back to SPORB</a>
-
   <h1><span>$SPORB</span> Tokenomics</h1>
   <p class="sub">Decentralized Physical Infrastructure Network — Smart Display Terminal</p>
 
@@ -143,22 +295,22 @@
     <h2>Node Mining <span>Pool</span></h2>
     <div class="info-grid">
       <div class="info-card">
-        <div class="icn">\u26CF</div>
+        <div class="icn">⛏️</div>
         <h3>Pool Size</h3>
         <p>300,000,000 SPORB (0.3% of total) allocated for 4 years of node mining.</p>
       </div>
       <div class="info-card">
-        <div class="icn">\uD83D\uDCC8</div>
+        <div class="icn">📈</div>
         <h3>Daily Reward</h3>
         <p>Base pool: 1,000,000 SPORB/day. Year 1 daily: ~685 SPORB. Dynamic pool adjusts with network size.</p>
       </div>
       <div class="info-card">
-        <div class="icn">\uD83D\uDD17</div>
+        <div class="icn">🔗</div>
         <h3>Stake Boost</h3>
         <p>Node operators can stake SPORB for up to 2x multiplier on mining rewards.</p>
       </div>
       <div class="info-card">
-        <div class="icn">\uD83D\uDD12</div>
+        <div class="icn">🔒</div>
         <h3>Supply Lock</h3>
         <p>Staked tokens are locked out of circulation, reducing sell pressure as the network grows.</p>
       </div>
@@ -179,7 +331,7 @@
       <tr class="hr"><td>Strategic Partners</td><td>6mo cliff + 18mo linear</td><td>0%</td><td>Month 24</td></tr>
       <tr><td>Community Staking</td><td>Starts Month 6, linear 24mo</td><td>0%</td><td>Month 30</td></tr>
     </table>
-    <p style="color:#8B949E; font-size:13px; margin-top:8px;">TGE: ~10% circulating supply. Most tokens locked with long vesting schedules.</p>
+    <p style="color:var(--muted); font-size:13px; margin-top:8px;">TGE: ~10% circulating supply. Most tokens locked with long vesting schedules.</p>
   </div>
 
   <!-- Token Utility -->
@@ -197,14 +349,47 @@
 
   <!-- Disclaimer -->
   <div class="disclaimer">
-    <strong style="color:#E6EDF3;">Disclaimer:</strong> This tokenomics is a live document and may be updated as the project evolves.
+    <strong>Disclaimer:</strong> This tokenomics is a live document and may be updated as the project evolves.
     Figures are estimates and subject to change. $SPORB is a utility token for the SPORB Protocol ecosystem.
     Always do your own research.
   </div>
 
   <div class="ft">
-    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+    <p>&copy; 2026 SPORB Protocol</p>
   </div>
 </div>
+<script>
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const stars = Array.from({ length: 200 }, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  size: Math.random() * 1.5 + 0.3,
+  alpha: Math.random(),
+  speed: Math.random() * 0.02 + 0.005
+}));
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(star => {
+    star.alpha += star.speed;
+    if (star.alpha > 1) star.alpha = 0;
+    ctx.beginPath();
+    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(232, 232, 237, ${Math.sin(star.alpha * Math.PI) * 0.5 + 0.3})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+</script>
 </body>
 </html>

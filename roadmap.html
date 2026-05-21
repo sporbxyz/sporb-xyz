@@ -2,58 +2,189 @@
 <html lang=en>
 <head>
 <meta charset=UTF-8>
-<meta name=viewport content=width=device-width, initial-scale=1.0>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
 <title>Roadmap | SPORB Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #0D1117; font-family: 'Inter', sans-serif; color: #E6EDF3; }
-  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-  h1 { font-size: clamp(32px, 6vw, 56px); font-weight: 800; text-align: center; letter-spacing: -1px; }
-  h1 span { color: #FF6B35; }
-  .sub { text-align: center; color: #8B949E; font-size: 16px; margin: 12px 0 40px; }
-  .back { display: inline-block; margin-bottom: 24px; color: #FF6B35; text-decoration: none; font-size: 14px; font-weight: 500; }
+
+  :root {
+    --bg: #0a0a0f;
+    --fg: #e8e8ed;
+    --muted: #6b6b80;
+    --accent: #00d4aa;
+    --accent-dim: rgba(0, 212, 170, 0.15);
+    --border: rgba(255,255,255,0.06);
+    --highlight: #FF6B35;
+    --highlight-dim: rgba(255,107,53,0.15);
+    --green: #3FB950;
+    --green-dim: rgba(63,185,80,0.15);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.03em;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, #00d4aa 0%, #00a3ff 50%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sub {
+    text-align: center;
+    color: var(--muted);
+    font-size: 16px;
+    margin: 12px 0 40px;
+  }
 
   .timeline { position: relative; padding-left: 32px; }
+
   .timeline::before {
-    content: ''; position: absolute; left: 11px; top: 0; bottom: 0;
-    width: 2px; background: #30363D;
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
   }
 
   .phase {
-    position: relative; margin-bottom: 36px; padding-left: 20px;
+    position: relative;
+    margin-bottom: 36px;
+    padding-left: 20px;
   }
+
   .phase::before {
-    content: ''; position: absolute; left: -26px; top: 6px;
-    width: 14px; height: 14px; border-radius: 50%;
-    background: #30363D; border: 2px solid #0D1117;
+    content: '';
+    position: absolute;
+    left: -26px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--border);
+    border: 2px solid var(--bg);
   }
-  .phase.done::before { background: #3FB950; }
-  .phase.active::before { background: #FF6B35; box-shadow: 0 0 12px rgba(255,107,53,0.4); }
+
+  .phase.done::before { background: var(--green); }
+  .phase.active::before { background: var(--highlight); box-shadow: 0 0 12px rgba(255,107,53,0.4); }
   .phase.future::before { background: #484F58; }
 
   .phase .label {
-    display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 10px; margin-bottom: 6px;
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
   }
-  .phase.done .label { background: rgba(63,185,80,0.15); color: #3FB950; }
-  .phase.active .label { background: rgba(255,107,53,0.15); color: #FF6B35; }
-  .phase.future .label { background: rgba(72,79,88,0.15); color: #8B949E; }
 
-  .phase h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .phase.done .label { background: var(--green-dim); color: var(--green); }
+  .phase.active .label { background: var(--highlight-dim); color: var(--highlight); }
+  .phase.future .label { background: rgba(72,79,88,0.15); color: var(--muted); }
+
+  .phase h3 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
   .phase .date { font-size: 12px; color: #484F58; margin-bottom: 8px; }
   .phase ul { list-style: none; }
-  .phase ul li { font-size: 13px; color: #8B949E; padding: 3px 0; display: flex; align-items: center; gap: 6px; }
-  .phase ul li::before { content: "\2713"; color: #3FB950; font-weight: 700; }
+  .phase ul li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .phase ul li::before { content: "\2713"; color: var(--green); font-weight: 700; }
   .phase.future ul li::before { content: "\25CB"; color: #484F58; }
 
-  .ft { text-align: center; padding: 40px 0; border-top: 1px solid #30363D; font-size: 13px; color: #484F58; margin-top: 48px; }
-  .ft a { color: #FF6B35; text-decoration: none; }
+  .ft {
+    text-align: center;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 48px;
+  }
+
+  .ft a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .ft a:hover { color: #00e8b8; }
 </style>
 </head>
 <body>
+<canvas id="stars-canvas"></canvas>
+<script>
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  const stars = Array.from({ length: 200 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 1.5 + 0.3,
+    alpha: Math.random(),
+    speed: Math.random() * 0.02 + 0.005
+  }));
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => {
+      star.alpha += star.speed;
+      if (star.alpha > 1) star.alpha = 0;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(232, 232, 237, ${Math.sin(star.alpha * Math.PI) * 0.5 + 0.3})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+</script>
 <div class="container">
-  <a href="/" class="back">← Back to SPORB</a>
   <h1>SPORB <span>Roadmap</span></h1>
   <p class="sub">From DePIN display terminal to orbital data infrastructure</p>
 
@@ -117,7 +248,7 @@
   </div>
 
   <div class="ft">
-    <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="https://sporb.xyz">sporb.xyz</a></p>
+    <p>&copy; 2026 SPORB Protocol | <a href="https://sporb.xyz">sporb.xyz</a></p>
   </div>
 </div>
 </body>
