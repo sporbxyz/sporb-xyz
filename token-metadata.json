@@ -1,13 +1,20 @@
 {
   "name": "SPORB Protocol",
   "symbol": "SPORB",
-  "description": "SPORB Protocol — The Bridge Between Earth and Space. $SPORB token representing the future of space infrastructure, AI, and decentralized networks.",
-  "image": "https://sporb.xyz/logo.png",
+  "description": "SPORB Protocol — Decentralized Edge Infrastructure. DePIN + Signal Engine + Edge Computing.\n\n🌐 https://sporb.xyz\n𝕏 https://x.com/sporb_xyz\n📱 https://t.me/sporb_xyz\n💻 https://github.com/sporbxyz\n💬 https://discord.gg/sporb_xyz",
+  "image": "https://ipfs.io/ipfs/QmSmnsYEvbiJ8yaS6ddNvpfuA2FRZo3XfxBv6PN1KvgoDh",
   "external_url": "https://sporb.xyz",
+  "social_links": {
+    "twitter": "https://x.com/sporb_xyz",
+    "telegram": "https://t.me/sporb_xyz",
+    "github": "https://github.com/sporbxyz",
+    "discord": "https://discord.gg/sporb_xyz",
+    "website": "https://sporb.xyz"
+  },
   "attributes": [
     {
       "trait_type": "Vision",
-      "value": "Space x AI x Web3"
+      "value": "DePIN x AI x Edge Computing"
     },
     {
       "trait_type": "Chain",
@@ -21,7 +28,7 @@
   "properties": {
     "files": [
       {
-        "uri": "https://sporb.xyz/logo.png",
+        "uri": "https://ipfs.io/ipfs/QmSmnsYEvbiJ8yaS6ddNvpfuA2FRZo3XfxBv6PN1KvgoDh",
         "type": "image/png"
       }
     ],
