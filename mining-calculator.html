@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPORB Mining Calculator</title>
+<title>SPORB Node Mining Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -110,16 +110,14 @@ body {
   background: var(--purple);
   display: inline-block;
 }
-/* grid layout */
+/* grid */
 .calc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 @media (max-width: 820px) {
-  .calc-grid {
-    grid-template-columns: 1fr;
-  }
+  .calc-grid { grid-template-columns: 1fr; }
 }
 /* inputs */
 .input-group {
@@ -201,6 +199,83 @@ input[type="number"]:focus {
 input[type="number"].price-input {
   width: 90px;
 }
+/* node type toggle */
+.type-toggle {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.type-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.type-btn:hover {
+  border-color: rgba(0,212,170,0.3);
+}
+.type-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.type-btn .type-sub {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+/* tier selector */
+.tier-select {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.tier-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-dim);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.tier-btn:hover {
+  border-color: rgba(124,58,237,0.3);
+}
+.tier-btn.active {
+  border-color: var(--purple);
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+.tier-btn .tier-sub {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  margin-top: 1px;
+  opacity: 0.7;
+}
+.tier-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
 /* outputs */
 .outputs {
   display: flex;
@@ -257,9 +332,7 @@ input[type="number"].price-input {
   gap: 16px;
 }
 @media (max-width: 600px) {
-  .roi-grid {
-    grid-template-columns: 1fr;
-  }
+  .roi-grid { grid-template-columns: 1fr; }
 }
 .roi-card {
   background: var(--surface2);
@@ -284,6 +357,51 @@ input[type="number"].price-input {
 }
 .roi-positive { color: var(--accent); }
 .roi-negative { color: var(--red); }
+
+/* comparison table */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.comp-table thead th {
+  background: var(--surface2);
+  padding: 10px 12px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.comp-table thead th:first-child {
+  text-align: left;
+  color: var(--text-muted);
+}
+.comp-table tbody td {
+  padding: 10px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+.comp-table tbody td:first-child {
+  text-align: left;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+.comp-table tbody tr:hover td {
+  background: rgba(0,212,170,0.04);
+}
+.comp-table tbody tr.highlight td {
+  color: var(--accent);
+  font-weight: 600;
+}
+.comp-table tbody tr.highlight td:first-child {
+  color: var(--accent);
+}
 
 /* explanation */
 .explanation {
@@ -321,8 +439,10 @@ input[type="number"].price-input {
   .output-value { font-size: 16px; }
   .output-value.green-big { font-size: 22px; }
   .roi-card .roi-value { font-size: 20px; }
+  .type-btn { font-size: 13px; padding: 10px 8px; }
+  .tier-btn { font-size: 12px; padding: 8px 4px; }
 }
-/* tooltip style */
+/* tooltip */
 .footnote {
   margin-top: 16px;
   padding: 12px 16px;
@@ -350,7 +470,7 @@ input[type="number"].price-input {
       <span style="font-size:24px; font-weight:700; color:#fff;">SPORB</span>
     </div>
     <h1>Node Mining Calculator</h1>
-    <p>Calculate your SPORB mining rewards across any timeline</p>
+    <p>Estimate your SPORB mining rewards based on real presale data</p>
   </div>
 
   <!-- Main Calculator -->
@@ -360,9 +480,77 @@ input[type="number"].price-input {
     <div class="card">
       <div class="card-title"><span class="accent-dot"></span> Mining Parameters</div>
 
+      <!-- Node Type -->
       <div class="input-group">
         <div class="input-label">
-          <span>Number of Nodes</span>
+          <span>Node Type</span>
+          <span class="badge" id="type-badge">Lite (1.0x)</span>
+        </div>
+        <div class="type-toggle">
+          <button class="type-btn active" data-type="lite" onclick="setNodeType('lite')">
+            Lite Node
+            <span class="type-sub">1.0x multiplier</span>
+          </button>
+          <button class="type-btn" data-type="miner" onclick="setNodeType('miner')">
+            Miner Node
+            <span class="type-sub" id="miner-mult-label">4.0x multiplier</span>
+          </button>
+        </div>
+        <!-- Miner multiplier slider (hidden for Lite) -->
+        <div id="miner-mult-group" style="display:none; margin-top:8px;">
+          <div class="input-label">
+            <span>Miner Multiplier</span>
+            <span class="badge" id="mult-badge">4.0x</span>
+          </div>
+          <div class="input-row">
+            <input type="range" id="mult-slider" min="3" max="5" value="4" step="0.1">
+            <input type="number" id="mult-num" min="3" max="5" value="4" step="0.1" class="price-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Node Tier</span>
+          <span class="badge" id="tier-badge">T1 Display (1.0x)</span>
+        </div>
+        <div class="tier-select">
+          <button class="tier-btn active" data-tier="1" onclick="setTier(1)">
+            T1 Display
+            <span class="tier-sub">1.0x</span>
+          </button>
+          <button class="tier-btn" data-tier="2" onclick="setTier(2)">
+            T2 Relay
+            <span class="tier-sub">1.5x</span>
+          </button>
+          <button class="tier-btn" data-tier="3" onclick="setTier(3)">
+            T3 Validator
+            <span class="tier-sub">2.5x</span>
+          </button>
+        </div>
+        <div class="tier-desc">
+          <span>Tier affects your node score multiplier</span>
+          <span style="color:var(--accent);">Score = Tier × Uptime × Stake × Type</span>
+        </div>
+      </div>
+
+      <!-- Network Size -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Total Network Nodes</span>
+          <span class="badge" id="net-badge">1,000</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="net-slider" min="100" max="10000" value="1000" step="50">
+          <input type="number" id="net-num" min="100" max="10000" value="1000" step="50" class="price-input">
+        </div>
+      </div>
+
+      <!-- Number of Your Nodes -->
+      <div class="input-group">
+        <div class="input-label">
+          <span>Your Nodes</span>
           <span class="badge" id="nodes-badge">1</span>
         </div>
         <div class="input-row">
@@ -371,17 +559,7 @@ input[type="number"].price-input {
         </div>
       </div>
 
-      <div class="input-group">
-        <div class="input-label">
-          <span>Daily Emission per Node</span>
-          <span class="badge" id="emission-badge">685 SPORB</span>
-        </div>
-        <div class="input-row">
-          <input type="range" id="emission-slider" min="100" max="2000" value="685" step="5">
-          <input type="number" id="emission-num" min="100" max="2000" value="685" class="price-input">
-        </div>
-      </div>
-
+      <!-- SPORB Price -->
       <div class="input-group">
         <div class="input-label">
           <span>SPORB Price (USD)</span>
@@ -393,27 +571,6 @@ input[type="number"].price-input {
         </div>
       </div>
 
-      <div class="input-group">
-        <div class="input-label">
-          <span>Electricity Cost ($/day/node)</span>
-          <span class="badge" id="electric-badge">$0.50</span>
-        </div>
-        <div class="input-row">
-          <input type="range" id="electric-slider" min="0" max="5" value="0.50" step="0.05">
-          <input type="number" id="electric-num" min="0" max="10" value="0.50" step="0.01" class="price-input">
-        </div>
-      </div>
-
-      <div class="input-group">
-        <div class="input-label">
-          <span>Pool Fee (%)</span>
-          <span class="badge" id="fee-badge">0%</span>
-        </div>
-        <div class="input-row">
-          <input type="range" id="fee-slider" min="0" max="20" value="0" step="0.5">
-          <input type="number" id="fee-num" min="0" max="20" value="0" step="0.5" class="price-input">
-        </div>
-      </div>
     </div>
 
     <!-- Outputs Column -->
@@ -422,7 +579,7 @@ input[type="number"].price-input {
       <div class="outputs">
 
         <div class="output-row">
-          <span class="output-label">Daily SPORB Earned</span>
+          <span class="output-label">Daily SPORB</span>
           <span class="output-value accent" id="daily-sporb">0 SPORB</span>
         </div>
 
@@ -432,8 +589,8 @@ input[type="number"].price-input {
         </div>
 
         <div class="output-row">
-          <span class="output-label">Daily Profit (after costs)</span>
-          <span class="output-value" id="daily-profit">$0.00</span>
+          <span class="output-label">Your Share of Daily Pool</span>
+          <span class="output-value purple" id="share-pct">0%</span>
         </div>
 
         <div class="output-divider"></div>
@@ -484,34 +641,64 @@ input[type="number"].price-input {
       <div class="roi-card">
         <div class="roi-label">Lite Node — Year-1 ROI</div>
         <div class="roi-value roi-positive" id="lite-roi">—</div>
-        <div class="roi-sub">Annual return on investment</div>
+        <div class="roi-sub">Annual return on $149 investment</div>
       </div>
 
       <div class="roi-card">
         <div class="roi-label">Miner Node — Year-1 ROI</div>
         <div class="roi-value roi-positive" id="miner-roi">—</div>
-        <div class="roi-sub">Annual return on investment</div>
+        <div class="roi-sub">Annual return on $849 investment</div>
       </div>
 
     </div>
   </div>
 
-  <!-- Explanation -->
+  <!-- Comparison Table -->
   <div class="card">
-    <div class="card-title"><span class="purple-dot"></span> Emission Model</div>
+    <div class="card-title"><span class="purple-dot"></span> Rewards at Different Network Sizes</div>
+    <div class="table-wrap">
+      <table class="comp-table" id="comp-table">
+        <thead>
+          <tr>
+            <th>Network Size</th>
+            <th>Daily SPORB</th>
+            <th>Daily USD</th>
+            <th>Monthly SPORB</th>
+            <th>Monthly USD</th>
+          </tr>
+        </thead>
+        <tbody id="comp-body">
+        </tbody>
+      </table>
+    </div>
+    <div class="footnote" style="margin-top:14px;">
+      <strong>Note:</strong> Assumes all other nodes are baseline (Lite, T1, no stake, 100% uptime). Your higher-tier and higher-multiplier nodes earn proportionally more.
+    </div>
+  </div>
+
+  <!-- Emission Model -->
+  <div class="card">
+    <div class="card-title"><span class="accent-dot"></span> Emission Model</div>
     <div class="explanation">
       <p>
         The SPORB network launched with an <strong>initial emission pool of 1,000,000 SPORB</strong>
-        allocated for node mining rewards. During <strong>Year 1</strong>, each node earns approximately
-        <strong>~685 SPORB per day</strong>, distributed pro-rata based on total active nodes.
+        allocated for node mining rewards over <strong>4 years</strong>. The pool is
+        <strong>expandable via DAO governance</strong>.
+      </p>
+      <p style="margin-top:10px;">
+        During <strong>Year 1</strong>, the network distributes <strong>~685 SPORB per day</strong>
+        total across ALL active nodes, divided pro-rata based on each node's <strong>Score</strong>.
       </p>
       <div class="expl" style="margin-top:14px;">
         <ul>
-          <li><strong>Initial Pool:</strong> 1,000,000 SPORB</li>
-          <li><strong>Year 1 Daily Rate:</strong> ~685 SPORB per node</li>
-          <li><strong>Decentralized Governance:</strong> Emissions are fully expandable via <span class="purple-text">DAO governance</span> — node operators vote on emission adjustments, pool top-ups, and future reward schedules.</li>
-          <li><strong>Flexible Model:</strong> As the network grows, the DAO can increase the emission cap, adjust distribution rates, or introduce new incentive programs through community proposals.</li>
-          <li><strong>Pro-Rata Distribution:</strong> Your share of daily emissions scales with the number of nodes you operate relative to the total active node count.</li>
+          <li><strong>Reward Formula:</strong> Your Daily = DailyPool × (Your Score / Total Score)</li>
+          <li><strong>Node Score:</strong> Tier × Uptime × Stake × Multiplier</li>
+          <li><strong>Initial Pool:</strong> 1,000,000 SPORB (expandable via governance)</li>
+          <li><strong>Year 1 Daily Rate:</strong> ~685 SPORB/day total</li>
+          <li><strong>Lite Multiplier:</strong> 1.0x &nbsp;|&nbsp; <strong>Miner Multiplier:</strong> 3–5x</li>
+          <li><strong>Tier Multipliers:</strong> T1 = 1.0x, T2 = 1.5x, T3 = 2.5x</li>
+          <li><strong>Pro-Rata Distribution:</strong> Higher-tier and higher-multiplier nodes earn proportionally more based on their Score contribution.</li>
+          <li><strong>Decentralized Governance:</strong> Pool emissions are fully expandable via <span class="purple-text">DAO governance</span> — node operators vote on emission adjustments, pool top-ups, and future reward schedules.</li>
         </ul>
       </div>
     </div>
@@ -568,31 +755,34 @@ input[type="number"].price-input {
   });
 })();
 
-// ===== Calculator Logic =====
+// ===== Calculator State =====
+let nodeType = 'lite';   // 'lite' or 'miner'
+let tier = 1;            // 1, 2, or 3
+const TIER_MULTS = {1: 1.0, 2: 1.5, 3: 2.5};
+const TIER_NAMES = {1: 'T1 Display', 2: 'T2 Relay', 3: 'T3 Validator'};
+const DAILY_POOL = 685;
+
+// Input elements
+const netSlider = document.getElementById('net-slider');
+const netNum = document.getElementById('net-num');
+const netBadge = document.getElementById('net-badge');
+
 const nodesSlider = document.getElementById('nodes-slider');
 const nodesNum = document.getElementById('nodes-num');
 const nodesBadge = document.getElementById('nodes-badge');
-
-const emissionSlider = document.getElementById('emission-slider');
-const emissionNum = document.getElementById('emission-num');
-const emissionBadge = document.getElementById('emission-badge');
 
 const priceSlider = document.getElementById('price-slider');
 const priceNum = document.getElementById('price-num');
 const priceBadge = document.getElementById('price-badge');
 
-const electricSlider = document.getElementById('electric-slider');
-const electricNum = document.getElementById('electric-num');
-const electricBadge = document.getElementById('electric-badge');
-
-const feeSlider = document.getElementById('fee-slider');
-const feeNum = document.getElementById('fee-num');
-const feeBadge = document.getElementById('fee-badge');
+const multSlider = document.getElementById('mult-slider');
+const multNum = document.getElementById('mult-num');
+const multBadge = document.getElementById('mult-badge');
 
 // Outputs
 const dailySporb = document.getElementById('daily-sporb');
 const dailyUsd = document.getElementById('daily-usd');
-const dailyProfit = document.getElementById('daily-profit');
+const sharePct = document.getElementById('share-pct');
 const monthlySporb = document.getElementById('monthly-sporb');
 const monthlyUsd = document.getElementById('monthly-usd');
 const yearlySporb = document.getElementById('yearly-sporb');
@@ -606,6 +796,10 @@ const minerBeMonths = document.getElementById('miner-be-months');
 const liteRoi = document.getElementById('lite-roi');
 const minerRoi = document.getElementById('miner-roi');
 
+// Comparison
+const compBody = document.getElementById('comp-body');
+
+// ===== Input Sync Helper =====
 function syncInput(slider, num, badge, formatter){
   slider.addEventListener('input', ()=>{
     num.value = slider.value;
@@ -614,8 +808,10 @@ function syncInput(slider, num, badge, formatter){
   });
   num.addEventListener('input', ()=>{
     let v = parseFloat(num.value);
-    if(isNaN(v) || v < parseFloat(num.min)) v = parseFloat(num.min);
-    if(v > parseFloat(num.max)) v = parseFloat(num.max);
+    let min = parseFloat(num.min);
+    let max = parseFloat(num.max);
+    if(isNaN(v) || v < min) v = min;
+    if(v > max) v = max;
     num.value = v;
     slider.value = v;
     badge.textContent = formatter(v);
@@ -623,43 +819,103 @@ function syncInput(slider, num, badge, formatter){
   });
 }
 
+syncInput(netSlider, netNum, netBadge, v => Number(v).toLocaleString());
 syncInput(nodesSlider, nodesNum, nodesBadge, v => v);
-syncInput(emissionSlider, emissionNum, emissionBadge, v => Math.round(v) + ' SPORB');
 syncInput(priceSlider, priceNum, priceBadge, v => '$' + parseFloat(v).toFixed(2));
-syncInput(electricSlider, electricNum, electricBadge, v => '$' + parseFloat(v).toFixed(2));
-syncInput(feeSlider, feeNum, feeBadge, v => v + '%');
+syncInput(multSlider, multNum, multBadge, v => parseFloat(v).toFixed(1) + 'x');
 
+// ===== Node Type & Tier Controls =====
+function setNodeType(type){
+  nodeType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.type-btn[data-type="${type}"]`).classList.add('active');
+
+  const multGroup = document.getElementById('miner-mult-group');
+  if(type === 'miner'){
+    multGroup.style.display = 'block';
+    document.getElementById('type-badge').textContent = 'Miner (' + parseFloat(multNum.value).toFixed(1) + 'x)';
+  } else {
+    multGroup.style.display = 'none';
+    document.getElementById('type-badge').textContent = 'Lite (1.0x)';
+  }
+  calculate();
+}
+
+function setTier(t){
+  tier = t;
+  document.querySelectorAll('.tier-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.tier-btn[data-tier="${t}"]`).classList.add('active');
+  document.getElementById('tier-badge').textContent = TIER_NAMES[t] + ' (' + TIER_MULTS[t].toFixed(1) + 'x)';
+  calculate();
+}
+
+// Miner multiplier slider label update
+multSlider.addEventListener('input', ()=>{
+  multNum.value = multSlider.value;
+  multBadge.textContent = parseFloat(multSlider.value).toFixed(1) + 'x';
+  document.getElementById('type-badge').textContent = 'Miner (' + parseFloat(multSlider.value).toFixed(1) + 'x)';
+  document.getElementById('miner-mult-label').textContent = parseFloat(multSlider.value).toFixed(1) + 'x multiplier';
+  calculate();
+});
+multNum.addEventListener('input', ()=>{
+  let v = parseFloat(multNum.value);
+  if(isNaN(v) || v < 3) v = 3;
+  if(v > 5) v = 5;
+  multNum.value = v;
+  multSlider.value = v;
+  multBadge.textContent = v.toFixed(1) + 'x';
+  document.getElementById('type-badge').textContent = 'Miner (' + v.toFixed(1) + 'x)';
+  document.getElementById('miner-mult-label').textContent = v.toFixed(1) + 'x multiplier';
+  calculate();
+});
+
+// ===== Formatting =====
 function fmtNum(n){
-  if(n >= 1000000) return (n/1000000).toFixed(2) + 'M';
-  if(n >= 1000) return (n/1000).toFixed(2) + 'K';
+  if(Math.abs(n) >= 1000000) return (n/1000000).toFixed(2) + 'M';
+  if(Math.abs(n) >= 1000) return (n/1000).toFixed(2) + 'K';
   return n.toFixed(2);
 }
 
+function fmtFull(n){
+  if(n >= 10000) return n.toLocaleString(undefined, {maximumFractionDigits: 0});
+  if(n >= 100) return n.toLocaleString(undefined, {maximumFractionDigits: 1});
+  return n.toFixed(4);
+}
+
+// ===== Main Calculation =====
 function calculate(){
-  const nodes = parseFloat(nodesNum.value) || 1;
-  const emission = parseFloat(emissionNum.value) || 685;
+  const networkSize = parseFloat(netNum.value) || 1000;
+  const yourNodes = parseFloat(nodesNum.value) || 1;
   const price = parseFloat(priceNum.value) || 3;
-  const electric = parseFloat(electricNum.value) || 0;
-  const feePct = parseFloat(feeNum.value) || 0;
 
-  const feeMultiplier = 1 - feePct / 100;
+  // Score components
+  const tierMult = TIER_MULTS[tier];
+  const typeMult = nodeType === 'lite' ? 1.0 : (parseFloat(multNum.value) || 4.0);
 
-  const dailyS = nodes * emission * feeMultiplier;
+  // Your node score (uptime=1, stake=1 assumed)
+  const yourScorePerNode = tierMult * typeMult;
+  const yourTotalScore = yourNodes * yourScorePerNode;
+
+  // Total network score: assume all other nodes are baseline (Lite, T1, 1.0x)
+  // But YOUR nodes have their actual score. So:
+  // totalScore = (networkSize - yourNodes) * 1.0 + yourTotalScore
+  const totalScore = (networkSize - yourNodes) * 1.0 + yourTotalScore;
+
+  // Daily SPORB
+  const share = yourTotalScore / totalScore;
+  const dailyS = DAILY_POOL * share;
   const dailyD = dailyS * price;
-  const dailyEl = nodes * electric;
-  const dailyP = dailyD - dailyEl;
+  const sharePctVal = share * 100;
 
   const monthlyS = dailyS * 30.437;
   const monthlyD = monthlyS * price;
-
   const yearlyS = dailyS * 365;
   const yearlyD = yearlyS * price;
 
   // Update outputs
   dailySporb.textContent = fmtNum(dailyS) + ' SPORB';
   dailyUsd.textContent = '$' + dailyD.toFixed(2);
-  dailyProfit.textContent = (dailyP >= 0 ? '$' : '-$') + Math.abs(dailyP).toFixed(2);
-  dailyProfit.style.color = dailyP >= 0 ? 'var(--accent)' : 'var(--red)';
+  sharePct.textContent = (sharePctVal < 0.01 ? '<0.01' : sharePctVal.toFixed(2)) + '%';
 
   monthlySporb.textContent = fmtNum(monthlyS) + ' SPORB';
   monthlyUsd.textContent = '$' + monthlyD.toFixed(2);
@@ -667,13 +923,22 @@ function calculate(){
   yearlySporb.textContent = fmtNum(yearlyS) + ' SPORB';
   yearlyUsd.textContent = '$' + yearlyD.toFixed(2);
 
-  // Break-even calculations (per single node)
-  const perNodeDailyProfit = emission * feeMultiplier * price - electric;
+  // Break-even calculations (per single node of each type)
+  // For a single Lite node (score=1.0): its share = 1.0 / totalScore
+  const liteShare = 1.0 / totalScore;
+  const liteDailyS = DAILY_POOL * liteShare;
+  const liteDailyD = liteDailyS * price;
 
-  // Lite Node: $149
-  if(perNodeDailyProfit > 0){
-    const liteDays = 149 / perNodeDailyProfit;
-    const minerDays = 849 / perNodeDailyProfit;
+  // For a single Miner node (4x default): its share = 4.0 / totalScore
+  const minerScore = 4.0; // default Miner 4x
+  const minerShare = minerScore / totalScore;
+  const minerDailyS = DAILY_POOL * minerShare;
+  const minerDailyD = minerDailyS * price;
+
+  // Break-even days
+  if(liteDailyD > 0){
+    const liteDays = 149 / liteDailyD;
+    const minerDays = 849 / minerDailyD;
 
     liteBeDays.textContent = Math.ceil(liteDays) + ' days';
     liteBeMonths.textContent = (liteDays / 30.437).toFixed(1) + ' months';
@@ -681,9 +946,10 @@ function calculate(){
     minerBeMonths.textContent = (minerDays / 30.437).toFixed(1) + ' months';
 
     // Year-1 ROI
-    const yearlyProfitPerNode = perNodeDailyProfit * 365;
-    const liteROI = ((yearlyProfitPerNode - 149) / 149) * 100;
-    const minerROI = ((yearlyProfitPerNode - 849) / 849) * 100;
+    const liteYearlyD = liteDailyD * 365;
+    const minerYearlyD = minerDailyD * 365;
+    const liteROI = ((liteYearlyD - 149) / 149) * 100;
+    const minerROI = ((minerYearlyD - 849) / 849) * 100;
 
     liteRoi.textContent = (liteROI >= 0 ? '+' : '') + liteROI.toFixed(1) + '%';
     liteRoi.className = 'roi-value ' + (liteROI >= 0 ? 'roi-positive' : 'roi-negative');
@@ -699,9 +965,41 @@ function calculate(){
     minerRoi.textContent = '—';
     minerRoi.className = 'roi-value roi-negative';
   }
+
+  // Comparison table
+  renderComparison(yourNodes, tierMult, typeMult, price);
 }
 
-// Initial calculation
+// ===== Comparison Table =====
+function renderComparison(yourNodes, tierMult, typeMult, price){
+  const sizes = [500, 1000, 2000, 5000, 10000];
+  const currentNet = parseFloat(netNum.value) || 1000;
+  const yourScorePerNode = tierMult * typeMult;
+
+  let html = '';
+  for(const size of sizes){
+    // totalScore = (size - yourNodes) * 1.0 + yourTotalScore
+    const yourTotalScore = yourNodes * yourScorePerNode;
+    const totalScore = (size - yourNodes) * 1.0 + yourTotalScore;
+    const share = yourTotalScore / totalScore;
+    const dailyS = DAILY_POOL * share;
+    const dailyD = dailyS * price;
+    const monthlyS = dailyS * 30.437;
+    const monthlyD = monthlyS * price;
+
+    const highlight = Math.abs(size - currentNet) < 1;
+    html += '<tr' + (highlight ? ' class="highlight"' : '') + '>';
+    html += '<td>' + size.toLocaleString() + ' nodes</td>';
+    html += '<td>' + fmtFull(dailyS) + '</td>';
+    html += '<td>$' + dailyD.toFixed(2) + '</td>';
+    html += '<td>' + fmtFull(monthlyS) + '</td>';
+    html += '<td>$' + monthlyD.toFixed(2) + '</td>';
+    html += '</tr>';
+  }
+  compBody.innerHTML = html;
+}
+
+// ===== Initial Calculation =====
 calculate();
 </script>
 
