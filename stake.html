@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORB Earn | Stake, OTC & Rewards</title>
+    <meta name="description" content="SPORB Earn — Stake your $SPORB, buy OTC, earn rewards. Decentralized Edge Infrastructure.">
+    <link rel="icon" type="image/png" href="/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid #1a1a2e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 24px; font-weight: 700; color: #00d4aa; text-decoration: none; }
+        .logo span { color: #fff; }
+        nav a {
+            color: #888;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #00d4aa; }
+        .connect-btn {
+            background: #00d4aa;
+            color: #0a0a0f;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .connect-btn:hover { background: #00b894; transform: translateY(-1px); }
+        .wallet-badge {
+            background: #1a1a2e;
+            color: #00d4aa;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        .hero h1 { font-size: 48px; font-weight: 700; margin-bottom: 16px; }
+        .hero h1 span { color: #00d4aa; }
+        .hero p { color: #888; font-size: 18px; max-width: 600px; margin: 0 auto 8px; }
+        .hero .warning {
+            color: #ff6b35;
+            font-size: 13px;
+            margin-top: 12px;
+            background: #1a0f0a;
+            padding: 8px 16px;
+            border-radius: 8px;
+            display: inline-block;
+            border: 1px solid #2a1f0a;
+        }
+        
+        /* Stats Bar */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin: 40px 0;
+        }
+        .stat-card {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: #00d4aa; }
+        .stat-card .label { font-size: 12px; color: #666; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Section Titles */
+        .section-title { font-size: 28px; font-weight: 700; margin: 40px 0 24px; }
+        .section-title span { color: #00d4aa; }
+        
+        /* Staking Cards */
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .plan-card {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .plan-card:hover { border-color: #00d4aa; transform: translateY(-2px); }
+        .plan-card.selected { border-color: #00d4aa; box-shadow: 0 0 20px rgba(0,212,170,0.15); }
+        .plan-card .period { font-size: 20px; font-weight: 600; color: #fff; }
+        .plan-card .apy { font-size: 36px; font-weight: 700; color: #00d4aa; margin: 12px 0; }
+        .plan-card .apy-label { font-size: 12px; color: #666; }
+        .plan-card .desc { font-size: 12px; color: #888; margin-top: 8px; }
+        .plan-card .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b35;
+            color: #fff;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        /* Stake Form */
+        .stake-form {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+        .stake-form .row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .stake-form label { font-size: 14px; color: #888; display: block; margin-bottom: 6px; }
+        .stake-form input {
+            background: #0a0a0f;
+            border: 1px solid #1a1a2e;
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            width: 200px;
+        }
+        .stake-form input:focus { outline: none; border-color: #00d4aa; }
+        .stake-form .calc {
+            background: #0a0a0f;
+            border: 1px solid #1a1a2e;
+            border-radius: 8px;
+            padding: 12px 20px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .stake-form .calc .est { color: #00d4aa; font-size: 24px; font-weight: 700; }
+        .stake-form .calc .est-label { font-size: 12px; color: #666; }
+        .btn-primary {
+            background: #00d4aa;
+            color: #0a0a0f;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover { background: #00b894; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-secondary {
+            background: transparent;
+            color: #00d4aa;
+            border: 1px solid #00d4aa;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover { background: rgba(0,212,170,0.1); }
+        
+        /* Deposit Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 520px;
+            width: 90%;
+            position: relative;
+        }
+        .modal h2 { font-size: 24px; margin-bottom: 16px; }
+        .modal h2 span { color: #00d4aa; }
+        .modal .close {
+            position: absolute;
+            top: 16px; right: 16px;
+            background: none;
+            border: none;
+            color: #666;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .modal .deposit-addr {
+            background: #0a0a0f;
+            border: 1px solid #1a1a2e;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: #00d4aa;
+            margin: 16px 0;
+        }
+        .modal .step { color: #666; font-size: 14px; margin-bottom: 8px; line-height: 1.6; }
+        .modal .step strong { color: #fff; }
+        .modal .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+        .modal .status.pending { background: #1a1a0a; color: #ffd700; border: 1px solid #3a2a0a; }
+        .modal .status.success { background: #0a1a0a; color: #00d4aa; border: 1px solid #0a3a2a; }
+        
+        /* Dashboard */
+        .dashboard {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+        .dashboard .empty {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        .dashboard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .dashboard th {
+            text-align: left;
+            padding: 12px 8px;
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #1a1a2e;
+        }
+        .dashboard td {
+            padding: 14px 8px;
+            font-size: 14px;
+            border-bottom: 1px solid #111;
+        }
+        .dashboard .matured { color: #00d4aa; }
+        .dashboard .locked { color: #ffd700; }
+        .dashboard .claim-btn {
+            background: #00d4aa;
+            color: #0a0a0f;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* OTC Section */
+        .otc-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .otc-card {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 28px;
+        }
+        .otc-card h3 { font-size: 18px; margin-bottom: 12px; }
+        .otc-card .price-big { font-size: 36px; font-weight: 700; color: #ff6b35; }
+        .otc-card .addr {
+            background: #0a0a0f;
+            border: 1px solid #1a1a2e;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            color: #ffd700;
+            margin: 12px 0;
+            cursor: pointer;
+        }
+        .otc-card .note { font-size: 12px; color: #666; margin-top: 8px; }
+        
+        /* Rewards */
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .reward-card {
+            background: #111118;
+            border: 1px solid #1a1a2e;
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+        .reward-card .icon { font-size: 32px; margin-bottom: 8px; }
+        .reward-card h4 { font-size: 16px; margin-bottom: 8px; }
+        .reward-card p { font-size: 13px; color: #888; }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid #1a1a2e;
+            color: #444;
+            font-size: 13px;
+        }
+        footer a { color: #00d4aa; text-decoration: none; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .plan-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .otc-section { grid-template-columns: 1fr; }
+            .rewards-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 32px; }
+            .stake-form .row { flex-direction: column; }
+            .stake-form input { width: 100%; }
+            header { flex-direction: column; gap: 12px; }
+            nav a { margin: 0 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="logo">SPORB <span>Earn</span></a>
+            <nav>
+                <a href="#stake">Stake</a>
+                <a href="#otc">OTC</a>
+                <a href="#rewards">Rewards</a>
+                <a href="/">Home</a>
+            </nav>
+            <button class="connect-btn" id="connectBtn" onclick="connectWallet()">Connect Wallet</button>
+            <div class="wallet-badge" id="walletBadge" style="display:none"></div>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <h1>Earn with <span>$SPORB</span></h1>
+            <p>Stake your tokens, buy OTC at fixed price, earn rewards — all while supporting the world's first orbital data infrastructure.</p>
+            <div class="warning">⚠️ Trust-based system — smart contract coming soon. Stake at your own risk.</div>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats" id="stats">
+            <div class="stat-card">
+                <div class="value" id="totalStaked">0</div>
+                <div class="label">Total Staked (SPORB)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="totalStakers">0</div>
+                <div class="label">Total Stakers</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="totalRewards">0</div>
+                <div class="label">Rewards Paid (SPORB)</div>
+            </div>
+            <div class="stat-card">
+                <div class="value" id="tvl">$0</div>
+                <div class="label">TVL (USD)</div>
+            </div>
+        </section>
+
+        <!-- Staking Plans -->
+        <section id="stake">
+            <h2 class="section-title">Choose Your <span>Stake Plan</span></h2>
+            <div class="plan-grid" id="planGrid">
+                <div class="plan-card" data-period="30" data-apy="5" onclick="selectPlan(this)">
+                    <div class="period">1 Month</div>
+                    <div class="apy">5%</div>
+                    <div class="apy-label">APY</div>
+                    <div class="desc">Quick yield. Low commitment.</div>
+                </div>
+                <div class="plan-card" data-period="90" data-apy="8" onclick="selectPlan(this)">
+                    <div class="period">3 Months</div>
+                    <div class="apy">8%</div>
+                    <div class="apy-label">APY</div>
+                    <div class="desc">Serious growth.</div>
+                </div>
+                <div class="plan-card" data-period="180" data-apy="12" onclick="selectPlan(this)">
+                    <div class="period">6 Months</div>
+                    <div class="apy">12%</div>
+                    <div class="apy-label">APY</div>
+                    <div class="desc">Maximized yield.</div>
+                </div>
+                <div class="plan-card" data-period="365" data-apy="20" onclick="selectPlan(this)">
+                    <div class="badge">BEST</div>
+                    <div class="period">12 Months</div>
+                    <div class="apy">20%</div>
+                    <div class="apy-label">APY</div>
+                    <div class="desc">Maximum returns for true believers.</div>
+                </div>
+            </div>
+            <p style="text-align:center;color:#888;font-size:13px;margin-top:-24px;margin-bottom:24px">📈 Fixed APY — simple, transparent, sustainable.</p>
+
+            <!-- Stake Form -->
+            <div class="stake-form">
+                <div class="row">
+                    <div>
+                        <label>Amount to Stake</label>
+                        <input type="number" id="stakeAmount" min="10" step="1" placeholder="Min 10 SPORB" oninput="calcRewards()">
+                    </div>
+                    <div>
+                        <label>Selected Plan</label>
+                        <div style="background:#0a0a0f;border:1px solid #1a1a2e;border-radius:8px;padding:12px 16px;min-width:140px" id="selectedPlanDisplay">—</div>
+                    </div>
+                    <div class="calc">
+                        <div class="est-label">Estimated Return</div>
+                        <div class="est" id="estReturn">0 SPORB</div>
+                        <div class="est-label">at maturity</div>
+                    </div>
+                    <button class="btn-primary" onclick="startStake()" id="stakeBtn" disabled>Connect Wallet</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard -->
+        <section>
+            <h2 class="section-title">Your <span>Dashboard</span></h2>
+            <div class="dashboard" id="dashboard">
+                <div class="empty">Connect your wallet to see your stakes</div>
+            </div>
+        </section>
+
+        <!-- OTC -->
+        <section id="otc">
+            <h2 class="section-title">OTC <span>Purchase</span></h2>
+            <div class="otc-section">
+                <div class="otc-card">
+                    <h3>Buy $SPORB Direct</h3>
+                    <p style="color:#888;margin-bottom:12px">Fixed price. No slippage. No bots.</p>
+                    <div class="price-big">$3.00</div>
+                    <div style="color:#666;font-size:13px;margin-bottom:16px">per SPORB — Min 100 USDT</div>
+                    <button class="btn-secondary" onclick="copyOTC()">Copy USDT Address</button>
+                    <div class="note">Send USDT (TRC-20) only. SPORB sent within 24h.</div>
+                </div>
+                <div class="otc-card">
+                    <h3>Payment Details</h3>
+                    <p style="font-size:13px;color:#888;margin-bottom:8px">Send USDT (TRC-20) to:</p>
+                    <div class="addr" id="otcAddr" onclick="copyOTC()">TVmG1w6RdUAsiQfgaKHnDuigmGxPhjb7ga</div>
+                    <p style="font-size:12px;color:#666">📱 Contact us after sending — SPORB will be delivered to your wallet.</p>
+                    <p style="font-size:12px;color:#666;margin-top:4px">💬 Message: <a href="https://t.me/sporb_xyz" style="color:#00d4aa">@sporb_xyz</a></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards -->
+        <section id="rewards">
+            <h2 class="section-title">Rewards & <span>Programs</span></h2>
+            <div class="rewards-grid">
+                <div class="reward-card">
+                    <div class="icon">🐦</div>
+                    <h4>Early Bird Bonus</h4>
+                    <p>Stake 12 months and earn 20% APY — our highest fixed rate. For long-term believers.</p>
+                </div>
+                <div class="reward-card">
+                    <div class="icon">🤝</div>
+                    <h4>Referral Program</h4>
+                    <p>Refer a friend who stakes 100+ SPORB — you both earn 5 SPORB bonus.</p>
+                </div>
+                <div class="reward-card">
+                    <div class="icon">🎁</div>
+                    <h4>Signal Engine Bundle</h4>
+                    <p>Signal Engine subscribers get priority staking support and early access to new pools.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section style="margin-bottom:40px">
+            <h2 class="section-title">How It <span>Works</span></h2>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+                <div style="background:#111118;border:1px solid #1a1a2e;border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:32px;color:#00d4aa;font-weight:700;margin-bottom:8px">1</div>
+                    <p style="font-size:13px;color:#888">Connect your Phantom wallet</p>
+                </div>
+                <div style="background:#111118;border:1px solid #1a1a2e;border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:32px;color:#00d4aa;font-weight:700;margin-bottom:8px">2</div>
+                    <p style="font-size:13px;color:#888">Choose lock period + amount</p>
+                </div>
+                <div style="background:#111118;border:1px solid #1a1a2e;border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:32px;color:#00d4aa;font-weight:700;margin-bottom:8px">3</div>
+                    <p style="font-size:13px;color:#888">Send SPORB to the staking wallet</p>
+                </div>
+                <div style="background:#111118;border:1px solid #1a1a2e;border-radius:12px;padding:20px;text-align:center">
+                    <div style="font-size:32px;color:#00d4aa;font-weight:700;margin-bottom:8px">4</div>
+                    <p style="font-size:13px;color:#888">Earn rewards. Withdraw at maturity.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>SPORB Protocol — Decentralized Edge Infrastructure</p>
+            <p style="margin-top:4px"><a href="/">Home</a> · <a href="/signal.html">Signal Engine</a> · <a href="/one-pager.html">About</a></p>
+        </footer>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal-overlay" id="modal">
+        <div class="modal">
+            <button class="close" onclick="closeModal()">&times;</button>
+            <h2>Stake <span>$SPORB</span></h2>
+            <p style="color:#888;margin-bottom:16px" id="modalSummary">Sending SPORB to the staking wallet</p>
+            
+            <div class="step"><strong>Step 1:</strong> Open Phantom wallet</div>
+            <div class="step"><strong>Step 2:</strong> Send SPORB to this address:</div>
+            <div class="deposit-addr" id="stakeWalletAddr">Gkgf4pMEyqWC5bmXjk1c3W4S99RLCpSVhEJPgX6nxDvb</div>
+            <div class="step"><strong>Step 3:</strong> Enter your <strong>wallet address</strong> below so we can match your deposit:</div>
+            <input type="text" id="depositWalletAddr" placeholder="Your Solana wallet address" style="width:100%;background:#0a0a0f;border:1px solid #1a1a2e;border-radius:8px;padding:12px;color:#fff;font-size:13px;font-family:'JetBrains Mono',monospace;margin-bottom:12px">
+            
+            <div style="display:flex;gap:12px">
+                <button class="btn-primary" onclick="confirmDeposit()">I've Sent ✓</button>
+                <button class="btn-secondary" onclick="copyStakeAddr()">Copy Address</button>
+            </div>
+            
+            <div class="status pending" id="depositStatus" style="display:none"></div>
+        </div>
+    </div>
+
+    <script>
+        // Phantom connection
+        let walletConnected = false;
+        let walletAddress = '';
+        let selectedPlan = null;
+        const STAKING_WALLET = 'Gkgf4pMEyqWC5bmXjk1c3W4S99RLCpSVhEJPgX6nxDvb';
+
+        async function connectWallet() {
+            if (window.solana && window.solana.isPhantom) {
+                try {
+                    const resp = await window.solana.connect();
+                    walletAddress = resp.publicKey.toString();
+                    walletConnected = true;
+                    document.getElementById('connectBtn').style.display = 'none';
+                    document.getElementById('walletBadge').style.display = 'inline-block';
+                    document.getElementById('walletBadge').textContent = walletAddress.slice(0,6) + '...' + walletAddress.slice(-4);
+                    document.getElementById('stakeBtn').textContent = 'Stake Now';
+                    document.getElementById('stakeBtn').disabled = false;
+                    loadDashboard();
+                } catch(e) {
+                    alert('Connection rejected');
+                }
+            } else {
+                alert('Please install Phantom Wallet');
+                window.open('https://phantom.app', '_blank');
+            }
+        }
+
+        function selectPlan(el) {
+            document.querySelectorAll(".plan-card").forEach(c => c.classList.remove("selected"));
+            el.classList.add("selected");
+            selectedPlan = el.dataset;
+            const apy = parseFloat(el.dataset.apy) || 0;
+            document.getElementById("selectedPlanDisplay").textContent = el.querySelector(".period").textContent + " @ " + apy + "% APY";
+            calcRewards();
+            if (walletConnected) document.getElementById("stakeBtn").disabled = false;
+        }
+
+        function calcRewards() {
+            const amount = parseFloat(document.getElementById("stakeAmount").value) || 0;
+            if (!selectedPlan || amount < 10) {
+                document.getElementById("estReturn").textContent = "—";
+                return;
+            }
+            const days = parseInt(selectedPlan.period);
+            const apy = parseFloat(selectedPlan.apy) || 0;
+            const reward = amount * (apy / 100) * (days / 365);
+            document.getElementById("estReturn").textContent = reward.toFixed(2) + " SPORB";
+        }
+
+        function startStake() {
+            const amount = parseFloat(document.getElementById("stakeAmount").value);
+            if (!walletConnected) { connectWallet(); return; }
+            if (!selectedPlan) { alert("Select a plan first"); return; }
+            if (amount < 10) { alert("Minimum 10 SPORB"); return; }
+            
+            const days = parseInt(selectedPlan.period);
+            const apy = parseFloat(selectedPlan.apy) || 0;
+            const reward = amount * (apy / 100) * (days / 365);
+            
+            document.getElementById("modalSummary").textContent = amount + " SPORB -> " + selectedPlan.period + "d @ " + apy + "% APY (est. " + reward.toFixed(2) + " SPORB)";
+            document.getElementById("modal").classList.add("active");
+        }
+
+        async function loadDashboard() {
+            if (!walletAddress) return;
+            const dashboard = document.getElementById("dashboard");
+            try {
+                const resp = await fetch("/api/stakes.json?_=" + Date.now());
+                const data = await resp.json();
+                const userStakes = (data.stakes || []).filter(s => s.user === walletAddress);
+                
+                if (userStakes.length === 0) {
+                    dashboard.innerHTML = "<div class=\"empty\">No active stakes. Start staking above!</div>";
+                } else {
+                    let html = "<table><tr><th>Amount</th><th>Plan</th><th>APY</th><th>Started</th><th>Matures</th><th>Status</th></tr>";
+                    userStakes.forEach(s => {
+                        const now = Date.now() / 1000;
+                        const mature = s.timestamp + s.days * 86400;
+                        const isMatured = now >= mature;
+                        html += "<tr>" +
+                            "<td>" + s.amount + " SPORB</td>" +
+                            "<td>" + s.days + "d</td>" +
+                            "<td>" + s.apy + "%</td>" +
+                            "<td>" + new Date(s.timestamp * 1000).toLocaleDateString() + "</td>" +
+                            "<td>" + new Date(mature * 1000).toLocaleDateString() + "</td>" +
+                            "<td class=\"" + (isMatured ? "matured" : "locked") + "\">" + (isMatured ? "Matured ✓" : "🔒 Locked") + "</td>" +
+                            "</tr>";
+                    });
+                    html += "</table>";
+                    dashboard.innerHTML = html;
+                }
+
+                document.getElementById("totalStaked").textContent = data.stats.totalStaked.toLocaleString();
+                document.getElementById("totalStakers").textContent = data.stats.totalStakers;
+                const totalR = data.stats.totalRewards || 0;
+                document.getElementById("totalRewards").textContent = totalR.toFixed(2);
+                document.getElementById("tvl").textContent = "$" + (data.stats.totalStaked * 2.5).toLocaleString();
+
+            } catch(e) {
+                document.getElementById("totalStaked").textContent = "0";
+            }
+        }
+
+        function closeModal() {
+            document.getElementById("modal").classList.remove("active");
+        }
+
+        function copyStakeAddr() {
+            navigator.clipboard.writeText(STAKING_WALLET);
+            alert("Address copied!");
+        }
+
+        function confirmDeposit() {
+            const userAddr = document.getElementById("depositWalletAddr").value.trim();
+            if (!userAddr) { alert("Enter your wallet address"); return; }
+            
+            const status = document.getElementById("depositStatus");
+            status.style.display = "block";
+            status.className = "status pending";
+            status.textContent = "Checking deposit...";
+            
+            try {
+                fetch("/api/submit-stake.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        user: userAddr,
+                        amount: parseFloat(document.getElementById("stakeAmount").value),
+                        days: parseInt(selectedPlan.period),
+                        apy: parseFloat(selectedPlan.apy),
+                        wallet: STAKING_WALLET
+                    })
+                });
+                status.textContent = "Deposit submitted! We will verify within 24h.";
+                status.className = "status success";
+            } catch(e) {
+                status.textContent = "Error submitting. Contact @sporb_xyz";
+            }
+        }
+
+        function copyOTC() {
+            navigator.clipboard.writeText("TVmG1w6RdUAsiQfgaKHnDuigmGxPhjb7ga");
+            alert("USDT address copied!");
+        }
+
+        // Auto-load
+        loadDashboard();
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>
