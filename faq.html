@@ -28,231 +28,206 @@
     }
 
     /* ── Starry Canvas ── */
-    #starry-bg {
+    #stars-canvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 0;
       pointer-events: none;
     }
 
-    /* ── Layout ── */
-    .wrapper {
+    .page-wrap {
       position: relative;
       z-index: 1;
-      max-width: 860px;
+      max-width: 840px;
       margin: 0 auto;
-      padding: 60px 24px 100px;
+      padding: 60px 24px 80px;
     }
 
-    /* ── Back to Home ── */
     .back-home {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      color: #7c3aed;
+      gap: 6px;
+      color: #6b7280;
       text-decoration: none;
-      font-weight: 500;
-      font-size: 0.95rem;
-      transition: color 0.3s, transform 0.3s;
-      margin-bottom: 40px;
+      font-size: 14px;
+      margin-bottom: 32px;
+      transition: color 0.3s;
     }
     .back-home:hover {
       color: #00d4aa;
-      transform: translateX(-4px);
-    }
-    .back-home svg {
-      transition: transform 0.3s;
-    }
-    .back-home:hover svg {
-      transform: translateX(-3px);
     }
 
-    /* ── Header ── */
     .page-header {
       text-align: center;
-      margin-bottom: 56px;
+      margin-bottom: 48px;
     }
 
     .page-header h1 {
-      font-size: 2.8rem;
+      font-size: clamp(32px, 5vw, 52px);
       font-weight: 700;
-      background: linear-gradient(135deg, #00d4aa 0%, #7c3aed 100%);
+      background: linear-gradient(135deg, #e2e8f0 0%, #00d4aa 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
     }
 
     .page-header p {
-      color: #94a3b8;
-      font-size: 1.1rem;
-      font-weight: 300;
+      color: #64748b;
+      font-size: 18px;
+      margin-top: 8px;
     }
 
-    .page-header .glow {
-      display: inline-block;
+    .glow {
       width: 80px;
-      height: 3px;
-      background: linear-gradient(90deg, transparent, #00d4aa, #7c3aed, transparent);
+      height: 4px;
+      background: linear-gradient(90deg, #00d4aa, #7c3aed);
       border-radius: 2px;
-      margin-top: 18px;
+      margin: 16px auto 0;
     }
 
-    /* ── Accordion ── */
+    /* ── FAQ Accordion ── */
     .faq-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
 
     .faq-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
       overflow: hidden;
-      transition: border-color 0.3s, box-shadow 0.3s;
+      transition: border-color 0.3s;
     }
     .faq-item:hover {
-      border-color: rgba(0, 212, 170, 0.25);
+      border-color: rgba(0,212,170,0.2);
     }
-    .faq-item.active {
-      border-color: rgba(0, 212, 170, 0.4);
-      box-shadow: 0 0 30px rgba(0, 212, 170, 0.06);
+    .faq-item.open {
+      border-color: rgba(0,212,170,0.3);
     }
 
     .faq-question {
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      width: 100%;
-      padding: 20px 24px;
-      background: transparent;
+      padding: 18px 22px;
+      background: none;
       border: none;
       color: #e2e8f0;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.05rem;
+      font-size: 15px;
       font-weight: 500;
-      cursor: pointer;
       text-align: left;
-      transition: color 0.3s, background 0.3s;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      gap: 12px;
+      transition: background 0.3s;
     }
     .faq-question:hover {
-      color: #00d4aa;
+      background: rgba(0,212,170,0.03);
     }
-    .faq-question .q-num {
-      color: #7c3aed;
-      font-weight: 600;
-      font-size: 0.8rem;
-      margin-right: 8px;
-      opacity: 0.7;
+
+    .q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: rgba(0,212,170,0.1);
+      color: #00d4aa;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 10px;
+      flex-shrink: 0;
     }
 
     .faq-icon {
+      width: 20px;
+      height: 20px;
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.4s ease;
+      transition: transform 0.3s;
     }
     .faq-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: #7c3aed;
-      stroke-width: 2.5;
+      width: 100%;
+      height: 100%;
+      stroke: #6b7280;
+      stroke-width: 2;
       stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: stroke 0.3s, transform 0.4s ease;
     }
-    .faq-item.active .faq-icon svg {
-      stroke: #00d4aa;
+    .faq-item.open .faq-icon {
       transform: rotate(45deg);
-    }
-    .faq-question:hover .faq-icon svg {
-      stroke: #00d4aa;
     }
 
     .faq-answer {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.45s ease, padding 0.45s ease;
+      transition: max-height 0.35s ease, padding 0.35s ease;
     }
+    .faq-item.open .faq-answer {
+      max-height: 800px;
+    }
+
     .faq-answer-inner {
-      padding: 0 24px 20px;
-      color: #cbd5e1;
-      font-size: 0.975rem;
-      line-height: 1.75;
+      padding: 0 22px 18px;
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.7;
     }
-    .faq-item.active .faq-answer {
-      max-height: 600px;
+    .faq-answer-inner p {
+      margin-bottom: 8px;
     }
-
-    .faq-answer-inner a {
-      color: #00d4aa;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .faq-answer-inner a:hover {
-      color: #7c3aed;
-      text-decoration: underline;
-    }
-
-    .faq-answer-inner code,
-    .faq-answer-inner .mono {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85em;
-      background: rgba(124, 58, 237, 0.12);
-      color: #a78bfa;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-
-    .faq-answer-inner strong {
-      color: #00d4aa;
-      font-weight: 600;
-    }
-
     .faq-answer-inner ul {
-      margin: 10px 0 0 20px;
+      margin: 6px 0 6px 20px;
       list-style: none;
     }
     .faq-answer-inner ul li {
       position: relative;
-      padding-left: 20px;
-      margin-bottom: 6px;
+      padding-left: 18px;
+      margin-bottom: 4px;
     }
     .faq-answer-inner ul li::before {
-      content: "▸";
+      content: "";
       position: absolute;
       left: 0;
-      color: #7c3aed;
-      font-weight: 700;
+      top: 10px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00d4aa;
+      opacity: 0.6;
+    }
+    .faq-answer-inner code {
+      font-family: 'JetBrains Mono', monospace;
+      color: #00d4aa;
+      font-size: 13px;
+    }
+    .faq-answer-inner strong {
+      color: #e2e8f0;
+    }
+    .faq-answer-inner a {
+      color: #00d4aa;
+      text-decoration: none;
+    }
+    .faq-answer-inner a:hover {
+      text-decoration: underline;
     }
 
-    /* ── Tokenomics grid ── */
     .token-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px 20px;
-      margin-top: 12px;
+      gap: 6px;
+      margin: 12px 0;
     }
     .token-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 10px;
+      align-items: center;
+      padding: 8px 14px;
       background: rgba(255,255,255,0.02);
       border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 14px;
     }
     .token-row .label {
       color: #94a3b8;
@@ -260,474 +235,346 @@
     .token-row .value {
       color: #00d4aa;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 500;
-      font-size: 0.85rem;
-    }
-
-    /* ── Community badges ── */
-    .community-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-    }
-    .community-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.3s;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      color: #e2e8f0;
-    }
-    .community-link:hover {
-      background: rgba(0, 212, 170, 0.08);
-      border-color: #00d4aa;
-      color: #00d4aa;
-      transform: translateY(-2px);
-    }
-    .community-link svg {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
+      font-weight: 600;
     }
 
     /* ── Footer ── */
     .faq-footer {
-      text-align: center;
       margin-top: 60px;
-      padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      font-size: 13px;
       color: #64748b;
-      font-size: 0.85rem;
     }
     .faq-footer a {
-      color: #7c3aed;
+      color: #6b7280;
       text-decoration: none;
     }
     .faq-footer a:hover {
       color: #00d4aa;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 640px) {
-      .wrapper {
-        padding: 32px 16px 80px;
-      }
-      .page-header h1 {
-        font-size: 2rem;
+    @media (max-width: 600px) {
+      .page-wrap {
+        padding: 40px 16px 60px;
       }
       .faq-question {
-        padding: 16px 18px;
-        font-size: 0.95rem;
+        font-size: 14px;
+        padding: 14px 16px;
       }
       .faq-answer-inner {
-        padding: 0 18px 16px;
-        font-size: 0.9rem;
+        font-size: 13px;
       }
-      .token-grid {
-        grid-template-columns: 1fr;
+      .q-num {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+        margin-right: 8px;
+      }
+      .token-row {
+        font-size: 13px;
+        padding: 6px 10px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══ Starry Canvas ═══ -->
-  <canvas id="starry-bg"></canvas>
+<canvas id="stars-canvas"></canvas>
 
-  <!-- ═══ Main Content ═══ -->
-  <div class="wrapper">
+<div class="page-wrap">
+  <a href="/" class="back-home">&larr; Back to Home</a>
 
-    <!-- Back to Home -->
-    <a href="/" class="back-home">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      Back to Home
-    </a>
+  <div class="page-header">
+    <h1>Frequently Asked Questions</h1>
+    <p>Everything you need to know about the SPORB Protocol</p>
+    <div class="glow"></div>
+  </div>
 
-    <!-- Header -->
-    <div class="page-header">
-      <h1>Frequently Asked Questions</h1>
-      <p>Everything you need to know about the SPORB Protocol</p>
-      <div class="glow"></div>
+  <div class="faq-list">
+
+    <!-- 1 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">01</span>What is SPORB Protocol?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            <strong>SPORB Protocol</strong> is a decentralized infrastructure project built on the <strong>Solana</strong> blockchain. It combines an AI-driven <strong>XAU Signal Engine</strong> with a DePIN (Decentralized Physical Infrastructure Network) of smart display terminals called SPORB Nodes. The protocol bridges real-world data with on-chain incentives, offering staking, node mining, and signal-driven trading tools.
+          </p>
+        </div>
+      </div>
     </div>
 
-    <!-- ═══ FAQ Accordion ═══ -->
-    <div class="faq-list" id="faqList">
-
-      <!-- 1 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">01</span>What is SPORB Protocol?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              <strong>SPORB Protocol</strong> is a next-generation decentralized finance (DeFi) platform built on the Solana blockchain. It combines an AI-driven signal engine — the <strong>XAU Signal Engine</strong> — with tokenized real-world assets (RWAs) backed by physical gold. The protocol bridges the gap between traditional commodity markets and on-chain finance, giving users exposure to gold price movements, yield-generating staking pools, and node-based network participation.
-            </p>
-            <p style="margin-top:10px;">
-              SPORB is designed for transparency, security, and community governance, with all smart contracts verified on Solscan. Whether you are a passive investor or an active DeFi participant, SPORB offers multiple ways to earn and interact.
-            </p>
-          </div>
+    <!-- 2 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">02</span>What is <code>$SPORB</code> token?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            <strong>$SPORB</strong> is the native <strong>SPL</strong> utility token of the SPORB Protocol on Solana. It powers the entire ecosystem:
+          </p>
+          <ul>
+            <li><strong>Governance</strong> — $SPORB holders vote on protocol upgrades and treasury allocations.</li>
+            <li><strong>Staking</strong> — Stake $SPORB to earn rewards from ecosystem revenue.</li>
+            <li><strong>Node Rewards</strong> — SPORB Node operators earn $SPORB for running network infrastructure.</li>
+            <li><strong>Fees &amp; Access</strong> — Used for premium signal subscriptions and network fees.</li>
+          </ul>
         </div>
       </div>
-
-      <!-- 2 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">02</span>What is <code>$SPORB</code> token?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              <strong>$SPORB</strong> is the native ERC-20 utility and governance token of the SPORB Protocol. It powers the entire ecosystem:
-            </p>
-            <ul>
-              <li><strong>Governance</strong> — $SPORB holders vote on protocol upgrades, fee structures, and treasury allocations.</li>
-              <li><strong>Staking</strong> — Stake $SPORB to earn rewards backed by XAU Signal Engine yields.</li>
-              <li><strong>Node Rewards</strong> — Node operators earn $SPORB for validating and relaying signals.</li>
-              <li><strong>Fees &amp; Access</strong> — Used for premium signal subscriptions and reduced trading fees.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">03</span>How do I buy <code>$SPORB</code>?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>Buying $SPORB is simple. Follow these steps:</p>
-            <ul>
-              <li><strong>1. Get a wallet</strong> — Download <strong>MetaMask</strong> or <strong>WalletConnect</strong>-compatible wallet.</li>
-              <li><strong>2. Fund with ETH</strong> — Purchase ETH on a centralized exchange (Coinbase, Binance, Kraken) and send it to your wallet, or use a fiat on-ramp like MoonPay.</li>
-              <li><strong>3. Connect to the dApp</strong> — Visit the official SPORB Protocol website and click "Launch App". Connect your wallet.</li>
-              <li><strong>4. Swap</strong> — Use the built-in swap interface to exchange ETH for $SPORB at the current market rate.</li>
-              <li><strong>5. Alternative: DEX</strong> — You can also trade $SPORB on <strong>Uniswap V3</strong> using the contract address available on the official site.</li>
-            </ul>
-            <p style="margin-top:10px;font-size:0.88rem;color:#64748b;">⚠ Always verify the contract address from official sources to avoid scams.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">04</span>What is the SPORB Node Presale?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              The <strong>SPORB Node Presale</strong> is an early-access sale of limited-edition SPORB Nodes. Each node is an NFT license that entitles its holder to:
-            </p>
-            <ul>
-              <li>A share of <strong>daily XAU Signal rewards</strong> distributed in ETH and $SPORB.</li>
-              <li>Priority access to future protocol features and airdrops.</li>
-              <li>A percentage of network transaction fees proportional to node tier.</li>
-              <li>Node tiers: <strong>Sentinel</strong>, <strong>Validator</strong>, and <strong>Oracle</strong> — each with increasing reward multipliers.</li>
-            </ul>
-            <p style="margin-top:10px;">
-              The presale is conducted in phases with escalating pricing. Early participants receive the best rates and bonus allocations. All node sales are capped and on-chain transparent.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 5 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">05</span>How does staking work on SPORB?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              Staking on SPORB lets you earn passive yield by locking your <code>$SPORB</code> tokens in the protocol's staking contract. Here is how it works:
-            </p>
-            <ul>
-              <li><strong>Deposit</strong> — Connect your wallet, navigate to the Staking dashboard, and choose your stake amount and lock period (flexible, 30-day, 90-day, or 180-day).</li>
-              <li><strong>Earn</strong> — Rewards accrue in real-time from XAU Signal Engine yields, swap fees, and node revenue. Longer lock periods earn higher APY multipliers.</li>
-              <li><strong>Compound or Claim</strong> — Reinvest rewards automatically (auto-compound) or claim them to your wallet at any time.</li>
-              <li><strong>Unstake</strong> — After your lock period, withdraw your principal plus accrued rewards. Early unstaking may incur a small penalty.</li>
-            </ul>
-            <p style="margin-top:10px;">
-              Rewards are distributed in <code>$SPORB</code> with a portion also available in <code>ETH</code> for higher-tier stakers. All staking contracts are audited and publicly verifiable.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 6 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">06</span>What is the XAU Signal Engine?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              The <strong>XAU Signal Engine</strong> is SPORB's proprietary AI-powered market analysis system. It processes terabytes of on-chain and off-chain data to generate actionable trading signals for XAU (gold) price movements. Key features:
-            </p>
-            <ul>
-              <li><strong>Multi-Model AI</strong> — Uses ensemble machine learning combining LSTM neural networks, gradient-boosted trees, and transformer-based models for high-accuracy predictions.</li>
-              <li><strong>Real-Time Data</strong> — Ingests live gold spot prices, COMEX futures, DXY index, macro-economic indicators, and on-chain volume data.</li>
-              <li><strong>Signal Types</strong> — Generates <strong>Long</strong>, <strong>Short</strong>, and <strong>Neutral</strong> signals with confidence scores and entry/exit zones.</li>
-              <li><strong>On-Chain Distribution</strong> — Signals are published on-chain via oracles, making them immutable and verifiable by anyone.</li>
-            </ul>
-            <p style="margin-top:10px;">
-              The XAU Signal Engine powers the protocol's yield generation — a portion of profits from signal-driven strategies is redistributed to <code>$SPORB</code> stakers and node operators.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 7 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">07</span>What are the tokenomics of <code>$SPORB</code>?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              <code>$SPORB</code> has a fixed total supply of <strong>100,000,000,000 tokens</strong>, distributed as follows:
-            </p>
-            <div class="token-grid" style="margin-top:12px;">
-              <div class="token-row"><span class="label">Ecosystem &amp; Rewards</span><span class="value">40%</span></div>
-              <div class="token-row"><span class="label">Team &amp; Contributors</span><span class="value">20%</span></div>
-              <div class="token-row"><span class="label">Company Reserve</span><span class="value">15%</span></div>
-              <div class="token-row"><span class="label">Liquidity Pool</span><span class="value">10%</span></div>
-              <div class="token-row"><span class="label">Pre-Sale</span><span class="value">8%</span></div>
-              <div class="token-row"><span class="label">Strategic Investors</span><span class="value">5%</span></div>
-              <div class="token-row"><span class="label">Marketing &amp; Airdrops</span><span class="value">2%</span></div>
-            </div>
-            <p style="margin-top:12px;font-size:0.9rem;color:#94a3b8;">
-              Team tokens: 4-year vest with 1-year cliff. No team tokens liquid at TGE.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 8 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">08</span>Is <code>$SPORB</code> safe?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              Safety and transparency are core pillars of the SPORB Protocol. Here's what we have done to ensure the highest level of security:
-            </p>
-            <ul>
-              <li><strong>Contract Verified</strong> — All smart contracts are <strong>verified on Solscan</strong>, with full source code publicly available for anyone to inspect.</li>
-              <li><strong>Audited</strong> — The codebase has undergone comprehensive audits by leading third-party firms. Audit reports are published on the official site.</li>
-              <li><strong>Team Tokens Vested</strong> — Team and advisor allocations are locked in a vesting contract with a <strong>6-month cliff</strong> followed by <strong>12 months of linear release</strong>, preventing any early dumping.</li>
-              <li><strong>Liquidity Locks</strong> — Initial liquidity pool tokens are locked for a minimum of <strong>12 months</strong> via time-lock contracts.</li>
-              <li><strong>Multi-Sig Treasury</strong> — The protocol treasury is controlled by a multi-signature wallet requiring approval from multiple trusted signers.</li>
-              <li><strong>No Mint Functions</strong> — The <code>$SPORB</code> token contract includes <strong>no minting functions</strong>, ensuring the total supply is permanently fixed at 100,000,000,000.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- 9 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">09</span>How can I join the community?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>We would love to have you! Join the SPORB community on these platforms:</p>
-            <div class="community-links">
-              <a href="https://t.me/sporbprotocol" class="community-link" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.062 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                Telegram
-              </a>
-              <a href="https://discord.gg/sporbprotocol" class="community-link" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.369a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028 14.09 14.09 0 001.226-1.994.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.673-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                Discord
-              </a>
-              <a href="https://twitter.com/sporbprotocol" class="community-link" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                X / Twitter
-              </a>
-              <a href="https://medium.com/@sporbprotocol" class="community-link" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M0 0h24v24H0V0zm23.16 3.92H.84v16.16h22.32V3.92zM5.6 12.42c0 2.08 1.56 3.78 3.48 3.78 1.92 0 3.48-1.7 3.48-3.78s-1.56-3.78-3.48-3.78c-1.92 0-3.48 1.7-3.48 3.78zm8.32 0c0 2.08.84 3.78 1.88 3.78s1.88-1.7 1.88-3.78-.84-3.78-1.88-3.78c-1.04 0-1.88 1.7-1.88 3.78zm4.64-3.37v12.19c0 .84-.32 1.14-1.24 1.14h-14.2c-.92 0-1.24-.3-1.24-1.14V9.05c0-.84.32-1.14 1.24-1.14h14.2c.92 0 1.24.3 1.24 1.14z"/></svg>
-                Medium
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 10 -->
-      <div class="faq-item">
-        <button class="faq-question" aria-expanded="false">
-          <span><span class="q-num">10</span>Where can I see the code?</span>
-          <span class="faq-icon">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          </span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-inner">
-            <p>
-              The SPORB Protocol codebase is fully <strong>open source</strong>. You can browse, fork, and audit everything on GitHub:
-            </p>
-            <p style="margin-top:12px;">
-              <a href="https://github.com/sporbxyz" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;font-size:0.95rem;font-weight:500;text-decoration:none;transition:all 0.3s;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                github.com/sporbxyz
-              </a>
-            </p>
-            <p style="margin-top:12px;font-size:0.88rem;color:#94a3b8;">
-              Repositories include smart contracts, the XAU Signal Engine, front-end dApp, and Signal Oracle nodes. Pull requests and community contributions are welcome.
-            </p>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- Footer -->
-    <div class="faq-footer">
-      <p>SPORB Protocol &mdash; Orbital Data Infrastructure.</p>
-      <p style="margin-top:4px;"><a href="/">Home</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
+    <!-- 3 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">03</span>How do I buy <code>$SPORB</code>?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Buying $SPORB is simple. Follow these steps:</p>
+          <ul>
+            <li><strong>1. Get a wallet</strong> — Download <strong>Phantom</strong> or <strong>Solflare</strong>.</li>
+            <li><strong>2. Fund with SOL</strong> — Purchase SOL on an exchange (Coinbase, Binance, Kraken) and send it to your wallet.</li>
+            <li><strong>3. Visit sporb.xyz</strong> — Use the built-in swap feature on the homepage.</li>
+            <li><strong>4. Alternative: DEX</strong> — Trade on <strong>Jupiter</strong> or <strong>Raydium</strong> using the token address from the official site.</li>
+          </ul>
+          <p style="margin-top:10px;font-size:0.88rem;color:#64748b;">Always verify the token address from official sources to avoid scams.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">04</span>What is the SPORB Node Presale?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            The <strong>SPORB Node Presale</strong> offers early access to two types of smart display terminals:
+          </p>
+          <ul>
+            <li><strong>Times Frame Lite</strong> ($149 Early Bird) — Desktop smart display, Allwinner H618, 10" IPS, earns $SPORB at 1.0x rate.</li>
+            <li><strong>Times Frame Miner</strong> ($849 Early Bird) — Edge compute node, RK3588 with 6 TOPS NPU, earns 3-5x rewards.</li>
+          </ul>
+          <p style="margin-top:10px;">Nodes display real-time XAU Signal data and earn daily $SPORB rewards from a dynamic mining pool. Shipping target: Q1 2027.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">05</span>How does staking work?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            Staking lets you lock $SPORB tokens to earn rewards. Four plans are available:
+          </p>
+          <ul>
+            <li><strong>1 Month</strong> — 12% APY, 0.5x boost</li>
+            <li><strong>3 Months</strong> — 18% APY, 1.0x boost</li>
+            <li><strong>6 Months</strong> — 24% APY, 1.5x boost</li>
+            <li><strong>12 Months</strong> — 30% APY, 2.0x boost</li>
+          </ul>
+          <p style="margin-top:10px;">Staking is currently trust-based (manual deposit detection) with a smart contract planned post-launch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">06</span>What is the XAU Signal Engine?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            The <strong>XAU Signal Engine</strong> is an AI-driven system that generates buy/sell signals for XAUUSD (gold). It combines trend analysis, FVG detection, and multi-timeframe confirmation. Signals are delivered via Telegram to subscribers. Pricing plans start at $29/month.
+          </p>
+          <p style="margin-top:10px;">For more details, visit <a href="/signal.html">sporb.xyz/signal.html</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">07</span>What are the tokenomics of <code>$SPORB</code>?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            <code>$SPORB</code> has a fixed total supply of <strong>100,000,000,000 tokens</strong>, distributed as follows:
+          </p>
+          <div class="token-grid" style="margin-top:12px;">
+            <div class="token-row"><span class="label">Ecosystem &amp; Rewards</span><span class="value">40%</span></div>
+            <div class="token-row"><span class="label">Team &amp; Contributors</span><span class="value">20%</span></div>
+            <div class="token-row"><span class="label">Company Reserve</span><span class="value">15%</span></div>
+            <div class="token-row"><span class="label">Liquidity Pool</span><span class="value">10%</span></div>
+            <div class="token-row"><span class="label">Pre-Sale</span><span class="value">8%</span></div>
+            <div class="token-row"><span class="label">Strategic Investors</span><span class="value">5%</span></div>
+            <div class="token-row"><span class="label">Marketing &amp; Airdrops</span><span class="value">2%</span></div>
+          </div>
+          <p style="margin-top:12px;font-size:0.9rem;color:#94a3b8;">
+            Team tokens: 4-year vest with 1-year cliff. No team tokens liquid at TGE. ~10% circulating at launch.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">08</span>Is <code>$SPORB</code> safe?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            Safety and transparency are core pillars. Here's what we have done:
+          </p>
+          <ul>
+            <li><strong>Contract Verified</strong> — Token contract verified on <strong>Solscan</strong>, source code publicly available.</li>
+            <li><strong>Team Tokens Vested</strong> — Team allocations locked with 1-year cliff + 4-year linear vesting.</li>
+            <li><strong>No Mint Functions</strong> — No minting functions. Total supply is permanently fixed at 100,000,000,000.</li>
+            <li><strong>Open Source</strong> — All code on <a href="https://github.com/sporbxyz" target="_blank">GitHub</a>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">09</span>How can I join the community?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>Join the SPORB community on these channels:</p>
+          <ul>
+            <li>Telegram: <a href="https://t.me/sporb_xyz" target="_blank">t.me/sporb_xyz</a></li>
+            <li>X / Twitter: <a href="https://x.com/sporb_xyz" target="_blank">x.com/sporb_xyz</a></li>
+            <li>GitHub: <a href="https://github.com/sporbxyz" target="_blank">github.com/sporbxyz</a></li>
+            <li>Discord: <a href="https://discord.gg/sporb_xyz" target="_blank">discord.gg/sporb_xyz</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false">
+        <span><span class="q-num">10</span>Where can I see the code?</span>
+        <span class="faq-icon">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+      </button>
+      <div class="faq-answer">
+        <div class="faq-answer-inner">
+          <p>
+            The SPORB Protocol codebase is fully <strong>open source</strong>. You can browse, fork, and audit everything on GitHub:
+          </p>
+          <p style="margin-top:10px;">
+            <a href="https://github.com/sporbxyz" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);color:#a78bfa;font-size:0.95rem;font-weight:500;text-decoration:none;transition:all 0.3s;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+              github.com/sporbxyz
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <!-- ═══ JavaScript ═══ -->
+  <div class="faq-footer">
+    <p>SPORB Protocol &mdash; Orbital Data Infrastructure.</p>
+    <p style="margin-top:4px;"><a href="/">Home</a> &middot; <a href="/terms.html">Terms</a> &middot; <a href="/privacy.html">Privacy</a></p>
+  </div>
+</div>
 
-  <!-- Starry background canvas -->
-  <script>
-    (function() {
-      const canvas = document.getElementById('starry-bg');
-      const ctx = canvas.getContext('2d');
-      let stars = [];
-      let animId;
-      let W, H;
-
-      function resize() {
-        W = canvas.width = window.innerWidth;
-        H = canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resize);
-
-      function initStars(count) {
-        stars = [];
-        for (let i = 0; i < count; i++) {
-          stars.push({
-            x: Math.random() * W,
-            y: Math.random() * H,
-            r: Math.random() * 1.5 + 0.3,
-            alpha: Math.random() * 0.8 + 0.2,
-            delta: Math.random() * 0.02 + 0.003,
-            phase: Math.random() * Math.PI * 2,
-          });
-        }
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, W, H);
-        const t = performance.now() * 0.001;
-
-        for (const s of stars) {
-          const flicker = 0.5 + 0.5 * Math.sin(t * s.delta * 80 + s.phase);
-          const a = s.alpha * flicker;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(200, 215, 255, ${a})`;
-          ctx.fill();
-        }
-
-        animId = requestAnimationFrame(draw);
-      }
-
-      function restart() {
-        if (animId) cancelAnimationFrame(animId);
-        resize();
-        initStars(180);
-        draw();
-      }
-
-      restart();
-    })();
-  </script>
-
-  <!-- FAQ Accordion interactivity -->
-  <script>
-    (function() {
-      const items = document.querySelectorAll('.faq-item');
-
-      function toggleItem(btn) {
-        const item = btn.closest('.faq-item');
-        if (!item) return;
-
-        const isOpen = item.classList.contains('active');
-
-        // Close all other items (accordion behavior — only one open at a time)
-        items.forEach(el => {
-          if (el !== item) {
-            el.classList.remove('active');
-            const q = el.querySelector('.faq-question');
-            if (q) q.setAttribute('aria-expanded', 'false');
-          }
+<script>
+  (function() {
+    var questions = document.querySelectorAll('.faq-question');
+    questions.forEach(function(q) {
+      q.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(function(i) {
+          i.classList.remove('open');
+          i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
         });
-
         // Toggle this one
-        if (isOpen) {
-          item.classList.remove('active');
-          btn.setAttribute('aria-expanded', 'false');
-        } else {
-          item.classList.add('active');
-          btn.setAttribute('aria-expanded', 'true');
-        }
-      }
-
-      items.forEach(item => {
-        const btn = item.querySelector('.faq-question');
-        if (btn) {
-          btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            toggleItem(this);
-          });
+        if (!isOpen) {
+          item.classList.add('open');
+          this.setAttribute('aria-expanded', 'true');
         }
       });
-    })();
-  </script>
+    });
+  })();
+
+  // Stars
+  var canvas = document.getElementById('stars-canvas');
+  var ctx = canvas.getContext('2d');
+  var stars = [];
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  for (var i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.5 + 0.3,
+      o: Math.random(),
+      s: Math.random() * 0.02 + 0.005
+    });
+  }
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(function(s) {
+      s.o += s.s;
+      var alpha = 0.3 + 0.7 * Math.abs(Math.sin(s.o));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,' + alpha + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+</script>
 
 </body>
 </html>
