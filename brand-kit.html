@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Kit — SPORB Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --bg: #0a0a0f; --fg: #e8e8ed; --muted: #6b6b80;
+      --accent: #00d4aa; --accent2: #7c3aed;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      background:var(--bg); color:var(--fg);
+      font-family:'Space Grotesk',sans-serif;
+      min-height:100vh; overflow-x:hidden;
+    }
+    #stars-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+    .content { position:relative; z-index:1; max-width:800px; margin:0 auto; padding:80px 24px; }
+    .back-home {
+      display:inline-flex; align-items:center; gap:6px;
+      color:var(--muted); text-decoration:none; font-size:14px;
+      margin-bottom:40px; transition:color 0.3s;
+    }
+    .back-home:hover { color:var(--accent); }
+    h1 { font-size:clamp(32px,5vw,56px); font-weight:700; margin-bottom:8px; }
+    .subtitle { color:var(--muted); font-size:18px; margin-bottom:48px; }
+    h2 { font-size:22px; font-weight:600; color:var(--accent); margin:48px 0 24px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+    .color-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:16px; margin-bottom:32px; }
+    .color-card { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px; padding:16px; }
+    .color-swatch { width:100%; height:60px; border-radius:8px; margin-bottom:10px; }
+    .color-name { font-size:13px; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .color-hex { font-size:13px; color:var(--accent); font-family:'JetBrains Mono',monospace; margin-top:4px; }
+    .logo-preview { display:flex; gap:32px; flex-wrap:wrap; margin:24px 0; }
+    .logo-preview img { max-width:200px; border-radius:12px; border:1px solid var(--border); }
+    .logo-card { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px; padding:24px; text-align:center; }
+    .logo-card p { font-size:13px; color:var(--muted); margin-top:12px; }
+    .font-card { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:12px; padding:20px 24px; margin-bottom:16px; }
+    .font-card .font-name { font-size:14px; color:var(--accent); font-family:'JetBrains Mono',monospace; margin-bottom:4px; }
+    .font-card .font-demo { font-size:28px; margin:12px 0 4px; }
+    .font-card .font-meta { font-size:13px; color:var(--muted); }
+    .download-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:14px 28px; border-radius:8px;
+      background:var(--accent); color:#0a0a0f;
+      font-weight:600; text-decoration:none; font-size:16px;
+      transition:all 0.3s; margin:24px 0;
+    }
+    .download-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,212,170,0.2); }
+    .social-links { display:flex; gap:12px; flex-wrap:wrap; margin:24px 0; }
+    .social-link { padding:8px 16px; border:1px solid var(--border); border-radius:8px; color:var(--fg); text-decoration:none; font-size:14px; transition:all 0.3s; }
+    .social-link:hover { border-color:var(--accent); color:var(--accent); }
+    .footer { margin-top:80px; padding-top:24px; border-top:1px solid var(--border); text-align:center; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <canvas id="stars-canvas"></canvas>
+  <div class="content">
+    <a href="/" class="back-home">← Back to Home</a>
+    <div class="badge" style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--border);border-radius:100px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:32px;">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>
+      BRAND KIT
+    </div>
+    <h1>Brand Kit</h1>
+    <p class="subtitle">Official brand assets for SPORB Protocol</p>
+
+    <h2>🎨 Colors</h2>
+    <div class="color-grid">
+      <div class="color-card"><div class="color-swatch" style="background:#0a0a0f;border:1px solid #333;"></div><div class="color-name">Background</div><div class="color-hex">#0a0a0f</div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#e8e8ed;"></div><div class="color-name">Foreground</div><div class="color-hex">#e8e8ed</div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#00d4aa;"></div><div class="color-name">Accent</div><div class="color-hex">#00d4aa</div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#7c3aed;"></div><div class="color-name">Secondary</div><div class="color-hex">#7c3aed</div></div>
+      <div class="color-card"><div class="color-swatch" style="background:#6b6b80;"></div><div class="color-name">Muted</div><div class="color-hex">#6b6b80</div></div>
+    </div>
+
+    <h2>🔤 Fonts</h2>
+    <div class="font-card">
+      <div class="font-name">Space Grotesk</div>
+      <div class="font-demo" style="font-family:'Space Grotesk',sans-serif;">SPORB Protocol — The Bridge Between Earth and Space</div>
+      <div class="font-meta">Weights: 300, 400, 500, 600, 700 · Google Fonts</div>
+    </div>
+    <div class="font-card">
+      <div class="font-name">JetBrains Mono</div>
+      <div class="font-demo" style="font-family:'JetBrains Mono',monospace;">SPORB Protocol — $SPORB Token</div>
+      <div class="font-meta">Weights: 400, 700 · Google Fonts</div>
+    </div>
+
+    <h2>🖼️ Logo</h2>
+    <div class="logo-preview">
+      <div class="logo-card">
+        <img src="/logo.svg" alt="SPORB logo SVG" style="max-width:160px;">
+        <p>logo.svg — Vector (preferred)</p>
+      </div>
+      <div class="logo-card">
+        <img src="/logo.png" alt="SPORB logo PNG" style="max-width:160px;">
+        <p>logo.png — 400×400px</p>
+      </div>
+    </div>
+
+    <h2>📥 Download</h2>
+    <a href="/brand-kit.zip" class="download-btn">⬇ Download Brand Kit (ZIP)</a>
+    <p style="color:var(--muted);font-size:14px;margin-top:8px;">Includes: logo.svg, logo.png, colors, fonts, brand guidelines</p>
+
+    <h2>🔗 Social Links</h2>
+    <div class="social-links">
+      <a href="https://x.com/sporb_xyz" target="_blank" class="social-link">𝕏 / Twitter</a>
+      <a href="https://t.me/sporb_xyz" target="_blank" class="social-link">Telegram</a>
+      <a href="https://github.com/sporbxyz" target="_blank" class="social-link">GitHub</a>
+      <a href="https://discord.gg/sporb_xyz" target="_blank" class="social-link">Discord</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>SPORB Protocol &mdash; Orbital Data Infrastructure</p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+    const stars = Array.from({length:180}, () => ({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.3,o:Math.random(),s:Math.random()*0.02+0.005}));
+    function drawStars() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      stars.forEach(s => {
+        s.o += s.s;
+        const alpha = 0.3 + 0.7 * Math.abs(Math.sin(s.o));
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+  </script>
+</body>
+</html>

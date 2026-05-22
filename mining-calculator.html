@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPORB Mining Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a2e;
+  --accent: #00d4aa;
+  --accent-dim: rgba(0,212,170,0.15);
+  --purple: #7c3aed;
+  --purple-dim: rgba(124,58,237,0.2);
+  --text: #e8e8f0;
+  --text-dim: #8888a0;
+  --text-muted: #55556a;
+  --border: #1e1e30;
+  --green: #00d4aa;
+  --green-bg: rgba(0,212,170,0.12);
+  --red: #ef4444;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+#stars-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+/* header */
+.header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.header .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.header .logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+}
+.header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header p {
+  color: var(--text-dim);
+  font-size: 16px;
+  margin-top: 8px;
+}
+/* card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 24px;
+}
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title .accent-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
+}
+.card-title .purple-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--purple);
+  display: inline-block;
+}
+/* grid layout */
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 820px) {
+  .calc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* inputs */
+.input-group {
+  margin-bottom: 22px;
+}
+.input-group:last-child {
+  margin-bottom: 0;
+}
+.input-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+.input-label .badge {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  background: var(--surface2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--surface2);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0,212,170,0.3);
+  border: 2px solid var(--bg);
+  transition: box-shadow 0.2s;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 20px rgba(0,212,170,0.5);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+input[type="number"] {
+  width: 80px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input[type="number"]:focus {
+  border-color: var(--accent);
+}
+input[type="number"].price-input {
+  width: 90px;
+}
+/* outputs */
+.outputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.output-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.output-row:hover {
+  border-color: rgba(0,212,170,0.2);
+}
+.output-label {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+.output-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+}
+.output-value.accent {
+  color: var(--accent);
+}
+.output-value.purple {
+  color: var(--purple);
+}
+.output-value.green-big {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.output-value .sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.output-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+/* roi section */
+.roi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .roi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.roi-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  text-align: center;
+}
+.roi-card .roi-label {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.roi-card .roi-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+.roi-card .roi-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.roi-positive { color: var(--accent); }
+.roi-negative { color: var(--red); }
+
+/* explanation */
+.explanation {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+.explanation strong {
+  color: var(--accent);
+  font-weight: 500;
+}
+.explanation .purple-text {
+  color: var(--purple);
+}
+.expl ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 12px;
+}
+.expl ul li {
+  padding: 6px 0 6px 20px;
+  position: relative;
+}
+.expl ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+/* responsive */
+@media (max-width: 600px) {
+  .container { padding: 20px 12px; }
+  .header h1 { font-size: 26px; }
+  .card { padding: 20px 16px; }
+  .output-value { font-size: 16px; }
+  .output-value.green-big { font-size: 22px; }
+  .roi-card .roi-value { font-size: 20px; }
+}
+/* tooltip style */
+.footnote {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--purple-dim);
+  border: 1px solid rgba(124,58,237,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.footnote strong {
+  color: var(--purple);
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">⬡</div>
+      <span style="font-size:24px; font-weight:700; color:#fff;">SPORB</span>
+    </div>
+    <h1>Node Mining Calculator</h1>
+    <p>Calculate your SPORB mining rewards across any timeline</p>
+  </div>
+
+  <!-- Main Calculator -->
+  <div class="calc-grid">
+
+    <!-- Inputs Column -->
+    <div class="card">
+      <div class="card-title"><span class="accent-dot"></span> Mining Parameters</div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Number of Nodes</span>
+          <span class="badge" id="nodes-badge">1</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="nodes-slider" min="1" max="100" value="1" step="1">
+          <input type="number" id="nodes-num" min="1" max="100" value="1" class="price-input">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Daily Emission per Node</span>
+          <span class="badge" id="emission-badge">685 SPORB</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="emission-slider" min="100" max="2000" value="685" step="5">
+          <input type="number" id="emission-num" min="100" max="2000" value="685" class="price-input">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>SPORB Price (USD)</span>
+          <span class="badge" id="price-badge">$3.00</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="price-slider" min="0.10" max="20" value="3" step="0.05">
+          <input type="number" id="price-num" min="0.01" max="100" value="3" step="0.01" class="price-input">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Electricity Cost ($/day/node)</span>
+          <span class="badge" id="electric-badge">$0.50</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="electric-slider" min="0" max="5" value="0.50" step="0.05">
+          <input type="number" id="electric-num" min="0" max="10" value="0.50" step="0.01" class="price-input">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-label">
+          <span>Pool Fee (%)</span>
+          <span class="badge" id="fee-badge">0%</span>
+        </div>
+        <div class="input-row">
+          <input type="range" id="fee-slider" min="0" max="20" value="0" step="0.5">
+          <input type="number" id="fee-num" min="0" max="20" value="0" step="0.5" class="price-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Outputs Column -->
+    <div class="card">
+      <div class="card-title"><span class="purple-dot"></span> Mining Rewards</div>
+      <div class="outputs">
+
+        <div class="output-row">
+          <span class="output-label">Daily SPORB Earned</span>
+          <span class="output-value accent" id="daily-sporb">0 SPORB</span>
+        </div>
+
+        <div class="output-row">
+          <span class="output-label">Daily USD Value</span>
+          <span class="output-value" id="daily-usd">$0.00</span>
+        </div>
+
+        <div class="output-row">
+          <span class="output-label">Daily Profit (after costs)</span>
+          <span class="output-value" id="daily-profit">$0.00</span>
+        </div>
+
+        <div class="output-divider"></div>
+
+        <div class="output-row">
+          <span class="output-label">Monthly SPORB</span>
+          <span class="output-value accent" id="monthly-sporb">0 SPORB</span>
+        </div>
+
+        <div class="output-row">
+          <span class="output-label">Monthly USD</span>
+          <span class="output-value" id="monthly-usd">$0.00</span>
+        </div>
+
+        <div class="output-divider"></div>
+
+        <div class="output-row">
+          <span class="output-label">Yearly SPORB</span>
+          <span class="output-value accent" id="yearly-sporb">0 SPORB</span>
+        </div>
+
+        <div class="output-row">
+          <span class="output-label">Yearly USD</span>
+          <span class="output-value" id="yearly-usd">$0.00</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ROI & Break-even Section -->
+  <div class="card">
+    <div class="card-title"><span class="accent-dot"></span> ROI Timeline &amp; Break-Even</div>
+    <div class="roi-grid">
+
+      <div class="roi-card">
+        <div class="roi-label">Lite Node ($149) — Break-Even</div>
+        <div class="roi-value roi-positive" id="lite-be-days">—</div>
+        <div class="roi-sub" id="lite-be-months">—</div>
+      </div>
+
+      <div class="roi-card">
+        <div class="roi-label">Miner Node ($849) — Break-Even</div>
+        <div class="roi-value roi-positive" id="miner-be-days">—</div>
+        <div class="roi-sub" id="miner-be-months">—</div>
+      </div>
+
+      <div class="roi-card">
+        <div class="roi-label">Lite Node — Year-1 ROI</div>
+        <div class="roi-value roi-positive" id="lite-roi">—</div>
+        <div class="roi-sub">Annual return on investment</div>
+      </div>
+
+      <div class="roi-card">
+        <div class="roi-label">Miner Node — Year-1 ROI</div>
+        <div class="roi-value roi-positive" id="miner-roi">—</div>
+        <div class="roi-sub">Annual return on investment</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Explanation -->
+  <div class="card">
+    <div class="card-title"><span class="purple-dot"></span> Emission Model</div>
+    <div class="explanation">
+      <p>
+        The SPORB network launched with an <strong>initial emission pool of 1,000,000 SPORB</strong>
+        allocated for node mining rewards. During <strong>Year 1</strong>, each node earns approximately
+        <strong>~685 SPORB per day</strong>, distributed pro-rata based on total active nodes.
+      </p>
+      <div class="expl" style="margin-top:14px;">
+        <ul>
+          <li><strong>Initial Pool:</strong> 1,000,000 SPORB</li>
+          <li><strong>Year 1 Daily Rate:</strong> ~685 SPORB per node</li>
+          <li><strong>Decentralized Governance:</strong> Emissions are fully expandable via <span class="purple-text">DAO governance</span> — node operators vote on emission adjustments, pool top-ups, and future reward schedules.</li>
+          <li><strong>Flexible Model:</strong> As the network grows, the DAO can increase the emission cap, adjust distribution rates, or introduce new incentive programs through community proposals.</li>
+          <li><strong>Pro-Rata Distribution:</strong> Your share of daily emissions scales with the number of nodes you operate relative to the total active node count.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== Stars Background =====
+(function(){
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let W, H;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function initStars(count){
+    stars = [];
+    for(let i=0; i<count; i++){
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.5 + 0.3,
+        a: Math.random() * 0.8 + 0.2,
+        speed: Math.random() * 0.02 + 0.005
+      });
+    }
+  }
+  initStars(220);
+
+  function drawStars(){
+    ctx.clearRect(0, 0, W, H);
+    for(const s of stars){
+      s.a += Math.sin(Date.now() * s.speed + s.x) * 0.002;
+      s.a = Math.max(0.1, Math.min(1, s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(drawStars);
+  }
+  drawStars();
+
+  window.addEventListener('resize', ()=>{
+    resize();
+    initStars(220);
+  });
+})();
+
+// ===== Calculator Logic =====
+const nodesSlider = document.getElementById('nodes-slider');
+const nodesNum = document.getElementById('nodes-num');
+const nodesBadge = document.getElementById('nodes-badge');
+
+const emissionSlider = document.getElementById('emission-slider');
+const emissionNum = document.getElementById('emission-num');
+const emissionBadge = document.getElementById('emission-badge');
+
+const priceSlider = document.getElementById('price-slider');
+const priceNum = document.getElementById('price-num');
+const priceBadge = document.getElementById('price-badge');
+
+const electricSlider = document.getElementById('electric-slider');
+const electricNum = document.getElementById('electric-num');
+const electricBadge = document.getElementById('electric-badge');
+
+const feeSlider = document.getElementById('fee-slider');
+const feeNum = document.getElementById('fee-num');
+const feeBadge = document.getElementById('fee-badge');
+
+// Outputs
+const dailySporb = document.getElementById('daily-sporb');
+const dailyUsd = document.getElementById('daily-usd');
+const dailyProfit = document.getElementById('daily-profit');
+const monthlySporb = document.getElementById('monthly-sporb');
+const monthlyUsd = document.getElementById('monthly-usd');
+const yearlySporb = document.getElementById('yearly-sporb');
+const yearlyUsd = document.getElementById('yearly-usd');
+
+// ROI
+const liteBeDays = document.getElementById('lite-be-days');
+const liteBeMonths = document.getElementById('lite-be-months');
+const minerBeDays = document.getElementById('miner-be-days');
+const minerBeMonths = document.getElementById('miner-be-months');
+const liteRoi = document.getElementById('lite-roi');
+const minerRoi = document.getElementById('miner-roi');
+
+function syncInput(slider, num, badge, formatter){
+  slider.addEventListener('input', ()=>{
+    num.value = slider.value;
+    badge.textContent = formatter(slider.value);
+    calculate();
+  });
+  num.addEventListener('input', ()=>{
+    let v = parseFloat(num.value);
+    if(isNaN(v) || v < parseFloat(num.min)) v = parseFloat(num.min);
+    if(v > parseFloat(num.max)) v = parseFloat(num.max);
+    num.value = v;
+    slider.value = v;
+    badge.textContent = formatter(v);
+    calculate();
+  });
+}
+
+syncInput(nodesSlider, nodesNum, nodesBadge, v => v);
+syncInput(emissionSlider, emissionNum, emissionBadge, v => Math.round(v) + ' SPORB');
+syncInput(priceSlider, priceNum, priceBadge, v => '$' + parseFloat(v).toFixed(2));
+syncInput(electricSlider, electricNum, electricBadge, v => '$' + parseFloat(v).toFixed(2));
+syncInput(feeSlider, feeNum, feeBadge, v => v + '%');
+
+function fmtNum(n){
+  if(n >= 1000000) return (n/1000000).toFixed(2) + 'M';
+  if(n >= 1000) return (n/1000).toFixed(2) + 'K';
+  return n.toFixed(2);
+}
+
+function calculate(){
+  const nodes = parseFloat(nodesNum.value) || 1;
+  const emission = parseFloat(emissionNum.value) || 685;
+  const price = parseFloat(priceNum.value) || 3;
+  const electric = parseFloat(electricNum.value) || 0;
+  const feePct = parseFloat(feeNum.value) || 0;
+
+  const feeMultiplier = 1 - feePct / 100;
+
+  const dailyS = nodes * emission * feeMultiplier;
+  const dailyD = dailyS * price;
+  const dailyEl = nodes * electric;
+  const dailyP = dailyD - dailyEl;
+
+  const monthlyS = dailyS * 30.437;
+  const monthlyD = monthlyS * price;
+
+  const yearlyS = dailyS * 365;
+  const yearlyD = yearlyS * price;
+
+  // Update outputs
+  dailySporb.textContent = fmtNum(dailyS) + ' SPORB';
+  dailyUsd.textContent = '$' + dailyD.toFixed(2);
+  dailyProfit.textContent = (dailyP >= 0 ? '$' : '-$') + Math.abs(dailyP).toFixed(2);
+  dailyProfit.style.color = dailyP >= 0 ? 'var(--accent)' : 'var(--red)';
+
+  monthlySporb.textContent = fmtNum(monthlyS) + ' SPORB';
+  monthlyUsd.textContent = '$' + monthlyD.toFixed(2);
+
+  yearlySporb.textContent = fmtNum(yearlyS) + ' SPORB';
+  yearlyUsd.textContent = '$' + yearlyD.toFixed(2);
+
+  // Break-even calculations (per single node)
+  const perNodeDailyProfit = emission * feeMultiplier * price - electric;
+
+  // Lite Node: $149
+  if(perNodeDailyProfit > 0){
+    const liteDays = 149 / perNodeDailyProfit;
+    const minerDays = 849 / perNodeDailyProfit;
+
+    liteBeDays.textContent = Math.ceil(liteDays) + ' days';
+    liteBeMonths.textContent = (liteDays / 30.437).toFixed(1) + ' months';
+    minerBeDays.textContent = Math.ceil(minerDays) + ' days';
+    minerBeMonths.textContent = (minerDays / 30.437).toFixed(1) + ' months';
+
+    // Year-1 ROI
+    const yearlyProfitPerNode = perNodeDailyProfit * 365;
+    const liteROI = ((yearlyProfitPerNode - 149) / 149) * 100;
+    const minerROI = ((yearlyProfitPerNode - 849) / 849) * 100;
+
+    liteRoi.textContent = (liteROI >= 0 ? '+' : '') + liteROI.toFixed(1) + '%';
+    liteRoi.className = 'roi-value ' + (liteROI >= 0 ? 'roi-positive' : 'roi-negative');
+    minerRoi.textContent = (minerROI >= 0 ? '+' : '') + minerROI.toFixed(1) + '%';
+    minerRoi.className = 'roi-value ' + (minerROI >= 0 ? 'roi-positive' : 'roi-negative');
+  } else {
+    liteBeDays.textContent = '∞';
+    liteBeMonths.textContent = 'Never break-even';
+    minerBeDays.textContent = '∞';
+    minerBeMonths.textContent = 'Never break-even';
+    liteRoi.textContent = '—';
+    liteRoi.className = 'roi-value roi-negative';
+    minerRoi.textContent = '—';
+    minerRoi.className = 'roi-value roi-negative';
+  }
+}
+
+// Initial calculation
+calculate();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — SPORB Protocol</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e2e8f0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 400;
+            line-height: 1.75;
+            min-height: 100vh;
+        }
+
+        a {
+            color: #00d4aa;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        a:hover {
+            opacity: 0.75;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ─── Navigation ─── */
+        nav {
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        nav .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #00d4aa;
+            letter-spacing: -0.02em;
+        }
+        .logo span {
+            color: #7c3aed;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #00d4aa;
+        }
+        .nav-links a.active {
+            color: #00d4aa;
+        }
+
+        /* ─── Hero ─── */
+        .hero {
+            padding: 80px 0 40px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+        .hero .last-updated {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .hero .tag {
+            display: inline-block;
+            background: rgba(0,212,170,0.1);
+            color: #00d4aa;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 100px;
+            margin-bottom: 20px;
+            letter-spacing: 0.03em;
+            border: 1px solid rgba(0,212,170,0.2);
+        }
+
+        /* ─── Content ─── */
+        .content {
+            padding-bottom: 80px;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 36px 40px;
+            margin-bottom: 24px;
+            transition: border-color 0.2s;
+        }
+        .section:hover {
+            border-color: rgba(0,212,170,0.15);
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section h2 .accent-bar {
+            display: inline-block;
+            width: 4px;
+            height: 22px;
+            background: #00d4aa;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .section h2 .accent-bar.purple {
+            background: #7c3aed;
+        }
+
+        .section h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #00d4aa;
+            margin: 24px 0 10px;
+        }
+        .section h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .section p {
+            margin-bottom: 14px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+        .section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section ul {
+            margin: 10px 0 16px 24px;
+            list-style: none;
+        }
+        .section ul li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+        .section ul li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            background: #00d4aa;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        .section ul li.purple-bullet::before {
+            background: #7c3aed;
+        }
+
+        /* ─── Info box ─── */
+        .info-box {
+            background: rgba(124,58,237,0.08);
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p {
+            color: #d8b4fe;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+        .info-box strong {
+            color: #c084fc;
+        }
+
+        .info-box.accent-box {
+            background: rgba(0,212,170,0.06);
+            border-color: rgba(0,212,170,0.2);
+        }
+        .info-box.accent-box p {
+            color: #5eead4;
+        }
+        .info-box.accent-box strong {
+            color: #2dd4bf;
+        }
+
+        /* ─── Contact card ─── */
+        .contact-card {
+            background: linear-gradient(135deg, rgba(0,212,170,0.04), rgba(124,58,237,0.04));
+            border: 1px solid rgba(0,212,170,0.12);
+            border-radius: 12px;
+            padding: 32px 40px;
+            margin-top: 32px;
+            text-align: center;
+        }
+        .contact-card h3 {
+            color: #00d4aa;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .contact-card p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        .contact-card a {
+            color: #00d4aa;
+            font-weight: 500;
+        }
+
+        /* ─── Footer ─── */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 28px 0;
+            text-align: center;
+        }
+        footer p {
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        footer a {
+            color: #64748b;
+        }
+        footer a:hover {
+            color: #00d4aa;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.85rem; }
+            .section { padding: 24px 20px; }
+            .contact-card { padding: 24px 20px; }
+            .nav-links { gap: 16px; font-size: 0.8rem; }
+            nav .container { flex-direction: column; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ Navigation ═══ -->
+    <nav>
+        <div class="container">
+            <a href="/" class="logo">SPORB<span>://</span>protocol</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="privacy.html" class="active">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══ Hero ═══ -->
+    <section class="hero">
+        <div class="container">
+            <span class="tag">📄 Policy</span>
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last updated: May 22, 2026</p>
+        </div>
+    </section>
+
+    <!-- ═══ Content ═══ -->
+    <section class="content">
+        <div class="container">
+
+            <!-- Introduction -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>Introduction</h2>
+                <p>SPORB Protocol ("<strong>we</strong>", "<strong>our</strong>", or "<strong>us</strong>") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or interact with the SPORB Protocol platform.</p>
+                <p>By using our services, you agree to the collection and use of information in accordance with this policy. If you do not agree, please discontinue use of the platform.</p>
+            </div>
+
+            <!-- Data We Collect -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>Information We Collect</h2>
+
+                <h3>Personal Information</h3>
+                <p>We may collect personal information that you voluntarily provide to us, including but not limited to:</p>
+                <ul>
+                    <li>Email address (when subscribing to updates or contacting support)</li>
+                    <li>Wallet address (when interacting with the protocol)</li>
+                    <li>Communications and correspondence with our team</li>
+                </ul>
+
+                <h3>Automatically Collected Information</h3>
+                <p>When you access our website, certain information is automatically collected:</p>
+                <ul>
+                    <li>IP address and approximate geographic location</li>
+                    <li>Browser type, version, and language preferences</li>
+                    <li>Device type and operating system</li>
+                    <li>Pages visited, time spent, and referral sources</li>
+                    <li>Interaction data with smart contracts (public blockchain data)</li>
+                </ul>
+
+                <h3>Blockchain Data</h3>
+                <p>SPORB Protocol is built on the Solana blockchain. Any transactions you sign and submit to the Solana network are public by design. Your wallet address, transaction amounts, and interaction history with our smart contracts are recorded on-chain and are not under our control.</p>
+            </div>
+
+            <!-- Cookies -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>Cookies &amp; Tracking</h2>
+                <p>We use cookies and similar tracking technologies to improve your browsing experience and gather analytics.</p>
+
+                <h3>Types of Cookies We Use</h3>
+                <ul>
+                    <li><strong>Essential Cookies:</strong> Required for basic functionality and security of the website.</li>
+                    <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with the site so we can improve performance and content.</li>
+                    <li><strong>Preference Cookies:</strong> Remember your settings and preferences across sessions.</li>
+                </ul>
+
+                <div class="info-box accent-box">
+                    <p><strong>Your Choices:</strong> Most browsers allow you to control cookie settings via their preferences menu. You may block or delete cookies; however, doing so may affect certain features of our website. We do not use cookies for targeted advertising.</p>
+                </div>
+            </div>
+
+            <!-- How We Use Data -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>How We Use Your Information</h2>
+                <p>We use the collected information for the following purposes:</p>
+                <ul>
+                    <li>To operate, maintain, and improve our platform and website</li>
+                    <li>To provide customer support and respond to inquiries</li>
+                    <li>To monitor and analyze usage trends and technical issues</li>
+                    <li>To detect, prevent, and address security threats or fraud</li>
+                    <li>To comply with legal obligations and regulatory requirements</li>
+                </ul>
+                <p>We do <strong>not</strong> sell your personal information to third parties.</p>
+            </div>
+
+            <!-- Third-Party Services -->
+            <div class="section">
+                <h2><span class="accent-bar purple"></span>Third-Party Services</h2>
+                <p>SPORB Protocol integrates with several third-party services to provide its functionality. Each service operates under its own privacy policy:</p>
+
+                <h3>Solana Blockchain</h3>
+                <p>The SPORB Protocol smart contracts are deployed on the <strong>Solana</strong> blockchain. All on-chain interactions — including token swaps, staking, and transactions — are publicly visible on the Solana ledger. We do not control the Solana network or its data handling practices. Please review <a href="https://solana.com/privacy" target="_blank" rel="noopener">Solana's Privacy Policy</a> for more information.</p>
+
+                <h3>Jupiter Aggregator</h3>
+                <p>SPORB Protocol uses <strong>Jupiter</strong> as its primary decentralized exchange aggregator for token swaps. When you execute a swap through our interface, your transaction is routed through Jupiter's infrastructure. Jupiter may collect certain data related to swap routing and execution. Please review <a href="https://jup.ag/privacy" target="_blank" rel="noopener">Jupiter's Privacy Policy</a>.</p>
+
+                <h3>Infrastructure &amp; Hosting</h3>
+                <p>Our website and backend services may use third-party hosting providers and infrastructure services (e.g., cloud platforms, CDN providers). These providers may have access to non-personal usage data as part of standard operations.</p>
+
+                <div class="info-box">
+                    <p><strong>Important:</strong> We encourage you to review the privacy policies of any third-party services you interact with through SPORB Protocol. We are not responsible for the privacy practices of these external services.</p>
+                </div>
+            </div>
+
+            <!-- Data Security -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>Data Security</h2>
+                <p>We implement reasonable technical and organizational measures to protect your information from unauthorized access, disclosure, alteration, or destruction. These include encryption in transit (TLS), access controls, and regular security reviews.</p>
+                <p>However, no method of transmission over the Internet or electronic storage is 100% secure. We cannot guarantee absolute security of your data.</p>
+            </div>
+
+            <!-- Your Rights -->
+            <div class="section">
+                <h2><span class="accent-bar"></span>Your Rights</h2>
+                <p>Depending on your jurisdiction, you may have the following rights regarding your personal data:</p>
+                <ul>
+                    <li><strong>Access:</strong> Request a copy of the data we hold about you.</li>
+                    <li><strong>Correction:</strong> Request that we correct inaccurate or incomplete data.</li>
+                    <li><strong>Deletion:</strong> Request that we delete your personal data, subject to legal retention requirements.</li>
+                    <li><strong>Objection:</strong> Object to the processing of your data for certain purposes.</li>
+                    <li><strong>Data Portability:</strong> Request transfer of your data to another service provider.</li>
+                </ul>
+                <p>To exercise any of these rights, please contact us using the information below.</p>
+            </div>
+
+            <!-- Contact -->
+            <div class="contact-card">
+                <h3>📬 Contact Us</h3>
+                <p>If you have questions about this Privacy Policy or wish to exercise your data rights, please reach out:</p>
+                <p><strong>Email:</strong> <a href="mailto:privacy@sporb.io">privacy@sporb.io</a></p>
+                <p><strong>Website:</strong> <a href="https://sporb.io" target="_blank" rel="noopener">https://sporb.io</a></p>
+                <p><strong>Jurisdiction:</strong> Hong Kong</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 SPORB Protocol. All rights reserved. | <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPORB XAU Signal Engine — Performance Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* ── Stars Canvas ── */
+    #stars-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    /* ── Layout ── */
+    .container {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem 3rem;
+    }
+    /* ── Header ── */
+    .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .logo { font-size: 1.6rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+    .logo span { color: #00d4aa; }
+    .badge {
+      background: rgba(124, 58, 237, 0.18);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      color: #a78bfa; font-size: 0.7rem; font-weight: 600;
+      padding: 0.25rem 0.7rem; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      color: #a0a0b0; padding: 0.5rem 1.1rem; border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: all 0.2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: #fff; }
+    .back-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+    /* ── Page Title ── */
+    .page-title { margin-bottom: 2rem; }
+    .page-title h1 { font-size: 1.75rem; font-weight: 700; color: #fff; margin-bottom: 0.3rem; }
+    .page-title p { font-size: 0.9rem; color: #6b7280; }
+    .page-title p span { color: #00d4aa; }
+    /* ── Stats Cards ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+    .stat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 1.2rem 1rem;
+      text-align: center; transition: border-color 0.25s, background 0.25s;
+    }
+    .stat-card:hover { border-color: rgba(0, 212, 170, 0.25); background: rgba(0, 212, 170, 0.03); }
+    .stat-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #6b7280; margin-bottom: 0.4rem; }
+    .stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; font-weight: 600; color: #fff; letter-spacing: -0.02em; }
+    .stat-value.green { color: #00d4aa; }
+    .stat-value.purple { color: #a78bfa; }
+    .stat-value.streak { font-family: 'Space Grotesk', sans-serif; }
+    .stat-sub { font-size: 0.7rem; color: #4b5563; margin-top: 0.15rem; }
+    /* ── Section Title ── */
+    .section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    .section-title h2 { font-size: 1.1rem; font-weight: 600; color: #fff; }
+    .update-badge {
+      font-size: 0.7rem; color: #6b7280; background: rgba(255,255,255,0.04);
+      padding: 0.3rem 0.7rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    /* ── Table ── */
+    .table-wrap {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; overflow-x: auto;
+      margin-bottom: 2.5rem;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.82rem; min-width: 700px;
+    }
+    thead { background: rgba(255,255,255,0.03); }
+    th {
+      padding: 0.7rem 0.9rem; text-align: left;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #6b7280; border-bottom: 1px solid rgba(255,255,255,0.06);
+      white-space: nowrap;
+    }
+    td {
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      white-space: nowrap;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    /* column alignments */
+    td.num, th.num { text-align: center; }
+    td.instr, th.instr { text-align: center; }
+    td.price, th.price { text-align: right; font-family: 'JetBrains Mono', monospace; }
+    td.pnl, th.pnl { text-align: right; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+    td.dir, th.dir { text-align: center; }
+    td.stat, th.stat { text-align: center; }
+    /* Direction badges */
+    .dir-badge {
+      display: inline-block; padding: 0.15rem 0.55rem; border-radius: 4px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em;
+    }
+    .dir-buy  { background: rgba(0, 212, 170, 0.15); color: #00d4aa; }
+    .dir-sell { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+    .pnl-positive { color: #00d4aa; }
+    .pnl-negative { color: #ef4444; }
+    .status-win  { color: #00d4aa; }
+    .status-loss { color: #ef4444; }
+    /* ── Equity Curve ── */
+    .equity-section { margin-bottom: 2.5rem; }
+    .equity-section .section-title { margin-bottom: 0.7rem; }
+    .chart-container {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 1.5rem 1.5rem 1rem;
+    }
+    .chart-y-labels {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding-right: 0.75rem; min-width: 48px; text-align: right;
+    }
+    .chart-y-labels span {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #4b5563; line-height: 1;
+    }
+    .chart-flex {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .chart-bars-wrap {
+      flex: 1; display: flex; align-items: flex-end; gap: 3px;
+      height: 160px; padding-top: 8px;
+    }
+    .bar-wrapper {
+      flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      height: 100%; min-width: 0;
+    }
+    .bar {
+      width: 100%; max-width: 20px;
+      border-radius: 3px 3px 0 0;
+      background: linear-gradient(to top, rgba(0, 212, 170, 0.35), #00d4aa);
+      transition: height 0.6s ease;
+      min-height: 2px;
+    }
+    .bar-label {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.55rem; color: #4b5563;
+      margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 36px;
+    }
+    .chart-equity-line {
+      position: absolute; left: 0; right: 0;
+      border-top: 1px dashed rgba(124, 58, 237, 0.3);
+      pointer-events: none;
+    }
+    .chart-footer {
+      display: flex; justify-content: space-between; margin-top: 0.5rem;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #4b5563;
+    }
+    .chart-footer strong { color: #6b7280; }
+    /* ── Disclaimer ── */
+    .disclaimer {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 1rem 1.3rem;
+      font-size: 0.78rem; color: #6b7280; line-height: 1.6;
+      display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+    .disclaimer strong { color: #9ca3af; }
+    .disclaimer a { color: #00d4aa; text-decoration: none; }
+    .disclaimer a:hover { text-decoration: underline; }
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .container { padding: 1rem 0.8rem 2rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+      .stat-value { font-size: 1.2rem; }
+      .page-title h1 { font-size: 1.3rem; }
+      .chart-bars-wrap { height: 120px; gap: 2px; }
+      .bar { max-width: 12px; }
+      .bar-label { font-size: 0.45rem; max-width: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════ Stars Background ══════ -->
+<canvas id="stars-canvas"></canvas>
+
+<!-- ══════ Container ══════ -->
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">SPORB <span>XAU</span></div>
+      <span class="badge">Signal Engine</span>
+    </div>
+    <a href="/" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      Back to Home
+    </a>
+  </div>
+
+  <!-- Page Title -->
+  <div class="page-title">
+    <h1>📊 Performance Dashboard</h1>
+    <p>Live tracking for <span>XAUUSD</span> signal performance &mdash; updated in real time</p>
+  </div>
+
+  <!-- ══════ 1. Stats Cards ══════ -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card">
+      <div class="stat-label">Total Signals</div>
+      <div class="stat-value" id="statTotal">47</div>
+      <div class="stat-sub">all time</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value green" id="statWinRate">72.3%</div>
+      <div class="stat-sub">34 wins / 13 losses</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Avg Gain</div>
+      <div class="stat-value green" id="statAvgGain">+$8.42</div>
+      <div class="stat-sub">per signal</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Profit Factor</div>
+      <div class="stat-value purple" id="statProfitFactor">3.2</div>
+      <div class="stat-sub">gross win / gross loss</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Current Streak</div>
+      <div class="stat-value green streak" id="statStreak">🔥 5 wins</div>
+      <div class="stat-sub">and counting</div>
+    </div>
+  </div>
+
+  <!-- ══════ 2. Last 20 Signals Table ══════ -->
+  <div class="section-title">
+    <h2>📋 Last 20 Signals</h2>
+    <span class="update-badge" id="updateBadge">updated just now</span>
+  </div>
+
+  <div class="table-wrap" id="signalsTableWrap">
+    <table id="signalsTable">
+      <thead>
+        <tr>
+          <th class="num">#</th>
+          <th>Date</th>
+          <th class="instr">Instrument</th>
+          <th class="dir">Direction</th>
+          <th class="price">Entry Price</th>
+          <th class="price">Exit Price</th>
+          <th class="pnl">P&amp;L</th>
+          <th class="stat">Status</th>
+        </tr>
+      </thead>
+      <tbody id="signalsBody">
+        <!-- rows inserted by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════ 3. Equity Curve ══════ -->
+  <div class="equity-section">
+    <div class="section-title">
+      <h2>📈 Equity Curve</h2>
+      <span class="update-badge">starting capital $1,000</span>
+    </div>
+    <div class="chart-container">
+      <div class="chart-flex">
+        <div class="chart-y-labels" id="yLabels"></div>
+        <div class="chart-bars-wrap" id="chartBars"></div>
+      </div>
+      <div class="chart-footer">
+        <span><strong>Start</strong> $1,000</span>
+        <span><strong>Current</strong> $1,200</span>
+        <span><strong>+20.0%</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ 4. Disclaimer ══════ -->
+  <div class="disclaimer">
+    <span>⚠️</span>
+    <div>
+      <strong>Disclaimer.</strong> This data is updated manually as signals are generated.
+      For live signals, join our Telegram <a href="https://t.me/sporb_xyz" target="_blank">t.me/sporb_xyz</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ══════  JAVASCRIPT  ══════ -->
+<!-- ════════════════════════════════════════════ -->
+<script>
+(function() {
+  'use strict';
+
+  // ── Sample signal data ──
+  const SIGNALS = [
+    { num:47, date:'May 21', instr:'XAUUSD', dir:'BUY',  entry:2418, exit:2430, pnl:12.00,  win:true  },
+    { num:46, date:'May 20', instr:'XAUUSD', dir:'BUY',  entry:2405, exit:2417, pnl:12.00,  win:true  },
+    { num:45, date:'May 19', instr:'XAUUSD', dir:'SELL', entry:2422, exit:2415, pnl:7.00,   win:true  },
+    { num:44, date:'May 18', instr:'XAUUSD', dir:'SELL', entry:2430, exit:2438, pnl:-8.00,  win:false },
+    { num:43, date:'May 17', instr:'XAUUSD', dir:'BUY',  entry:2389, exit:2402, pnl:13.00,  win:true  },
+    { num:42, date:'May 16', instr:'XAUUSD', dir:'BUY',  entry:2378, exit:2390, pnl:12.00,  win:true  },
+    { num:41, date:'May 15', instr:'XAUUSD', dir:'SELL', entry:2395, exit:2388, pnl:7.00,   win:true  },
+    { num:40, date:'May 14', instr:'XAUUSD', dir:'SELL', entry:2410, exit:2418, pnl:-8.00,  win:false },
+    { num:39, date:'May 13', instr:'XAUUSD', dir:'BUY',  entry:2365, exit:2380, pnl:15.00,  win:true  },
+    { num:38, date:'May 12', instr:'XAUUSD', dir:'BUY',  entry:2358, exit:2367, pnl:9.00,   win:true  },
+    { num:37, date:'May 11', instr:'XAUUSD', dir:'SELL', entry:2380, exit:2372, pnl:8.00,   win:true  },
+  ];
+
+  // ── Format helpers ──
+  function fmtPrice(v) { return '$' + v.toLocaleString('en-US', {minimumFractionDigits:0, maximumFractionDigits:0}); }
+  function fmtPnl(v)   { return (v >= 0 ? '+' : '') + '$' + v.toFixed(2); }
+  function pnlClass(v) { return v >= 0 ? 'pnl-positive' : 'pnl-negative'; }
+  function dirClass(d) { return d === 'BUY' ? 'dir-buy' : 'dir-sell'; }
+  function statusHtml(win) {
+    return win
+      ? '<span class="status-win">✅ Win</span>'
+      : '<span class="status-loss">❌ Loss</span>';
+  }
+
+  // ── Render table ──
+  const tbody = document.getElementById('signalsBody');
+  function renderTable(data) {
+    tbody.innerHTML = data.map(s => {
+      const pnlVal = s.pnl;
+      return `<tr>
+        <td class="num">${s.num}</td>
+        <td>${s.date}</td>
+        <td class="instr">${s.instr}</td>
+        <td class="dir"><span class="dir-badge ${dirClass(s.dir)}">${s.dir}</span></td>
+        <td class="price">${fmtPrice(s.entry)}</td>
+        <td class="price">${fmtPrice(s.exit)}</td>
+        <td class="pnl ${pnlClass(pnlVal)}">${fmtPnl(pnlVal)}</td>
+        <td class="stat">${statusHtml(s.win)}</td>
+      </tr>`;
+    }).join('');
+  }
+  renderTable(SIGNALS);
+
+  // ── Expose for manual updates ──
+  window.updateSignals = function(newSignals) {
+    if (!Array.isArray(newSignals)) return;
+    renderTable(newSignals);
+    const badge = document.getElementById('updateBadge');
+    const now = new Date();
+    const time = now.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
+    badge.textContent = 'updated ' + time;
+    // optionally recalc stats
+  };
+
+  // ── Stars canvas ──
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let animId = null;
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function initStars(count) {
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.2 + 0.3,
+        a: Math.random() * 0.7 + 0.3,
+        speed: Math.random() * 0.005 + 0.002,
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const s of stars) {
+      s.a += (Math.random() - 0.5) * s.speed;
+      s.a = Math.max(0.15, Math.min(1, s.a));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + s.a.toFixed(3) + ')';
+      ctx.fill();
+    }
+    animId = requestAnimationFrame(drawStars);
+  }
+
+  function startStars() {
+    if (animId) cancelAnimationFrame(animId);
+    resizeCanvas();
+    initStars(180);
+    drawStars();
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initStars(180);
+  });
+
+  startStars();
+
+  // ── Equity Curve ──
+  // Simulate growth from $1,000 to ~$1,200 over 20 bars (matching signals)
+  function buildEquityCurve(signals, startCapital) {
+    const bars = [];
+    let equity = startCapital;
+    // Reverse signals so oldest first, mapping each trade
+    const reversed = [...signals].reverse();
+    // Include start bar
+    bars.push({ label: 'Start', equity: startCapital });
+    for (const s of reversed) {
+      equity += s.pnl;
+      bars.push({ label: '#' + s.num, equity: Math.round(equity * 100) / 100 });
+    }
+    return bars;
+  }
+
+  function renderEquityCurve() {
+    const data = buildEquityCurve(SIGNALS, 1000);
+    const values = data.map(d => d.equity);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+
+    // Y labels
+    const yContainer = document.getElementById('yLabels');
+    const ySteps = 5;
+    yContainer.innerHTML = '';
+    for (let i = 0; i <= ySteps; i++) {
+      const val = min + (range * (ySteps - i)) / ySteps;
+      const span = document.createElement('span');
+      span.textContent = '$' + val.toFixed(0);
+      yContainer.appendChild(span);
+    }
+
+    // Bars
+    const barContainer = document.getElementById('chartBars');
+    barContainer.innerHTML = '';
+    // show every Nth label to avoid crowding
+    const labelInterval = Math.max(1, Math.floor(data.length / 12));
+
+    for (let i = 0; i < data.length; i++) {
+      const d = data[i];
+      const pct = (d.equity - min) / range;
+      const heightPx = Math.max(3, pct * 100);
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bar-wrapper';
+
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = heightPx + '%';
+      wrapper.appendChild(bar);
+
+      const label = document.createElement('div');
+      label.className = 'bar-label';
+      label.textContent = (i % labelInterval === 0) ? d.label : '';
+      wrapper.appendChild(label);
+
+      barContainer.appendChild(wrapper);
+    }
+  }
+
+  renderEquityCurve();
+
+})();
+</script>
+</body>
+</html>
