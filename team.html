@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SPORB Protocol — Team</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ── Reset & Base ── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #0a0a0f;
+            color: #e0e0e8;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ── Stars Canvas ── */
+        #stars-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── Layout Wrapper ── */
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* ── Navigation ── */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0 2rem;
+        }
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.04em;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .nav-logo span {
+            color: #00d4aa;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            padding: 5rem 0 3rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #00d4aa, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero .sub {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #8888a0;
+            font-weight: 400;
+        }
+
+        /* ── Section Shared ── */
+        .section {
+            margin: 5rem 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #00d4aa, #7c3aed);
+            border-radius: 2px;
+            margin-top: 0.4rem;
+        }
+
+        /* ── Mission ── */
+        .mission-text {
+            font-size: 1.1rem;
+            color: #b0b0c0;
+            max-width: 780px;
+            line-height: 1.8;
+            padding: 1.5rem 0 0.5rem;
+        }
+
+        /* ── Team Grid ── */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .team-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 2rem 1.5rem;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .team-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 212, 170, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 212, 170, 0.08);
+        }
+        .team-role {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #00d4aa;
+            margin-bottom: 0.5rem;
+        }
+        .team-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.75rem;
+        }
+        .team-desc {
+            font-size: 0.95rem;
+            color: #8888a0;
+            line-height: 1.6;
+        }
+        .team-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(124, 58, 237, 0.15));
+            border: 1px solid rgba(0, 212, 170, 0.15);
+            color: #00d4aa;
+        }
+
+        /* ── Advisors ── */
+        .advisor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .advisor-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+        .advisor-card .role {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ffffff;
+        }
+        .advisor-card .detail {
+            font-size: 0.85rem;
+            color: #666680;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Values ── */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .value-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+        .value-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+        }
+        .value-card .emoji {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+        }
+        .value-card .label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* ── Back to Home ── */
+        .back-section {
+            text-align: center;
+            margin-top: 5rem;
+        }
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2.4rem;
+            border-radius: 40px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: linear-gradient(135deg, #00d4aa, #7c3aed);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .btn-home:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 28px rgba(0, 212, 170, 0.25);
+        }
+
+        /* ── Footer ── */
+        .footer {
+            text-align: center;
+            padding: 3rem 0 1rem;
+            color: #4a4a5a;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 4rem;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .wrapper { padding: 1.2rem 1rem 3rem; }
+            .hero { padding: 3rem 0 2rem; }
+            .team-grid { grid-template-columns: 1fr; }
+            .advisor-list { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ═══ Stars Canvas ═══ -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- ═══ Wrapper ═══ -->
+    <div class="wrapper">
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <a href="#" class="nav-logo">SPORB<span>://</span></a>
+        </nav>
+
+        <!-- ═══ Hero ═══ -->
+        <section class="hero">
+            <h1>About <span class="highlight">SPORB Protocol</span></h1>
+            <p class="sub">The people building the orbital data layer for DePIN.</p>
+        </section>
+
+        <!-- ═══ Mission ═══ -->
+        <section class="section">
+            <h2 class="section-title">Mission</h2>
+            <p class="mission-text">
+                SPORB Protocol builds decentralized physical infrastructure (DePIN) that bridges
+                real-world data with on-chain incentives. By connecting orbital sensor networks,
+                edge hardware, and verifiable computation, we create a trustless pipeline where
+                physical-world signals — from spectrum readings to environmental metrics — become
+                programmable, rewardable assets on the Solana blockchain. Our mission is to make
+                the data layer of the physical world as open, permissionless, and resilient as
+                the internet itself.
+            </p>
+        </section>
+
+        <!-- ═══ Core Team ═══ -->
+        <section class="section">
+            <h2 class="section-title">Core Team</h2>
+            <div class="team-grid">
+
+                <div class="team-card">
+                    <div class="team-icon">🛰️</div>
+                    <div class="team-role">Founder &amp; Vision</div>
+                    <div class="team-name">Visionary</div>
+                    <div class="team-desc">
+                        Orbital data infrastructure background. Deep expertise in satellite
+                        communications, low-Earth orbit networks, and decentralized systems
+                        architecture.
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-icon">⚙️</div>
+                    <div class="team-role">Head of Engineering</div>
+                    <div class="team-name">Systems Architect</div>
+                    <div class="team-desc">
+                        Hardware + firmware specialist with hands-on experience shipping
+                        DePIN edge devices. Embedded systems, wireless protocols, and
+                        ruggedized sensor arrays.
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-icon">🔗</div>
+                    <div class="team-role">Lead Developer</div>
+                    <div class="team-name">Smart Contract Engineer</div>
+                    <div class="team-desc">
+                        Full-stack Solana ecosystem developer. Expert in Anchor, Rust,
+                        program-derived addresses, and cross-chain data verification
+                        pipelines.
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-icon">🧠</div>
+                    <div class="team-role">Signal Engine Lead</div>
+                    <div class="team-name">AI/ML Engineer</div>
+                    <div class="team-desc">
+                        Specializes in AI/ML models for financial signal processing and
+                        XAU trading systems. Real-time inference pipelines, feature
+                        engineering, and low-latency prediction architectures.
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-icon">🌐</div>
+                    <div class="team-role">Head of Operations</div>
+                    <div class="team-name">Operations Lead</div>
+                    <div class="team-desc">
+                        Community building, strategic partnerships, and business development.
+                        Connects DePIN projects with real-world infrastructure operators and
+                        ecosystem stakeholders.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ═══ Advisors ═══ -->
+        <section class="section">
+            <h2 class="section-title">Advisors</h2>
+            <div class="advisor-list">
+                <div class="advisor-card">
+                    <div class="role">Web3 Infrastructure Advisor</div>
+                    <div class="detail">Decentralized network architecture &amp; tokenomics</div>
+                </div>
+                <div class="advisor-card">
+                    <div class="role">Hardware &amp; Telecom Advisor</div>
+                    <div class="detail">Satellite communications &amp; RF engineering</div>
+                </div>
+                <div class="advisor-card">
+                    <div class="role">Capital Markets Advisor</div>
+                    <div class="detail">Institutional-grade trading &amp; risk frameworks</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Values ═══ -->
+        <section class="section">
+            <h2 class="section-title">Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="emoji">🔍</div>
+                    <div class="label">Transparency</div>
+                </div>
+                <div class="value-card">
+                    <div class="emoji">⚡</div>
+                    <div class="label">Decentralization</div>
+                </div>
+                <div class="value-card">
+                    <div class="emoji">💡</div>
+                    <div class="label">Innovation</div>
+                </div>
+                <div class="value-card">
+                    <div class="emoji">🤝</div>
+                    <div class="label">Community-First</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ Back to Home ═══ -->
+        <div class="back-section">
+            <a href="#" class="btn-home">← Back to Home</a>
+        </div>
+
+        <!-- ═══ Footer ═══ -->
+        <footer class="footer">
+            SPORB Protocol &mdash; Decentralized Physical Infrastructure Network
+        </footer>
+
+    </div>
+
+    <!-- ═══ Stars Background Script ═══ -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('stars-canvas');
+            const ctx = canvas.getContext('2d');
+            let w, h;
+            let stars = [];
+            const STAR_COUNT = 220;
+            const MAX_SPEED = 0.25;
+
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+
+            function initStars() {
+                stars = [];
+                for (let i = 0; i < STAR_COUNT; i++) {
+                    stars.push({
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.8 + 0.3,
+                        dx: (Math.random() - 0.5) * MAX_SPEED * 0.6,
+                        dy: (Math.random() - 0.5) * MAX_SPEED * 0.6,
+                        alpha: Math.random() * 0.8 + 0.2,
+                        pulseSpeed: Math.random() * 0.008 + 0.003,
+                        pulsePhase: Math.random() * Math.PI * 2,
+                    });
+                }
+            }
+
+            function draw() {
+                ctx.clearRect(0, 0, w, h);
+
+                const time = Date.now();
+
+                for (const s of stars) {
+                    // Twinkle
+                    const twinkle = 0.5 + 0.5 * Math.sin(time * s.pulseSpeed + s.pulsePhase);
+                    const a = s.alpha * twinkle;
+
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200, 210, 255, ${a})`;
+                    ctx.fill();
+
+                    // Glow on larger stars
+                    if (s.r > 1.2) {
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, s.r * 2.2, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(124, 58, 237, ${a * 0.12})`;
+                        ctx.fill();
+                    }
+
+                    // Movement
+                    s.x += s.dx;
+                    s.y += s.dy;
+
+                    // Wrap around
+                    if (s.x < -5) s.x = w + 5;
+                    if (s.x > w + 5) s.x = -5;
+                    if (s.y < -5) s.y = h + 5;
+                    if (s.y > h + 5) s.y = -5;
+                }
+
+                // Draw subtle connecting lines between nearby stars
+                for (let i = 0; i < stars.length; i++) {
+                    for (let j = i + 1; j < stars.length; j++) {
+                        const dx = stars[i].x - stars[j].x;
+                        const dy = stars[i].y - stars[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 90) {
+                            const alpha = (1 - dist / 90) * 0.08;
+                            ctx.beginPath();
+                            ctx.moveTo(stars[i].x, stars[i].y);
+                            ctx.lineTo(stars[j].x, stars[j].y);
+                            ctx.strokeStyle = `rgba(124, 58, 237, ${alpha})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+
+            window.addEventListener('resize', () => {
+                resize();
+                // Re-position stars proportionally on resize
+                for (const s of stars) {
+                    s.x = (s.x / (w || 1)) * window.innerWidth;
+                    s.y = (s.y / (h || 1)) * window.innerHeight;
+                }
+                resize();
+            });
+
+            resize();
+            initStars();
+            draw();
+        })();
+    </script>
+
+</body>
+</html>

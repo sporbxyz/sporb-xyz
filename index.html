@@ -670,6 +670,34 @@
             </form>
         </div>
         
+        <!-- Live Stats -->
+        <div class="stats-bar" style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px; padding:24px 0; max-width:800px; margin:0 auto;">
+            <div style="padding:16px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.03);">
+                <div style="font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">$SPORB Price</div>
+                <div style="font-size:20px; font-weight:700; color:var(--accent); font-family:'JetBrains Mono',monospace;" id="stat-price">$2.41</div>
+            </div>
+            <div style="padding:16px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.03);">
+                <div style="font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Total Supply</div>
+                <div style="font-size:20px; font-weight:700; color:var(--fg); font-family:'JetBrains Mono',monospace;">100B</div>
+            </div>
+            <div style="padding:16px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.03);">
+                <div style="font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Signal Win Rate</div>
+                <div style="font-size:20px; font-weight:700; color:var(--accent); font-family:'JetBrains Mono',monospace;">72.3%</div>
+            </div>
+            <div style="padding:16px; border:1px solid var(--accent-dim); border-radius:10px; text-align:center; background:rgba(0,212,170,0.03);">
+                <div style="font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Nodes Projected</div>
+                <div style="font-size:20px; font-weight:700; color:var(--fg); font-family:'JetBrains Mono',monospace;">1,000+</div>
+            </div>
+        </div>
+        <script>
+        // Sync price stat with the live price element
+        setInterval(function(){
+            var p = document.getElementById('sporb-price');
+            var s = document.getElementById('stat-price');
+            if(p && s) s.textContent = p.textContent;
+        }, 3000);
+        </script>
+        
         <!-- Footer Image -->
         <div class="section-image">
             <img src="/images/space-tech.jpg" alt="Space technology">
@@ -694,6 +722,9 @@
                     <a href="/how-to-buy.html">How to Buy</a>
                     <a href="/mining-calculator.html">Mining Calc</a>
                     <a href="/signal-performance.html">Signal Perf</a>
+                    <a href="/team.html">Team</a>
+                    <a href="/news.html">News</a>
+                    <a href="/audits.html">Audits</a>
                     <a href="/brand-kit.html">Brand Kit</a>
                     <a href="/terms.html">Terms</a>
                     <a href="/privacy.html">Privacy</a>

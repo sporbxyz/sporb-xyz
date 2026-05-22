@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPORB Updates — News &amp; Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- Stars canvas ---- */
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ---- Page wrapper ---- */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* ---- Nav ---- */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+
+    .back-link {
+      color: #7c3aed;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .back-link:hover {
+      color: #00d4aa;
+    }
+
+    .back-link svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .sporb-logo {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #00d4aa;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ---- Hero ---- */
+    .hero {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+    }
+
+    .hero h1 span {
+      color: #00d4aa;
+    }
+
+    .hero p {
+      margin-top: 0.75rem;
+      font-size: 1.1rem;
+      color: #888;
+      font-weight: 400;
+    }
+
+    /* ---- Divider ---- */
+    .divider {
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #00d4aa, #7c3aed);
+      border-radius: 4px;
+      margin: 1.25rem auto 0;
+    }
+
+    /* ---- Posts ---- */
+    .posts {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .post {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 1.75rem 2rem;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    .post:hover {
+      border-color: rgba(0, 212, 170, 0.25);
+      box-shadow: 0 0 30px rgba(0, 212, 170, 0.04);
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .post-date {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #7c3aed;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .post-tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      background: rgba(0, 212, 170, 0.12);
+      color: #00d4aa;
+      border: 1px solid rgba(0, 212, 170, 0.2);
+    }
+
+    .post-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .post-excerpt {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #a0a0a0;
+      margin-bottom: 0.9rem;
+    }
+
+    .post-excerpt strong {
+      color: #c0c0c0;
+    }
+
+    .read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #00d4aa;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .read-more:hover {
+      color: #7c3aed;
+    }
+
+    .read-more svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform 0.2s;
+    }
+
+    .read-more:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      margin-top: 4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #444;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 2rem;
+    }
+
+    .footer a {
+      color: #7c3aed;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #00d4aa;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 600px) {
+      .page { padding: 1.25rem 1rem 3rem; }
+      .hero h1 { font-size: 2rem; }
+      .post { padding: 1.25rem 1.25rem; }
+      .post-title { font-size: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== Stars Canvas ===== -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- ===== Page ===== -->
+  <div class="page">
+
+    <!-- Nav -->
+    <nav class="nav">
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to home
+      </a>
+      <span class="sporb-logo">SPORB</span>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1>SPORB <span>Updates</span></h1>
+      <p>The latest news, releases, and announcements from the SPORB Protocol team.</p>
+      <div class="divider"></div>
+    </section>
+
+    <!-- Blog Posts -->
+    <div class="posts">
+
+      <!-- Post 1 -->
+      <article class="post">
+        <div class="post-meta">
+          <span class="post-date">May 22, 2026</span>
+          <span class="post-tag">Release</span>
+        </div>
+        <h2 class="post-title">SPORB Website Expansion Complete</h2>
+        <p class="post-excerpt">
+          The SPORB Protocol website has been significantly expanded with five major new sections:
+          <strong>FAQ</strong>, <strong>Terms of Service</strong>, <strong>Mining Calculator</strong>,
+          <strong>Brand Kit</strong>, and <strong>Signal Performance Dashboard</strong>.
+          Explore everything SPORB has to offer in one place.
+        </p>
+        <a href="#" class="read-more" aria-label="Read more about SPORB Website Expansion">
+          Read more
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Post 2 -->
+      <article class="post">
+        <div class="post-meta">
+          <span class="post-date">May 22, 2026</span>
+          <span class="post-tag">Feature</span>
+        </div>
+        <h2 class="post-title">SPORB Pulse Weekly Report Launches</h2>
+        <p class="post-excerpt">
+          Introducing <strong>SPORB Pulse</strong> — an automated weekly community report that delivers
+          network statistics, signal performance highlights, mining activity summaries, and key protocol
+          metrics directly to the community. Stay informed every week without lifting a finger.
+        </p>
+        <a href="#" class="read-more" aria-label="Read more about SPORB Pulse Weekly Report">
+          Read more
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+      <!-- Post 3 -->
+      <article class="post">
+        <div class="post-meta">
+          <span class="post-date">May 20, 2026</span>
+          <span class="post-tag">Presale</span>
+        </div>
+        <h2 class="post-title">SPORB Node Presale Opens</h2>
+        <p class="post-excerpt">
+          The <strong>SPORB Node Presale</strong> is now live. Two tiers are available:
+          <strong>Times Frame Lite</strong> at <strong>$149</strong> and the full
+          <strong>Miner Node</strong> at <strong>$849</strong>. Secure your node and help
+          power the SPORB Protocol network. Limited quantities available.
+        </p>
+        <a href="#" class="read-more" aria-label="Read more about SPORB Node Presale">
+          Read more
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </article>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <a href="index.html">← Back to home</a> &nbsp;·&nbsp; SPORB Protocol &nbsp;·&nbsp; &copy; 2026
+    </footer>
+  </div>
+
+  <!-- ===== Stars Animation Script ===== -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('stars-canvas');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      let w, h;
+
+      function resize() {
+        w = canvas.width  = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const STAR_COUNT = 220;
+
+      function initStars() {
+        stars = [];
+        for (let i = 0; i < STAR_COUNT; i++) {
+          stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.6 + 0.3,
+            alpha: Math.random() * 0.6 + 0.2,
+            speed: Math.random() * 0.008 + 0.003,
+            direction: Math.random() > 0.5 ? 1 : -1,
+          });
+        }
+      }
+      initStars();
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (const s of stars) {
+          s.alpha += s.speed * s.direction;
+          if (s.alpha > 0.9 || s.alpha < 0.1) {
+            s.direction *= -1;
+          }
+
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+
+      /* Redistribute stars on resize */
+      window.addEventListener('resize', () => {
+        resize();
+        initStars();
+      });
+    })();
+  </script>
+</body>
+</html>
